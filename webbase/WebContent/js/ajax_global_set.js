@@ -121,6 +121,22 @@ $.sm = {
 					}
 				}
 			}
-		}
-		
+		}		
+}
+
+/**
+ * easyui中的组件的ajax数据的通用处理方法
+ */
+$.ajaxData = {
+	/**
+	 * 往下来框框中增加全部选项，要求 值字段名为id,文本字段名为text
+	 */
+	addAllOption : function(data){
+		data.splice(0,0,{id:"",text:I18N_MESS.option_all});
+		return data;
+	},
+	addChooseOption : function(data){
+		data.splice(0,0,{id:"",text:I18N_MESS.option_choose});
+		return data;
+	}
 }

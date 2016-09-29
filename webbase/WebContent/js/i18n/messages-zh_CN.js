@@ -13,5 +13,8 @@ var I18N_MESS = {
 	
 	operate_ok : ["操作成功！","新增成功！","修改成功！","删除成功！"],
 	operate_faild : ["操作失败！","新增失败！","修改失败！","删除失败！"],
+	
+	option_all:"全部",
+	option_choose: "-请选择-"
 
 }

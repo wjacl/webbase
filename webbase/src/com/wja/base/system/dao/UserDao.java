@@ -3,13 +3,14 @@ package com.wja.base.system.dao;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
+import org.springframework.stereotype.Repository;
 
+import com.wja.base.common.CommRepository;
 import com.wja.base.system.entity.Privilege;
 import com.wja.base.system.entity.User;
 
-@org.springframework.stereotype.Repository
-public interface UserDao extends Repository<User, String>
+@Repository
+public interface UserDao extends CommRepository<User, String>
 {
     User getUserByUsername(String username);
     

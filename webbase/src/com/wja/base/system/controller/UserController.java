@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
+import com.wja.base.util.Page;
 
 @Controller
 @RequestMapping("/user")
@@ -15,6 +16,11 @@ public class UserController
     
     @Autowired
     private UserService userService;
+    
+    @RequestMapping("mana")
+    public String manage(){
+    	return "system/user";
+    }
     
     @RequestMapping("add")
     @ResponseBody
@@ -25,5 +31,11 @@ public class UserController
         
         return user;
         
+    }
+    
+    @RequestMapping("query")
+    @ResponseBody
+    public Object query(Page<User> page){
+    	return this.userService.query(null, page);
     }
 }

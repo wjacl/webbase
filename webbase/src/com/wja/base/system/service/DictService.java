@@ -27,4 +27,8 @@ public class DictService extends CommService<Dict>
         temp.setText(dict.getText());
         this.commDao.update(temp);
     }
+    
+    public List<Dict> getByPid(String pid){
+    	return this.dictDao.findByPid(pid);
+    }
 }

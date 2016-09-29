@@ -1,18 +1,20 @@
 package com.wja.base.system.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.wja.base.common.service.CommService;
+import com.wja.base.common.CommSpecification;
 import com.wja.base.system.dao.UserDao;
 import com.wja.base.system.entity.Privilege;
 import com.wja.base.system.entity.User;
 import com.wja.base.util.MD5;
+import com.wja.base.util.Page;
 
 @Service
-public class UserService extends CommService<User>
+public class UserService
 {
     
     @Autowired
@@ -23,11 +25,6 @@ public class UserService extends CommService<User>
         return this.userDao.getUserByUsername(username);
     }
     
-    @Override
-    public void add(User user)
-    {
-        addUser(user);
-    }
     
     public void addUser(User user)
     {
@@ -37,7 +34,7 @@ public class UserService extends CommService<User>
         }
         
         user.setPassword(MD5.encode(user.getPassword()));
-        this.commDao.save(user);
+        this.userDao.save(user);
     }
     
     public List<Privilege> getUserPrivileges(String id)
@@ -45,4 +42,8 @@ public class UserService extends CommService<User>
         return this.userDao.getUserPrivileges(id);
     }
     
+    public Page<User> query(Map<String,Object> params,Page<User> page)
+    {
+    	return page.setPageData(this.userDao.findAll(new CommSpecification<User>(params), page.getPageRequest()));
+    }
 }

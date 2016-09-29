@@ -32,6 +32,12 @@ public class DictController
         return this.ds.getRoots();
     }
     
+    @RequestMapping("get")
+    @ResponseBody
+    public List<Dict> getByPid(String pid){
+    	return this.ds.getByPid(pid);
+    }
+    
     @RequestMapping("add")
     @ResponseBody
     public Object add(Dict dict)

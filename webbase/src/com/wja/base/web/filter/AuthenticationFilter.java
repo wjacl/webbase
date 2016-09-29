@@ -1,6 +1,8 @@
 package com.wja.base.web.filter;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.Filter;
@@ -15,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import com.wja.base.common.CommConstants;
+import com.wja.base.system.entity.Privilege;
+import com.wja.base.system.service.PrivilegeService;
+import com.wja.base.web.AppContext;
 
 /**
  * Servlet Filter implementation class AuthenticationFilter
@@ -33,7 +38,9 @@ public class AuthenticationFilter implements Filter
     /**
      * 排除的地址模式
      */
-    String[] exceptUriPatterns = null;
+   private  String[] exceptUriPatterns = null;
+    
+   private Set<String> needAuthenticationUris = new HashSet<>();
     
     /**
      * Default constructor.
@@ -64,11 +71,11 @@ public class AuthenticationFilter implements Filter
         
         String uri = hrequest.getRequestURI();
         
-        if (matchExcepts(uri))
+        if (matchExcepts(uri)) //例外uri
         {
             chain.doFilter(request, response);
         }
-        else
+        else if(this.needAuthenticationUris.contains(uri)) //是否是需要鉴权的uri
         {
             // 当前用户有权操作的uri集合
             @SuppressWarnings("unchecked")
@@ -90,6 +97,10 @@ public class AuthenticationFilter implements Filter
                     hresponse.sendRedirect(this.unauthorizedUri);
                 }
             }
+            
+        }
+        else{
+        	chain.doFilter(request, response);
         }
     }
     
@@ -149,6 +160,25 @@ public class AuthenticationFilter implements Filter
                 }
             }
         }
+        
+        //获取所有需要鉴权的操作uri
+        PrivilegeService privilegeService = AppContext.getWebApplicationContext().getBean(PrivilegeService.class);
+        List<Privilege> allPrivs = privilegeService.getAll();
+        
+        if(allPrivs != null && allPrivs.size() > 0){
+        	String uri = null;
+        	for(Privilege p : allPrivs){
+        		uri = p.getPath();
+        		if(uri != null){
+        			uri = uri.trim();
+        			if(!"".equals(uri)){
+        				this.needAuthenticationUris.add(cpath + (uri.startsWith("/") ? "" : "/") + uri);
+        			}
+        		}
+        	}
+        }
+        
+        
     }
     
 }

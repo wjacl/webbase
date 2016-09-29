@@ -1,5 +1,9 @@
 INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('0','数据字典',NULL,'s',1);
 --INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('role','角色类型','0','s',1);
+INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type','用户类别','0','s',1);
+INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type.A','员工','user.type','s',1);
+INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type.S','学生','user.type','s',1);
+INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type.C','合作用户','user.type','s',1);
 
 INSERT INTO t_sys_role(ID,NAME,TYPE,valid)
 VALUES('admin','超级管理员','s',1);
@@ -26,6 +30,9 @@ INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('sys-dict-update','修改','/dict/update','sys-dict','0',1,9803);
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('sys-dict-remove','删除','/dict/remove','sys-dict','0',1,9804);
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('sys-dict-get','字典选项获取','/dict/get','sys-dict','0',1,9805);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-dict-get');
 
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-dict-tree');
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-dict-add');
@@ -39,7 +46,7 @@ VALUES('sys-user-query','查询','/user/query','sys-user','0',1,9102);
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('sys-user-add','新增','/user/add','sys-user','0',1,9103);
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
-VALUES('sys-user-update','修改','/user/add','sys-user','0',1,9104);
+VALUES('sys-user-update','修改','/user/update','sys-user','0',1,9104);
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('sys-user-remove','新增','/user/remove','sys-user','0',1,9105);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-user');

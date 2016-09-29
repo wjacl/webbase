@@ -7,6 +7,10 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  <!-- 应用上下文工具类，它需要通过监听来获得上下文 -->
+  <listener>
+    <listener-class>com.wja.base.web.AppContext</listener-class>
+  </listener>
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>

@@ -28,9 +28,6 @@ import com.wja.base.common.CommEntity;
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class Dict extends CommEntity
 {
-    @Transient
-    private String group;
-    
     @Column(length = 20, nullable = false)
     private String text;
     
@@ -76,16 +73,6 @@ public class Dict extends CommEntity
     public void setChildren(Set<Dict> children)
     {
         this.children = children;
-    }
-    
-    public String getGroup()
-    {
-        return group;
-    }
-    
-    public void setGroup(String group)
-    {
-        this.group = group;
     }
     
     public String getType()
