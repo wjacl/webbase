@@ -15,6 +15,8 @@ import javax.persistence.criteria.Root;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
+import com.wja.base.util.DateUtil;
+
 public class CommSpecification<T> implements Specification<T>
 {
     
@@ -44,7 +46,7 @@ public class CommSpecification<T> implements Specification<T>
             
             for (String key : this.params.keySet())
             {
-                if (StringUtils.isNotBlank(key)) // key 的组成 [(or)_]fieldName[_操作符][_时间格式] []表示可以没有
+                if (StringUtils.isNotBlank(key)) // key 的组成 [(or)_]fieldName[_操作符][_数据类型|时间格式] []表示可以没有
                 {
                     String[] infos = key.split("_");
                     int index = 0;
@@ -147,4 +149,154 @@ public class CommSpecification<T> implements Specification<T>
         return null;
     }
     
+    private Integer toInteger(Object value)
+    {
+        if (value instanceof Integer)
+        {
+            return (Integer)value;
+        }
+        else
+        {
+            return Integer.valueOf((String)value);
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private List<Integer> toIntegerList(Object value)
+    {
+        List<Integer> datas = new ArrayList<>();
+        if (value instanceof List<?>)
+        {
+            datas = (List<Integer>)value;
+        }
+        else if (value instanceof String[])
+        {
+            for (String s : (String[])value)
+            {
+                datas.add(Integer.valueOf(s));
+            }
+        }
+        else
+        {
+            datas.add(Integer.valueOf((String)value));
+        }
+        return datas;
+    }
+    
+    private Double toDouble(Object value)
+    {
+        if (value instanceof Double)
+        {
+            return (Double)value;
+        }
+        else
+        {
+            return Double.valueOf((String)value);
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    private List<Double> toDoubleList(Object value)
+    {
+        List<Double> datas = new ArrayList<>();
+        if (value instanceof List<?>)
+        {
+            datas = (List<Double>)value;
+        }
+        else if (value instanceof String[])
+        {
+            for (String s : (String[])value)
+            {
+                datas.add(Double.valueOf(s));
+            }
+        }
+        else
+        {
+            datas.add(Double.valueOf((String)value));
+        }
+        return datas;
+    }
+    
+    private Date toDate(Object value, String pattern)
+        throws Exception
+    {
+        if (value instanceof Date)
+        {
+            return (Date)value;
+        }
+        else
+        {
+            String v = (String)value;
+            return StringUtils.isBlank(pattern) ? DateUtil.DEFAULT_DF.parse(v)
+                : DateUtil.getDateFormat(pattern).parse(v);
+        }
+    }
+    
+    private class Condition
+    {
+        boolean or = false;
+        
+        String fieldName;
+        
+        String op = "eq";
+        
+        String dataType = "string";
+        
+        String pattern;
+        
+        Object value;
+        
+        // key 的组成 [or_]fieldName[_操作符][_数据类型|时间格式] []表示可以没有
+        Condition(String paramName, Object value)
+        {
+            String[] infos = paramName.trim().split("_");
+            
+            int index = 0;
+            // 判断是否or_开头
+            if ("or".equals(infos[0].trim().toLowerCase()))
+            {
+                or = true;
+                index++;
+            }
+            
+            if (infos.length > index)
+            {
+                fieldName = infos[index].trim();
+                
+                // 下一个是操作符，没有则当 eq处理
+                index++;
+                if (infos.length > index)
+                {
+                    String ops = infos[index].trim().toLowerCase();
+                    if (StringUtils.isNotBlank(ops))
+                    {
+                        op = ops;
+                    }
+                    
+                    // 下一个是数据类型，没有就当string处理
+                    index++;
+                    if (infos.length > index)
+                    {
+                        String[] dts = infos[index].trim().split("\\|");
+                        String dt = dts[0].trim();
+                        if (StringUtils.isNotBlank(dt))
+                        {
+                            this.dataType = dt.toLowerCase();
+                        }
+                        
+                        if (dts.length > 1)
+                        {
+                            String p = dts[1].trim();
+                            if (StringUtils.isNotBlank(dt))
+                            {
+                                this.pattern = p;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // 值处理
+        }
+    }
 }

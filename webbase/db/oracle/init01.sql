@@ -30,9 +30,6 @@ INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('sys-dict-update','修改','/dict/update','sys-dict','0',1,9803);
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('sys-dict-remove','删除','/dict/remove','sys-dict','0',1,9804);
-INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
-VALUES('sys-dict-get','字典选项获取','/dict/get','sys-dict','0',1,9805);
-INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-dict-get');
 
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-dict-tree');
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-dict-add');

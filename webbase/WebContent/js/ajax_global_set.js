@@ -122,7 +122,32 @@ $.sm = {
 				}
 			}
 		}		
-}
+};
+
+
+/**
+ * 将表单序列化为json对象的jquery插件
+ */
+(function($){  
+    $.fn.serializeJson=function(){  
+        var serializeObj={};  
+        var array=this.serializeArray();  
+        var str=this.serialize();  
+        $(array).each(function(){  
+            if(serializeObj[this.name]){  
+                if($.isArray(serializeObj[this.name])){  
+                    serializeObj[this.name].push(this.value);  
+                }else{  
+                    serializeObj[this.name]=[serializeObj[this.name],this.value];  
+                }  
+            }else{  
+                serializeObj[this.name]=this.value;   
+            }  
+        });  
+        return serializeObj;  
+    };  
+})(jQuery);  
+
 
 /**
  * easyui中的组件的ajax数据的通用处理方法
@@ -138,5 +163,14 @@ $.ajaxData = {
 	addChooseOption : function(data){
 		data.splice(0,0,{id:"",text:I18N_MESS.option_choose});
 		return data;
+	},
+	
+	gridQuery:function(formId,gridId){
+		var params = $("#" + formId).serialize();
+		
+		var jsonData = $("#" + formId).serializeJson();
+		
+		$('#' + gridId).datagrid('load',{params:JSON.stringify(jsonData)});
+		
 	}
 }

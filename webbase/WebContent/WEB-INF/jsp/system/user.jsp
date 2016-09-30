@@ -18,15 +18,16 @@
 			</h2>
 			<div style="margin: 20px 0;"></div>
 
-			<table class="easyui-datagrid" 
+			<table class="easyui-datagrid" id="user_grid"
 				style="width: 700px;"
-				data-options="rownumbers:true,singleSelect:true,pagination:true,url:'${ctx }/user/query',method:'post',toolbar:'#tb'">
+				data-options="rownumbers:true,singleSelect:true,pagination:true,multiSort:true,
+				url:'${ctx }/user/query',method:'post',toolbar:'#tb'">
 				<thead>
 					<tr>
 						<th data-options="field:'name',width:100"><s:message code="user.name" /></th>
-						<th data-options="field:'username',width:100"><s:message code="user.username" /></th>
-						<th data-options="field:'type',width:100,align:'center'"><s:message code="user.type" /></th>
-						<th data-options="field:'status',width:100,align:'center'"><s:message code="user.status" /></th>
+						<th data-options="field:'username',width:100,sortable:'true'"><s:message code="user.username" /></th>
+						<th data-options="field:'type',width:100,align:'center',sortable:'true'"><s:message code="user.type" /></th>
+						<th data-options="field:'status',width:100,align:'center',sortable:'true'"><s:message code="user.status" /></th>
 					</tr>
 				</thead>
 			</table>
@@ -40,17 +41,18 @@
 				</div>
 				<div>
 					<form id="user_query_form">
-					<s:message code="user.name" />: <input class="easyui-textbox" style="width: 120px" name="name">
-					<s:message code="user.username" />: <input class="easyui-textbox" style="width: 120px" name="username">
-					<s:message code="user.type" />: <input class="easyui-combobox" name="type" style="width:120px;" data-options="
+					<s:message code="user.name" />: <input class="easyui-textbox" style="width: 120px" name="name_like_string">
+					<s:message code="user.username" />: <input class="easyui-textbox" style="width: 120px" name="username_like_string">
+					<s:message code="user.type" />: <input class="easyui-combobox" name="type_in_string" style="width:120px;" data-options="
 	                    url:'${ctx }/dict/get?pid=user.type',
 	                    method:'get',
 	                    valueField:'id',
 	                    textField:'text',
 	                    panelHeight:'auto',
+	                    multiple:true,
 	                    loadFilter:$.ajaxData.addAllOption
                     ">
-					<a href="#" class="easyui-linkbutton" iconCls="icon-search"><s:message code="comm.query" /></a>
+					<a href="javascript:$.ajaxData.gridQuery('user_query_form','user_grid')" class="easyui-linkbutton" iconCls="icon-search"><s:message code="comm.query" /></a>
 					</form>
 				</div>
 			</div>
