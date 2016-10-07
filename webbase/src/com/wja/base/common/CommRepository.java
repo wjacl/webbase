@@ -29,7 +29,17 @@ public interface CommRepository<T, ID extends Serializable> extends JpaRepositor
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
      */
     @Modifying
-    @Query("update #{#entityName} u set u.valid = 0 where u.id = ?1 ")
-    void logicDeleteBatch(Iterable<ID> ids);
+    @Query("update #{#entityName} u set u.valid = 0 where u.id in ?1 ")
+    void logicDeleteInBatch(Iterable<ID> ids);
+    
+    /**
+     * 批量逻辑删除 the entity with the given id.
+     * 
+     * @param id must not be {@literal null}.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}
+     */
+    @Modifying
+    @Query("update #{#entityName} u set u.valid = 0 where u.id in ?1 ")
+    void logicDeleteInBatch(Serializable[] ids);
     
 }

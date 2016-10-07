@@ -13,10 +13,10 @@
 
 	<div id="mainwrap">
 		<div id="content" class="content">
-			<h2>
+			<h3>
 				<s:message code="dict.title" />
-			</h2>
-			<div style="margin: 20px 0;"></div>
+			</h3>
+			<!-- <div style="margin: 20px 0;"></div> -->
 			<div class="easyui-panel" style="padding: 5px">
 				<ul id="dictTree" class="easyui-tree"
 					data-options="

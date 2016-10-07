@@ -11,14 +11,23 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
 
-import com.wja.base.common.CommEntity;
 import com.wja.base.common.CommConstants;
+import com.wja.base.common.CommEntity;
 
 @Entity
 @Table(name = "t_sys_role")
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class Role extends CommEntity
 {
+    /**
+     * 类别：s:系统内置角色
+     */
+    public static final String TYPE_S = "s";
+    
+    /**
+     * 类别：u:用户定义的角色
+     */
+    public static final String TYPE_U = "u";
     
     @Column(length = 20, nullable = false)
     private String name;
@@ -29,11 +38,8 @@ public class Role extends CommEntity
     @Column(length = 100)
     private String remark;
     
-    /**
-     * 类别：s:系统内置角色，u:用户定义的角色
-     */
     @Column(length = 1)
-    private String type = "u";
+    private String type = TYPE_U;
     
     /**
      * 角色拥有的权限

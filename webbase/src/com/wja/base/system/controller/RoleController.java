@@ -1,12 +1,18 @@
 package com.wja.base.system.controller;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wja.base.common.OpResult;
+import com.wja.base.system.dao.PrivilegeDao;
 import com.wja.base.system.dao.RoleDao;
+import com.wja.base.system.entity.Privilege;
 import com.wja.base.system.entity.Role;
 import com.wja.base.util.Page;
 
@@ -16,6 +22,9 @@ public class RoleController
 {
     @Autowired
     private RoleDao dao;
+    
+    @Autowired
+    private PrivilegeDao privDao;
     
     @RequestMapping("manage")
     public String manage()
@@ -48,17 +57,27 @@ public class RoleController
     
     @RequestMapping("add")
     @ResponseBody
-    public OpResult add(Role role)
+    public OpResult add(Role role, String privIds)
     {
+        this.save(role, privIds);
+        return OpResult.addOk(role.getId());
+    }
+    
+    private void save(Role role, String privIds)
+    {
+        if (StringUtils.isNotBlank(privIds))
+        {
+            String[] privId = privIds.split(",");
+            role.setPrivs(new HashSet<Privilege>(this.privDao.findAll(Arrays.asList(privId))));
+        }
         this.dao.save(role);
-        return OpResult.addOk(role);
     }
     
     @RequestMapping("update")
     @ResponseBody
-    public OpResult update(Role role)
+    public OpResult update(Role role, String privIds)
     {
-        this.dao.save(role);
+        this.save(role, privIds);
         return OpResult.updateOk(role);
     }
     

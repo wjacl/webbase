@@ -28,13 +28,15 @@
 				href : murl,
 				closable : true,
 				bodyCls : 'content-doc' ,
+				//content:'<iframe scrolling="auto" frameborder="0"  src="'+murl+'?inframe=yes" style="width:100%;height:100%;"></iframe>'
+				  bodyCls : 'content-doc' ,
 				extractor : function(data) {
 					data = $.fn.panel.defaults.extractor(data);
 					var tmp = $('<div></div>').html(data);
 					data = tmp.find('#content').html();
 					tmp.remove();
 					return data;
-				} 
+				}   
 			});
 		}
 	}
@@ -216,14 +218,7 @@
 						onclick="open1('tooltip')">tooltip</a></li>
 					<li iconCls="icon-gears"><a href="#" onclick="open1('mobile')">mobile</a></li>
 				</ul></li>
-			<li iconCls="icon-layout"><span>Layout</span>
-			<ul>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('panel')">panel</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('tabs')">tabs</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('accordion')">accordion</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('layout')">layout</a></li>
-				</ul></li>
+			
 			<li iconCls="icon-menu"><span>Menu and Button</span>
 			<ul>
 					<li iconCls="icon-gears"><a href="#" onclick="open1('menu')">menu</a></li>
@@ -236,63 +231,7 @@
 					<li iconCls="icon-gears"><a href="#"
 						onclick="open1('switchbutton')">switchbutton</a></li>
 				</ul></li>
-			<li iconCls="icon-form"><span>Form</span>
-			<ul>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('form')">form</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('validatebox')">validatebox</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('textbox')">textbox</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('passwordbox')">passwordbox</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('combo')">combo</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('combobox')">combobox</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('combotree')">combotree</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('combogrid')">combogrid</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('combotreegrid')">combotreegrid</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('numberbox')">numberbox</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('datebox')">datebox</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('datetimebox')">datetimebox</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('datetimespinner')">datetimespinner</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('calendar')">calendar</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('spinner')">spinner</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('numberspinner')">numberspinner</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('timespinner')">timespinner</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('slider')">slider</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('filebox')">filebox</a></li>
-				</ul></li>
-			<li iconCls="icon-window"><span>Window</span>
-			<ul>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('window')">window</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('dialog')">dialog</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('messager')">messager</a></li>
-				</ul></li>
-			<li iconCls="icon-datagrid"><span>DataGrid and Tree</span>
-			<ul>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('datagrid')">datagrid</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('datalist')">datalist</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('propertygrid')">propertygrid</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('tree')">tree</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('treegrid')">treegrid</a></li>
-				</ul></li>
+			
 		</ul>
 	</div>
 	<div region="center">

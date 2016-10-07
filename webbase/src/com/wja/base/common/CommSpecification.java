@@ -1,6 +1,7 @@
 package com.wja.base.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -50,20 +51,21 @@ public class CommSpecification<T> implements Specification<T>
                 {
                     try
                     {
-                        con = new Condition(key,this.params.get(key));
+                        con = new Condition(key, this.params.get(key));
                     }
                     catch (Exception e)
                     {
                         Log.LOGGER.error("动态查询条件处理异常：", e);
                         throw new RuntimeException(e);
                     }
-                   
-                    //如果没有属性名，就跳过这个条件
-                    if(StringUtils.isBlank(con.fieldName)){
-                        continue;   
+                    
+                    // 如果没有属性名，就跳过这个条件
+                    if (StringUtils.isBlank(con.fieldName) || (con.value == null && !con.op.equals(OP.isnull)))
+                    {
+                        continue;
                     }
                     
-                    //条件属性处理
+                    // 条件属性处理
                     if (con.fieldName.contains("."))
                     {
                         String[] names = StringUtils.split(con.fieldName, ".");
@@ -78,127 +80,154 @@ public class CommSpecification<T> implements Specification<T>
                         expression = root.get(con.fieldName);
                     }
                     
-                      
-                        switch (con.op)
-                        {
-                            case eq:
-                                if(con.or){
-                                    predicates.add(builder.or(builder.equal(expression, con.value)));
-                                }
-                                else{
-                                    predicates.add(builder.equal(expression, con.value));
-                                }
-                                break;
-                            case ne:
-                                if(con.or){
-                                    predicates.add(builder.or(builder.notEqual(expression, con.value)));
-                                }
-                                else{
-                                    predicates.add(builder.notEqual(expression, con.value));
-                                }
-                                break;
-                            case like:
-                                if(con.or){
-                                    predicates.add(builder.or(builder.like(expression, "%" + con.value + "%")));
-                                }
-                                else{
-                                    predicates.add(builder.like(expression, "%" + con.value + "%"));
-                                }
-                                break;
-                            case lt:
-                                if(con.or){
-                                    predicates.add(builder.or(builder.lessThan(expression, (Comparable)con.value)));
-                                }
-                                else{
-                                    predicates.add(builder.lessThan(expression, (Comparable)con.value));
-                                }
-                                break;
-                            case gt:
-                                if(con.or){
-                                    predicates.add(builder.or(builder.greaterThan(expression, (Comparable)con.value)));
-                                }
-                                else{
-                                    predicates.add(builder.greaterThan(expression, (Comparable)con.value));
-                                }
-                                break;
-                            case lte:
-                                if(con.or){
-                                    predicates.add(builder.or(builder.lessThanOrEqualTo(expression, (Comparable)con.value)));
-                                }
-                                else{
-                                    predicates.add(builder.lessThanOrEqualTo(expression, (Comparable)con.value));
-                                }
-                                break;
-                            case gte:
-                                if(con.or){
-                                    predicates.add(builder.or(builder.greaterThanOrEqualTo(expression, (Comparable)con.value)));
-                                }
-                                else{
-                                    predicates.add(builder.greaterThanOrEqualTo(expression, (Comparable)con.value));
-                                }
-                                break;
-                            case isnull:
-                                if(con.or){
-                                    predicates.add(builder.or(builder.isNull(expression)));
-                                }
-                                else{
-                                    predicates.add(builder.isNull(expression));
-                                }
-                                break;
-                            case in:    
-                                if(con.or){
-                                    predicates.add(builder.or(builder.in(expression.in((Collection)con.value))));
-                                }
-                                else{
-                                    predicates.add(builder.in(expression.in((Collection)con.value)));
-                                }
-                                break;
-                            case notin:
-                                if(con.or){
-                                    predicates.add(builder.or(builder.not(builder.in(expression.in((Collection)con.value)))));
-                                }
-                                else{
-                                    predicates.add(builder.not(builder.in(expression.in((Collection)con.value))));
-                                }
-                                break;
-                            case after:                         
-                                if(con.or){
-                                    predicates.add(builder.or(builder.greaterThanOrEqualTo(expression, (Comparable)con.value)));
-                                }
-                                else{
-                                    predicates.add(builder.greaterThanOrEqualTo(expression, (Comparable)con.value));
-                                }     
-                                break;
-                            case before:     
-                                Calendar dv = Calendar.getInstance();
-                                dv.setTime((Date)con.value);
-                                dv.add(Calendar.DATE, 1);
-                                if(con.or){
-                                    predicates.add(builder.or(builder.lessThan(expression, dv.getTime())));
-                                }
-                                else{
-                                    predicates.add(builder.lessThan(expression, dv.getTime()));
-                                }     
-                                break;
-                        }
+                    switch (con.op)
+                    {
+                        case eq:
+                            if (con.or)
+                            {
+                                predicates.add(builder.or(builder.equal(expression, con.value)));
+                            }
+                            else
+                            {
+                                predicates.add(builder.equal(expression, con.value));
+                            }
+                            break;
+                        case ne:
+                            if (con.or)
+                            {
+                                predicates.add(builder.or(builder.notEqual(expression, con.value)));
+                            }
+                            else
+                            {
+                                predicates.add(builder.notEqual(expression, con.value));
+                            }
+                            break;
+                        case like:
+                            if (con.or)
+                            {
+                                predicates.add(builder.or(builder.like(expression, "%" + con.value + "%")));
+                            }
+                            else
+                            {
+                                predicates.add(builder.like(expression, "%" + con.value + "%"));
+                            }
+                            break;
+                        case lt:
+                            if (con.or)
+                            {
+                                predicates.add(builder.or(builder.lessThan(expression, (Comparable)con.value)));
+                            }
+                            else
+                            {
+                                predicates.add(builder.lessThan(expression, (Comparable)con.value));
+                            }
+                            break;
+                        case gt:
+                            if (con.or)
+                            {
+                                predicates.add(builder.or(builder.greaterThan(expression, (Comparable)con.value)));
+                            }
+                            else
+                            {
+                                predicates.add(builder.greaterThan(expression, (Comparable)con.value));
+                            }
+                            break;
+                        case lte:
+                            if (con.or)
+                            {
+                                predicates
+                                    .add(builder.or(builder.lessThanOrEqualTo(expression, (Comparable)con.value)));
+                            }
+                            else
+                            {
+                                predicates.add(builder.lessThanOrEqualTo(expression, (Comparable)con.value));
+                            }
+                            break;
+                        case gte:
+                            if (con.or)
+                            {
+                                predicates
+                                    .add(builder.or(builder.greaterThanOrEqualTo(expression, (Comparable)con.value)));
+                            }
+                            else
+                            {
+                                predicates.add(builder.greaterThanOrEqualTo(expression, (Comparable)con.value));
+                            }
+                            break;
+                        case isnull:
+                            if (con.or)
+                            {
+                                predicates.add(builder.or(builder.isNull(expression)));
+                            }
+                            else
+                            {
+                                predicates.add(builder.isNull(expression));
+                            }
+                            break;
+                        case in:
+                            if (con.or)
+                            {
+                                predicates.add(builder.or(builder.in(expression.in((Collection)con.value))));
+                            }
+                            else
+                            {
+                                predicates.add((expression.in((Collection)con.value)));
+                            }
+                            break;
+                        case notin:
+                            if (con.or)
+                            {
+                                predicates
+                                    .add(builder.or(builder.not(builder.in(expression.in((Collection)con.value)))));
+                            }
+                            else
+                            {
+                                predicates.add(builder.not(builder.in(expression.in((Collection)con.value))));
+                            }
+                            break;
+                        case after:
+                            if (con.or)
+                            {
+                                predicates
+                                    .add(builder.or(builder.greaterThanOrEqualTo(expression, (Comparable)con.value)));
+                            }
+                            else
+                            {
+                                predicates.add(builder.greaterThanOrEqualTo(expression, (Comparable)con.value));
+                            }
+                            break;
+                        case before:
+                            Calendar dv = Calendar.getInstance();
+                            dv.setTime((Date)con.value);
+                            dv.add(Calendar.DATE, 1);
+                            if (con.or)
+                            {
+                                predicates.add(builder.or(builder.lessThan(expression, dv.getTime())));
+                            }
+                            else
+                            {
+                                predicates.add(builder.lessThan(expression, dv.getTime()));
+                            }
+                            break;
                     }
                 }
-
+            }
+            
             // 将查询条件加到查询中
             query.where(predicates.toArray(new Predicate[predicates.size()]));
-            }      
+        }
         // 查询条件已经加到查询中，所以返回null
         return null;
     }
     
-    
-    
-    public enum OP {
-    	eq,ne,like,lt,gt,lte,gte,isnull,in,notin,after,before
+    public enum OP
+    {
+        eq, ne, like, lt, gt, lte, gte, isnull, in, notin, after, before
     }
     
-    public enum DType {
-    	string,intt,doubt,date
+    public enum DType
+    {
+        string, intt, doubt, date
     }
     
     class Condition
@@ -216,7 +245,8 @@ public class CommSpecification<T> implements Specification<T>
         Object value;
         
         // key 的组成 [or_]fieldName[_操作符][_数据类型|时间格式] []表示可以没有
-        Condition(String paramName, Object value) throws Exception
+        Condition(String paramName, Object value)
+            throws Exception
         {
             String[] infos = paramName.trim().split("_");
             
@@ -265,51 +295,73 @@ public class CommSpecification<T> implements Specification<T>
                 }
             }
             
-            if(StringUtils.isNotBlank(fieldName)){
+            if (StringUtils.isNotBlank(fieldName))
+            {
                 // 值处理
                 handleValue(value);
             }
         }
         
-        private void handleValue(Object v) throws Exception{
-        	switch(this.op){
-	        	case in:case notin:
-	        	    process2collection(v);
-	        		break;
-	        	default:
-	        	    process2single(v);
-        	}
-        }
-        
-        private void process2collection(Object v){
-            switch(this.dataType){
-                case intt:
-                   this.value = this.toIntegerList(v);
-                   break;
-                case doubt:
-                    this.value = this.toDoubleList(v);
+        private void handleValue(Object v)
+            throws Exception
+        {
+            switch (this.op)
+            {
+                case in:
+                case notin:
+                    process2collection(v);
                     break;
-                default: 
-                    this.value = v;
+                default:
+                    process2single(v);
             }
         }
         
-        private void process2single(Object v) throws Exception{
-            switch(this.dataType){
+        private void process2collection(Object v)
+        {
+            switch (this.dataType)
+            {
                 case intt:
-                   this.value = this.toInteger(v);
-                   break;
+                    this.value = this.toIntegerList(v);
+                    break;
+                case doubt:
+                    this.value = this.toDoubleList(v);
+                    break;
+                case string:
+                    this.value = this.toStringList(v);
+                    break;
+            }
+            if (this.value != null)
+            {
+                if (((Collection)this.value).size() == 0)
+                {
+                    this.value = null;
+                }
+            }
+        }
+        
+        private void process2single(Object v)
+            throws Exception
+        {
+            switch (this.dataType)
+            {
+                case intt:
+                    this.value = this.toInteger(v);
+                    break;
                 case doubt:
                     this.value = this.toDouble(v);
                     break;
                 case date:
                     this.value = this.toDate(v, this.pattern);
                     break;
-                default: 
-                    this.value = v;
+                case string:
+                    String s = (String)v;
+                    if (StringUtils.isNotBlank(s))
+                    {
+                        this.value = s;
+                    }
+                    break;
             }
         }
-        
         
         private Integer toInteger(Object value)
         {
@@ -319,7 +371,12 @@ public class CommSpecification<T> implements Specification<T>
             }
             else
             {
-                return Integer.valueOf((String)value);
+                String v = (String)value;
+                if (StringUtils.isBlank(v))
+                {
+                    return null;
+                }
+                return Integer.valueOf(v);
             }
         }
         
@@ -340,7 +397,11 @@ public class CommSpecification<T> implements Specification<T>
             }
             else
             {
-                datas.add(Integer.valueOf((String)value));
+                String v = (String)value;
+                if (StringUtils.isNotBlank(v))
+                {
+                    datas.add(Integer.valueOf(v));
+                }
             }
             return datas;
         }
@@ -353,7 +414,13 @@ public class CommSpecification<T> implements Specification<T>
             }
             else
             {
-                return Double.valueOf((String)value);
+                String v = (String)value;
+                if (StringUtils.isBlank(v))
+                {
+                    return null;
+                }
+                
+                return Double.valueOf(v);
             }
         }
         
@@ -374,8 +441,40 @@ public class CommSpecification<T> implements Specification<T>
             }
             else
             {
-                datas.add(Double.valueOf((String)value));
+                String v = (String)value;
+                if (StringUtils.isNotBlank(v))
+                {
+                    datas.add(Double.valueOf(v));
+                }
             }
+            return datas;
+        }
+        
+        private List<String> toStringList(Object value)
+        {
+            List<String> datas = new ArrayList<>();
+            if (value instanceof List<?>)
+            {
+                datas = (List<String>)value;
+            }
+            else if (value instanceof String[])
+            {
+                datas = Arrays.asList((String[])value);
+            }
+            else if (value instanceof String)
+            {
+                String v = (String)value;
+                if (StringUtils.isNotBlank(v))
+                {
+                    String[] ss = v.split(",");
+                    datas = Arrays.asList(ss);
+                }
+            }
+            else
+            {
+                datas.add(value.toString());
+            }
+            
             return datas;
         }
         
@@ -389,6 +488,11 @@ public class CommSpecification<T> implements Specification<T>
             else
             {
                 String v = (String)value;
+                if (StringUtils.isBlank(v))
+                {
+                    return null;
+                }
+                
                 return StringUtils.isBlank(pattern) ? DateUtil.DEFAULT_DF.parse(v)
                     : DateUtil.getDateFormat(pattern).parse(v);
             }

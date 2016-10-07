@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
-	
 	<div id="header" class="group wrap header">
 		<div class="content">
 			<div class="navigation-toggle" data-tools="navigation-toggle"
@@ -31,4 +30,5 @@
 		<script type="text/javascript"
 			src="${pageContext.request.contextPath }/js/header.js"></script>
 	</div>
+	
 	

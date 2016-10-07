@@ -1,13 +1,9 @@
 package com.wja.base.system.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -42,7 +38,7 @@ public class Privilege
     @Column(name = "pr_name", length = 20, nullable = false)
     private String name;
     
-    @Column(name = "pr_type", length = 2, nullable = false)
+    @Column(name = "pr_type", length = 32, nullable = false)
     private String type;
     
     @Column(name = "path", length = 200)
@@ -62,10 +58,6 @@ public class Privilege
     
     @Column(name = "valid", length = 1)
     private byte valid = CommConstants.DATA_VALID;
-    
-    @OneToMany
-    @JoinColumn(name = "p_pr_id")
-    private List<Privilege> childs;
     
     public String getId()
     {
@@ -125,16 +117,6 @@ public class Privilege
     public void setPid(String pid)
     {
         this.pid = pid;
-    }
-    
-    public List<Privilege> getChilds()
-    {
-        return childs;
-    }
-    
-    public void setChilds(List<Privilege> childs)
-    {
-        this.childs = childs;
     }
     
     public int getOrderNo()

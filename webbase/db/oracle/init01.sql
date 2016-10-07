@@ -4,6 +4,10 @@ INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type','用户类别'
 INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type.A','员工','user.type','s',1);
 INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type.S','学生','user.type','s',1);
 INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type.C','合作用户','user.type','s',1);
+INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.status','用户状态','0','s',1);
+INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.status.N','正常','user.status','s',1);
+INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.status.L','锁定','user.status','s',1);
+
 
 INSERT INTO t_sys_role(ID,NAME,TYPE,valid)
 VALUES('admin','超级管理员','s',1);

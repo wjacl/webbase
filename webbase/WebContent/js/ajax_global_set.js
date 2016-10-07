@@ -33,36 +33,48 @@ $( document ).ajaxComplete(function( event, xhr, settings ) {
  * 扩展的提示、结果处理方法插件
  */
 $.sm = {
+		alert:function(mess){
+			$.messager.alert(I18N.ALERT_TITLE,mess);
+		},
+		
+		show:function(mess){
+			$.messager.show({
+                title:I18N.SHOW_TITLE,
+                msg:mess,
+                showType:'show'
+            });
+		},
+		
 		showAddOK : function(){
 			$.messager.show({
-                title:I18N_MESS.SHOW_TITLE,
-                msg:I18N_MESS.OPER_ADD_OK,
+                title:I18N.SHOW_TITLE,
+                msg:I18N.OPER_ADD_OK,
                 showType:'show'
             });
 		},
 		showUpdateOK : function(){
 			$.messager.show({
-                title:I18N_MESS.SHOW_TITLE,
-                msg:I18N_MESS.OPER_UPDATE_OK,
+                title:I18N.SHOW_TITLE,
+                msg:I18N.OPER_UPDATE_OK,
                 showType:'show'
             });
 		},
 		showDeleteOK : function(){
 			$.messager.show({
-                title:I18N_MESS.SHOW_TITLE,
-                msg:I18N_MESS.OPER_DELETE_OK,
+                title:I18N.SHOW_TITLE,
+                msg:I18N.OPER_DELETE_OK,
                 showType:'show'
             });
 		},
 		showSysError:function(error){
 			$.messager.show({
-                title:I18N_MESS.ALERT_TITLE,
-                msg:I18N_MESS.OPER_SYS_ERROR + (error ? ":" + error : ""),
+                title:I18N.ALERT_TITLE,
+                msg:I18N.OPER_SYS_ERROR + (error ? ":" + error : ""),
                 showType:'show'
             });
 		},
 		confirmDelete:function(fun){
-			 $.messager.confirm(I18N_MESS.CONFIRM_TITLE, I18N_MESS.CONFIRM_DELETE_MESS, function(r){		 
+			 $.messager.confirm(I18N.CONFIRM_TITLE, I18N.CONFIRM_DELETE_MESS, function(r){		 
 				 if(r){
 	                fun.apply();
 				 }
@@ -89,11 +101,11 @@ $.sm = {
 					content = mess;
 				}
 				else{
-					content = I18N_MESS.operate_ok[res.operate];
+					content = I18N.operate_ok[res.operate];
 				}
 				
 				$.messager.show({
-	                title:I18N_MESS.SHOW_TITLE,
+	                title:I18N.SHOW_TITLE,
 	                msg:content,
 	                showType:'show'
 	            });
@@ -105,12 +117,12 @@ $.sm = {
 				}
 			}
 			else{
-				var content = I18N_MESS.operate_faild[res.operate];
+				var content = I18N.operate_faild[res.operate];
 				if(res.mess){
 					content += mess;
 				}
 				else{
-					content += OPER_SYS_ERROR;
+					content += I18N.OPER_SYS_ERROR;
 				}
 				
 				$.messager.alert(content);
@@ -152,25 +164,88 @@ $.sm = {
 /**
  * easyui中的组件的ajax数据的通用处理方法
  */
-$.ajaxData = {
+$.ad = {
 	/**
 	 * 往下来框框中增加全部选项，要求 值字段名为id,文本字段名为text
 	 */
 	addAllOption : function(data){
-		data.splice(0,0,{id:"",text:I18N_MESS.option_all});
+		data.splice(0,0,{id:"",text:I18N.option_all});
 		return data;
 	},
 	addChooseOption : function(data){
-		data.splice(0,0,{id:"",text:I18N_MESS.option_choose});
+		data.splice(0,0,{id:"",text:I18N.option_choose});
 		return data;
 	},
 	
 	gridQuery:function(formId,gridId){
-		var params = $("#" + formId).serialize();
-		
 		var jsonData = $("#" + formId).serializeJson();
 		
 		$('#' + gridId).datagrid('load',{params:JSON.stringify(jsonData)});
 		
+	},
+	
+	submitForm:function(formId,gridId,wid,success){
+		var succ;
+		if(success && (typeof success == "function")){
+			succ = success;
+		}
+		else{
+			succ = function(data){
+				var data = eval('(' + data + ')');
+				$.sm.handleResult(data,function(data){
+					$('#' + wid).window('close');
+					$('#' + formId).form('clear');
+					$('#' + gridId).datagrid('load'); 
+				});
+			};
+		}
+		$('#' + formId).form('submit',{success:succ});
+	},
+	
+	clearForm: function (formId) {
+		$('#' + formId).form('clear');
+	},
+	
+	toAdd:function(wid,wTitle,formId,url){
+		$('#' + formId).form('clear');
+		if(url){
+			$('#' + formId).form({url:url});
+		}
+		$("#" + wid).window({title:I18N.add + wTitle});
+		$("#" + wid).window("open");
+	},
+	
+	toUpdate:function(gridId,wid,wTitle,formId,url){
+		var selRows = $("#" + gridId).datagrid("getSelections");
+		if(selRows.length != 1){
+			$.sm.alert(I18N.alert_select_one);
+			return;
+		}
+
+		$('#' + formId).form('load',selRows[0]);
+		
+		if(url){
+			$('#' + formId).form({url:url});
+		}
+		$("#" + wid).window({title:I18N.update + wTitle});
+		$("#" + wid).window("open");
+	},
+	
+	doDelete:function(gridId,url){
+		var selRows = $("#" + gridId).datagrid("getChecked");
+		if(selRows.length == 0){
+			$.sm.alert(I18N.alert_select);
+			return;
+		}
+		var ids = "";
+		for(var i in selRows){
+			ids += "&id=" + selRows[i].id;
+		}
+		
+		$.post(url,ids,function(data){
+			$.sm.handleResult(data,function(data){
+				$("#" + gridId).datagrid("reload");
+			});
+		},'json');
 	}
 }

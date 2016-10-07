@@ -10,6 +10,7 @@ import com.wja.base.common.CommSpecification;
 import com.wja.base.system.dao.UserDao;
 import com.wja.base.system.entity.Privilege;
 import com.wja.base.system.entity.User;
+import com.wja.base.util.BeanUtil;
 import com.wja.base.util.MD5;
 import com.wja.base.util.Page;
 
@@ -25,6 +26,27 @@ public class UserService
         return this.userDao.getUserByUsername(username);
     }
     
+    public void deleteUser(String[] ids)
+    {
+        this.userDao.logicDeleteInBatch(ids);
+    }
+    
+    public void updateUser(User user)
+    {
+        if (user == null || user.getId() == null)
+        {
+            return;
+        }
+        
+        User dbUser = this.userDao.findOne(user.getId());
+        if (!dbUser.getPassword().equals(user.getPassword()))
+        {
+            user.setPassword(MD5.encode(user.getPassword()));
+        }
+        
+        BeanUtil.copyPropertiesIgnoreNull(user, dbUser);
+        this.userDao.save(dbUser);
+    }
     
     public void addUser(User user)
     {
@@ -42,8 +64,8 @@ public class UserService
         return this.userDao.getUserPrivileges(id);
     }
     
-    public Page<User> query(Map<String,Object> params,Page<User> page)
+    public Page<User> query(Map<String, Object> params, Page<User> page)
     {
-    	return page.setPageData(this.userDao.findAll(new CommSpecification<User>(params), page.getPageRequest()));
+        return page.setPageData(this.userDao.findAll(new CommSpecification<User>(params), page.getPageRequest()));
     }
 }
