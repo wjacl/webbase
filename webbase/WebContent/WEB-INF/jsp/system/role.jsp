@@ -19,7 +19,7 @@
 			<div id="role_tb" style="padding: 5px; height: auto">
 				<div style="margin-bottom: 5px">
 					<a
-						href="javascript:$.ad.toAdd('role_w',I18N.role,'role_add','${ctx }/role/add')"
+						href="javascript:rolePrivTree.checkAllNodes(false);$.ad.toAdd('role_w',I18N.role,'role_add','${ctx }/role/add')"
 						class="easyui-linkbutton easyui-tooltip"
 						title="<s:message code='comm.add' />" iconCls="icon-add"
 						plain="true"></a> 
@@ -37,7 +37,7 @@
 			</div>
 			<table class="easyui-datagrid" style="width: 700px;" id="role_grid"
 				data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,
-				url:'${ctx }/role/query',method:'post',toolbar:'#role_tb',loadFilter:roleLoadFilter">
+				url:'${ctx }/role/query',method:'post',toolbar:'#role_tb',onCheck:roleRowOnCheck,onLoadSuccess:roleDataProcess">
 				<thead>
 					<tr>
 						<th data-options="field:'ck',checkbox:true"></th>
@@ -48,24 +48,28 @@
 				</thead>
 			</table>
 			<script type="text/javascript">
-			function roleLoadFilter(data){
-				if(data){
-					for(var i in data){
-						if(data[i].type == "s"){
-							data[i].checkbox = false;
+			
+			function roleDataProcess(data){
+				if(data && data.rows){
+					var rows = data.rows;
+					for(var i in rows){
+						if(rows[i].privs){
+							var privs = rows[i].privs;
+							for(var j in privs){
+								if(privs[j].$ref){
+									privs[j] = eval(privs[j].$ref.replace('$',"data"));
+								}
+							}
 						}
 					}
 				}
-				return data;
 			}
 			
-			function roleCheckFormatter(value,row,index){
+			function roleRowOnCheck(index,row){
 				if(row.type == "s"){
-					value = false;
-					row.checkbox = false;
-					return false;
+					$("#role_grid").datagrid("uncheckRow",index);
+					$.sm.show(I18N.role_sys_no_modify)
 				}
-				return true;
 			}
 			
 			function roleTypeFormatter(value,row,index){

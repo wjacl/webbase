@@ -26,6 +26,7 @@ var I18N = {
 	role:"角色",
 	
 	role_type_s:"系统内置",
-	role_type_u:"用户自建"
+	role_type_u:"用户自建",
+	role_sys_no_modify:"内置角色不可更改"
 
 }
