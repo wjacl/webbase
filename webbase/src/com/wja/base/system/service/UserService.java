@@ -61,6 +61,12 @@ public class UserService
         }
         
         BeanUtil.copyPropertiesIgnoreNull(user, dbUser);
+        
+        if (user.getRoles() == null)
+        {
+            dbUser.setRoles(null);
+        }
+        
         this.userDao.save(dbUser);
     }
     

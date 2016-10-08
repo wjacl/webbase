@@ -132,7 +132,7 @@
 							};
 					
 							var rolezNodes;
-							$.ajax({ url: "${ctx }/user/privs",async:false, success: function(data){
+							$.ajax({ url: "${ctx }/user/privs",async:false,dataType:'json', success: function(data){
 								rolezNodes = data;
 						      }});
 							

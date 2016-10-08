@@ -19,7 +19,7 @@
 	
 	<div id="user_tb" style="padding: 5px; height: auto">
 		<div style="margin-bottom: 5px">
-			<a href="javascript:$('#userRoleComb').combobox('setValues', []);$.ad.toAdd('user_w',I18N.user,'user_add','${ctx }/user/add');" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.add' />"
+			<a href="javascript:$('#userRoleComb').combobox('reload');$.ad.toAdd('user_w',I18N.user,'user_add','${ctx }/user/add');" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.add' />"
 				iconCls="icon-add" plain="true"></a> 
 			<a href="javascript:$.ad.toUpdate('user_grid','user_w',I18N.user,'user_add','${ctx }/user/update');userUpdate()"
 				class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.update' />" iconCls="icon-edit" plain="true"></a>
@@ -53,7 +53,7 @@
 		</div>
 	</div>
 
-	<table class="easyui-datagrid" id="user_grid" style="width: 700px;"
+	<table class="easyui-datagrid" id="user_grid" style="width: 720px;"
 		data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,
 				url:'${ctx }/user/query',method:'post',toolbar:'#user_tb',loadFilter:userDataProcess">
 		<thead>
@@ -70,7 +70,7 @@
 					data-options="field:'status',width:100,align:'center',sortable:'true',formatter:userStatusFormatter"><s:message
 						code="user.status" /></th>
 				<th
-					data-options="field:'roles',width:300,align:'left',formatter:userRoleFormatter"><s:message
+					data-options="field:'roles',width:260,align:'left',formatter:userRoleFormatter"><s:message
 						code="role" /></th>
 			</tr>
 		</thead>
@@ -124,7 +124,7 @@
 			if(!userStatus){
 				$.ajax({ url: "${ctx }/dict/get?pid=user.status",async:false, success: function(data){
 			        userStatus = data;
-			      }});
+			      },dataType:'json'});
 			}
 			
 			for(var i in userStatus){
@@ -137,7 +137,7 @@
 		function userUpdate(){
 			if(!$("#user_w").window("options").closed){
 
-				$("#userRoleComb").combobox('setValues', []);
+				$("#userRoleComb").combobox('reload');
 				var selRows = $("#user_grid").datagrid("getSelections");
 				var roleIds = [];
 				var roles = selRows[0].roles;
