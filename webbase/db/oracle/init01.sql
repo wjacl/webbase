@@ -1,5 +1,4 @@
 INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('0','数据字典',NULL,'s',1);
---INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('role','角色类型','0','s',1);
 INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type','用户类别','0','s',1);
 INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type.A','员工','user.type','s',1);
 INSERT INTO t_sys_dict(Id,text,pid,type,valid) VALUES('user.type.S','学生','user.type','s',1);
@@ -76,4 +75,15 @@ INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-role-update');
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-role-delete');
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-role-get');
 
-
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu','教务管理',NULL,NULL,'2',1,2000);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu');
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-class','班级管理','/class/manage','edu','1',1,2020);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-class');
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-stu','学生管理','/stu/manage','edu','1',1,2030);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-stu');
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-tea','教师管理','/tea/manage','edu','1',1,2040);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-tea');

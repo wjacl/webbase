@@ -19,9 +19,9 @@
 	
 	<div id="user_tb" style="padding: 5px; height: auto">
 		<div style="margin-bottom: 5px">
-			<a href="javascript:$.ad.toAdd('user_w',I18N.user,'user_add','${ctx }/user/add')" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.add' />"
+			<a href="javascript:$('#userRoleComb').combobox('setValues', []);$.ad.toAdd('user_w',I18N.user,'user_add','${ctx }/user/add');" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.add' />"
 				iconCls="icon-add" plain="true"></a> 
-			<a href="javascript:$.ad.toUpdate('user_grid','user_w',I18N.user,'user_add','${ctx }/user/update')"
+			<a href="javascript:$.ad.toUpdate('user_grid','user_w',I18N.user,'user_add','${ctx }/user/update');userUpdate()"
 				class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.update' />" iconCls="icon-edit" plain="true"></a>
 			<a href="javascript:$.ad.doDelete('user_grid','${ctx }/user/remove')" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.remove' />" iconCls="icon-remove"
 				plain="true"></a>
@@ -55,7 +55,7 @@
 
 	<table class="easyui-datagrid" id="user_grid" style="width: 700px;"
 		data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,
-				url:'${ctx }/user/query',method:'post',toolbar:'#user_tb'">
+				url:'${ctx }/user/query',method:'post',toolbar:'#user_tb',loadFilter:userDataProcess">
 		<thead>
 			<tr>
 				<th data-options="field:'ck',checkbox:true"></th>
@@ -69,10 +69,44 @@
 				<th
 					data-options="field:'status',width:100,align:'center',sortable:'true',formatter:userStatusFormatter"><s:message
 						code="user.status" /></th>
+				<th
+					data-options="field:'roles',width:300,align:'left',formatter:userRoleFormatter"><s:message
+						code="role" /></th>
 			</tr>
 		</thead>
 	</table>
 	<script type="text/javascript">
+	
+		function userDataProcess(data){
+			if(data && data.rows){
+				var rows = data.rows;
+				for(var i in rows){
+					if(rows[i].roles){
+						var roles = rows[i].roles;
+						for(var j in roles){
+							if(roles[j].$ref){
+								roles[j] = eval(roles[j].$ref.replace('$',"data"));
+							}
+						}
+					}
+				}
+			}
+			return data;
+		}
+		
+		function userRoleFormatter(value,row,index){
+			var text = "";
+			var names = [];
+			if(value && value.length > 0){
+				for(var i in value){
+					names.push(value[i].name);
+				}
+				text = names.join(",");
+			}
+				
+			return text;
+		}
+	
 		var userTypes;	
 		function userTypeFormatter(value,row,index){
 			if(!userTypes){
@@ -97,6 +131,22 @@
 				if(userStatus[i].id == value){
 					return userStatus[i].text;
 				}
+			}
+		}
+		
+		function userUpdate(){
+			if(!$("#user_w").window("options").closed){
+
+				$("#userRoleComb").combobox('setValues', []);
+				var selRows = $("#user_grid").datagrid("getSelections");
+				var roleIds = [];
+				var roles = selRows[0].roles;
+				if(roles && roles.length > 0){
+					for(var i in roles){
+						roleIds.push(roles[i].id);
+					}
+				}
+				$("#userRoleComb").combobox('setValues', roleIds);
 			}
 		}
 	</script>
@@ -130,6 +180,19 @@
 		                    panelHeight:'auto',
 		                    required:true,
 		                    label:'<s:message code="user.type"/>:'
+	                    ">
+                    </div>
+                    <div style="margin-bottom: 20px">
+						<input class="easyui-combobox" name="roleIds"  id="userRoleComb"
+						style="width: 100%;"
+						data-options="
+		                    url:'${ctx }/user/roles',
+		                    method:'get',
+		                    valueField:'id',
+		                    textField:'name',
+		                    panelHeight:'auto',
+		                    label:'<s:message code="role"/>:',
+	                    	multiple:true
 	                    ">
                     </div>
                     <input type="hidden" name="id" />

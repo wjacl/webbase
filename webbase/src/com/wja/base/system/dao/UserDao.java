@@ -16,4 +16,5 @@ public interface UserDao extends CommRepository<User, String>
     
     @Query("select distinct p from User u JOIN u.roles r JOIN r.privs p where u.id = ?1 order by p.orderNo")
     List<Privilege> getUserPrivileges(String id);
+    
 }

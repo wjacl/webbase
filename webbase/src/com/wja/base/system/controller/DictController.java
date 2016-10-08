@@ -22,7 +22,7 @@ public class DictController
     @RequestMapping("main")
     public String toMain()
     {
-        return "system/dict/main";
+        return "system/dict";
     }
     
     @RequestMapping("getTree")
@@ -34,8 +34,9 @@ public class DictController
     
     @RequestMapping("get")
     @ResponseBody
-    public List<Dict> getByPid(String pid){
-    	return this.ds.getByPid(pid);
+    public List<Dict> getByPid(String pid)
+    {
+        return this.ds.getByPid(pid);
     }
     
     @RequestMapping("add")

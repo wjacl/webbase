@@ -29,7 +29,7 @@
 						title="<s:message code='comm.update' />" iconCls="icon-edit"
 						plain="true"></a> 
 					<a
-						href="javascript:$.ad.doDelete('role_grid','${ctx }/role/remove')"
+						href="javascript:$.ad.doDelete('role_grid','${ctx }/role/delete')"
 						class="easyui-linkbutton easyui-tooltip"
 						title="<s:message code='comm.remove' />" iconCls="icon-remove"
 						plain="true"></a>
@@ -37,7 +37,7 @@
 			</div>
 			<table class="easyui-datagrid" style="width: 700px;" id="role_grid"
 				data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,
-				url:'${ctx }/role/query',method:'post',toolbar:'#role_tb',onCheck:roleRowOnCheck,onLoadSuccess:roleDataProcess">
+				url:'${ctx }/role/query',method:'post',toolbar:'#role_tb',onCheck:roleRowOnCheck,loadFilter:roleDataProcess">
 				<thead>
 					<tr>
 						<th data-options="field:'ck',checkbox:true"></th>
@@ -63,6 +63,7 @@
 						}
 					}
 				}
+				return data;
 			}
 			
 			function roleRowOnCheck(index,row){
@@ -157,7 +158,7 @@
 							}
 							
 							function roleUpdate(){
-								if(!$("#role_grid").datagrid("options").closed){
+								if(!$("#role_w").window("options").closed){
 									var selRows = $("#role_grid").datagrid("getSelections");
 									var privs = selRows[0].privs;
 									rolePrivTree.checkAllNodes(false);

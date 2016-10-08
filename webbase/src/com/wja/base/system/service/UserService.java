@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wja.base.common.CommConstants;
 import com.wja.base.common.CommSpecification;
 import com.wja.base.system.dao.UserDao;
 import com.wja.base.system.entity.Privilege;
@@ -21,6 +22,11 @@ public class UserService
     @Autowired
     private UserDao userDao;
     
+    public User getUser(String id)
+    {
+        return this.userDao.getOne(id);
+    }
+    
     public User getUserByUsername(String username)
     {
         return this.userDao.getUserByUsername(username);
@@ -28,7 +34,17 @@ public class UserService
     
     public void deleteUser(String[] ids)
     {
-        this.userDao.logicDeleteInBatch(ids);
+        List<User> users = this.userDao.findAll(ids);
+        if (users != null && users.size() > 0)
+        {
+            for (User u : users)
+            {
+                u.setRoles(null);
+                u.setValid(CommConstants.DATA_INVALID);
+            }
+            
+            this.userDao.save(users);
+        }
     }
     
     public void updateUser(User user)

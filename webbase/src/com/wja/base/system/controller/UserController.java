@@ -1,6 +1,8 @@
 package com.wja.base.system.controller;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.wja.base.common.OpResult;
+import com.wja.base.system.dao.RoleDao;
+import com.wja.base.system.entity.Role;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
 import com.wja.base.util.Page;
@@ -22,6 +26,9 @@ public class UserController
     @Autowired
     private UserService userService;
     
+    @Autowired
+    private RoleDao roleDao;
+    
     @RequestMapping("mana")
     public String manage()
     {
@@ -30,8 +37,15 @@ public class UserController
     
     @RequestMapping("add")
     @ResponseBody
-    public Object addUser(User user)
+    public Object addUser(User user, String[] roleIds)
     {
+        
+        if (roleIds != null && roleIds.length > 1)
+        {
+            Set<Role> roles = new HashSet<>();
+            roles.addAll(this.roleDao.findAll(roleIds));
+            user.setRoles(roles);
+        }
         
         this.userService.addUser(user);
         
@@ -49,8 +63,14 @@ public class UserController
     
     @RequestMapping("update")
     @ResponseBody
-    public Object updateUser(User user)
+    public Object updateUser(User user, String[] roleIds)
     {
+        if (roleIds != null && roleIds.length > 1)
+        {
+            Set<Role> roles = new HashSet<>();
+            roles.addAll(this.roleDao.findAll(roleIds));
+            user.setRoles(roles);
+        }
         this.userService.updateUser(user);
         return OpResult.updateOk();
     }
@@ -76,5 +96,16 @@ public class UserController
         {
             return this.userService.getUserPrivileges(user.getId());
         }
+    }
+    
+    @RequestMapping("roles")
+    @ResponseBody
+    public Object getCurrUserRoles()
+    {
+        User user = RequestThreadLocal.currUser.get();
+        user = this.userService.getUser(user.getId());
+        Set<Role> roles = this.roleDao.findByCreateUser(user.getId());
+        roles.addAll(user.getRoles());
+        return roles;
     }
 }

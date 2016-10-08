@@ -2,6 +2,7 @@ package com.wja.base.system.controller;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wja.base.common.CommConstants;
 import com.wja.base.common.OpResult;
 import com.wja.base.system.dao.PrivilegeDao;
 import com.wja.base.system.dao.RoleDao;
@@ -49,9 +51,18 @@ public class RoleController
     
     @RequestMapping("delete")
     @ResponseBody
-    public Object delete(String id)
+    public Object delete(String[] id)
     {
-        this.dao.logicDelete(id);
+        List<Role> list = this.dao.findAll(id);
+        if (list != null && list.size() > 0)
+        {
+            for (Role r : list)
+            {
+                r.setPrivs(null);
+                r.setValid(CommConstants.DATA_INVALID);
+            }
+            this.dao.save(list);
+        }
         return OpResult.deleteOk();
     }
     
