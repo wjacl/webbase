@@ -65,7 +65,7 @@ public class UserController
     @ResponseBody
     public Object updateUser(User user, String[] roleIds)
     {
-        if (roleIds != null && roleIds.length > 1)
+        if (roleIds != null && roleIds.length > 0)
         {
             Set<Role> roles = new HashSet<>();
             roles.addAll(this.roleDao.findAll(roleIds));
