@@ -9,6 +9,7 @@ var I18N = {
 	OPER_SYS_ERROR:"系统异常,请重试！",
 	
 	CONFIRM_TITLE:"确认",
+	confirm_delet:"确定删除",
 	CONFIRM_DELETE_MESS:"您确定删除吗？",
 	
 	operate_ok : ["操作成功！","新增成功！","修改成功！","删除成功！"],
@@ -22,11 +23,17 @@ var I18N = {
 	
 	add:"新增",
 	update:"修改",
+	remove:"删除",
 	user:"用户",
 	role:"角色",
 	
 	role_type_s:"系统内置",
 	role_type_u:"用户自建",
-	role_sys_no_modify:"内置角色不可更改"
-
+	role_sys_no_modify:"内置角色不可更改",
+	
+	org:"机构",
+	org_new:"新机构",
+	org_name_not_null:"机构名称不能为空！",
+	
+	dict_root_not_delete:"数据字典节点不可删除！"
 }

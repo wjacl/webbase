@@ -2,6 +2,8 @@
 	jquery ajax 全局设置
 	在此js中主要设置当用户session失效、鉴权不通过时的ajax请求的处理。
 */
+$.ajaxSetup({traditional:true});
+
 $( document ).ajaxComplete(function( event, xhr, settings ) {
 	
 	if(xhr.status == 401){ //未认证

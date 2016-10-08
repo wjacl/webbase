@@ -76,6 +76,10 @@ INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-role-delete');
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-role-get');
 
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('sys-org','机构管理','/org/manage','sys','1',1,9130);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-org');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('edu','教务管理',NULL,NULL,'2',1,2000);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu');
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)

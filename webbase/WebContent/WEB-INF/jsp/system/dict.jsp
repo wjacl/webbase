@@ -85,7 +85,7 @@
 					function doDelete(){
 						var node = $('#dictTree').tree('getSelected');
 						if(node.id == 0){
-							$.messager.alert("数据字典节点不可删除");
+							$.messager.alert(I18N.dict_root_not_delete);
 							return;
 						}
 						
@@ -93,7 +93,7 @@
 							var node = $('#dictTree').tree('getSelected');
 							var ids=[];
 							getAllChildrenIds(node,ids);
-							$.post('${ctx}/dict/remove',{"ids":ids.join(',')},function(data){
+							$.post('${ctx}/dict/remove',{"ids":ids},function(data){
 								$.sm.handleResult(data,function(data){
 									$('#dictTree').tree('remove', node.target);
 								});

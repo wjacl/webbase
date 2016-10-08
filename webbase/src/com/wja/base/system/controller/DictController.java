@@ -2,7 +2,6 @@ package com.wja.base.system.controller;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,12 +48,11 @@ public class DictController
     
     @RequestMapping("remove")
     @ResponseBody
-    public Object remove(String ids)
+    public Object remove(String[] ids)
     {
-        if (StringUtils.isNotBlank(ids))
+        if (ids != null && ids.length > 0)
         {
-            String[] idarray = ids.split(",");
-            this.ds.delete(Dict.class, idarray);
+            this.ds.delete(Dict.class, ids);
         }
         
         return OpResult.deleteOk();
