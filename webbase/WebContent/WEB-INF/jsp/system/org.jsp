@@ -29,7 +29,7 @@
 					edit: {
 						enable: true,
 						removeTitle:I18N.remove,
-						renameTitle:I18N.update
+						showRenameBtn: false
 					},
 					data: {
 						simpleData: {
@@ -39,7 +39,8 @@
 					},
 					callback: {
 						beforeRemove: orgzTreeBeforeRemove,
-						beforeRename: orgzTreeBeforeRename
+						beforeRename: orgzTreeBeforeRename,
+						onClick: orgzTreeOnClick
 					}
 				};
 
@@ -47,12 +48,16 @@
 					{ id:0, pid:0, name:"组织机构"}
 				];
 				
-				$.ajax({ url: "${ctx }/org/tree",async:false, success: function(data){
+				$.ajax({ url: "${ctx }/org/tree",async:false,dataType:'json', success: function(data){
 					if(data && data.length > 0){
 						data.push(orgTreezNodes[0]);
 						orgTreezNodes = data;
 					}
 			      }});
+				
+				function orgzTreeOnClick(event, treeId, treeNode, clickFlag){
+					orgzTree.editName(treeNode);
+				}
 				
 				function orgzTreeBeforeRename(treeId, treeNode, newName, isCancel) {
 					if(newName.length == 0){
@@ -67,7 +72,7 @@
 					
 					var res = false;
 					
-					$.ajax({ url: "${ctx }/org/save",data:{id:treeNode.id,name:newName,pid:treeNode.pid},async:false, 
+					$.ajax({ url: "${ctx }/org/save",dataType:'json',data:{id:treeNode.id,name:newName,pid:treeNode.pid},async:false, 
 						success: function(data){
 							$.sm.handleResult(data);
 							if(!treeNode.id){
@@ -89,7 +94,7 @@
 							return;
 						}
 						
-						$.ajax({ url: "${ctx }/org/delete",method:"post",data:{ids:ids},async:false, 
+						$.ajax({ url: "${ctx }/org/delete",dataType:'json',method:"post",data:{ids:ids},async:false, 
 							success: function(data){
 								$.sm.handleResult(data);
 								orgzTree.removeNode(treeNode);
