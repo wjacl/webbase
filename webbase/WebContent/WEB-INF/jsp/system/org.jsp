@@ -22,8 +22,8 @@
 				<script type="text/javascript">
 				var orgTreeSetting = {
 					view: {
-						addHoverDom: orgAddHoverDom,
-						removeHoverDom: orgRemoveHoverDom,
+						addHoverDom: ztreef.addHoverDom,
+						removeHoverDom: ztreef.removeHoverDom,
 						selectedMulti: false
 					},
 					edit: {
@@ -38,9 +38,9 @@
 						}
 					},
 					callback: {
-						beforeRemove: orgzTreeBeforeRemove,
-						beforeRename: orgzTreeBeforeRename,
-						onClick: orgzTreeOnClick
+						beforeRemove: ztreef.beforeRemove,
+						beforeRename: ztreef.beforeRename,
+						onClick: ztreef.clickToEdit
 					}
 				};
 
@@ -55,84 +55,9 @@
 					}
 			      }});
 				
-				function orgzTreeOnClick(event, treeId, treeNode, clickFlag){
-					orgzTree.editName(treeNode);
-				}
-				
-				function orgzTreeBeforeRename(treeId, treeNode, newName, isCancel) {
-					if(newName.length == 0){
-						orgzTree.cancelEditName();
-						$.sm.alert(I18N.org_name_not_null);
-						return false;
-					}
-					
-					if(treeNode.name == newName){
-						return true;
-					}
-					
-					var res = false;
-					
-					$.ajax({ url: "${ctx }/org/save",dataType:'json',data:{id:treeNode.id,name:newName,pid:treeNode.pid},async:false, 
-						success: function(data){
-							$.sm.handleResult(data);
-							if(!treeNode.id){
-								treeNode.id = data.data;
-							}
-							res = true;
-					      }});
-					
-					return res;
-				}
-				
-				function orgzTreeBeforeRemove(treeId, treeNode) {
-					orgzTree.selectNode(treeNode);
-					$.sm.confirmDelete(function(){
-						var ids = [];
-						orgzTreeGetAllChildrenIds(treeNode,ids);
-						if(ids.length == 0){
-							orgzTree.removeNode(treeNode);
-							return;
-						}
-						
-						$.ajax({ url: "${ctx }/org/delete",dataType:'json',method:"post",data:{ids:ids},async:false, 
-							success: function(data){
-								$.sm.handleResult(data);
-								orgzTree.removeNode(treeNode);
-						      }});
-					});
-					return false;
-				}
-				
-				function orgzTreeGetAllChildrenIds(node,ids){
-					if(node.id){
-						ids.push(node.id);
-					}
-					if(node.children && node.children.length>0){
-						for(var i in node.children){
-							orgzTreeGetAllChildrenIds(node.children[i],ids);
-						}
-					}
-				}
-				
-				function orgAddHoverDom(treeId, treeNode) {
-					var sObj = $("#" + treeNode.tId + "_span");
-					if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-					var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-						+ "' title='" + I18N.add + "' onfocus='this.blur();'></span>";
-					sObj.after(addStr);
-					var btn = $("#addBtn_"+treeNode.tId);
-					if (btn) btn.bind("click", function(){
-						var zTree = $.fn.zTree.getZTreeObj("orgTree");
-						zTree.addNodes(treeNode, {pid:treeNode.id, name:I18N.org_new});
-						return false;
-					});
-				};
-				function orgRemoveHoverDom(treeId, treeNode) {
-					$("#addBtn_"+treeNode.tId).unbind().remove();
-				};
-				
 				var orgzTree = $.fn.zTree.init($("#orgTree"), orgTreeSetting, orgTreezNodes);
-				
+				orgzTree.saveUrl = "${ctx}/org/save";
+				orgzTree.deleteUrl = "${ctx}/org/delete";
 				
 				</script>
 			</div>

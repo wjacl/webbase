@@ -24,11 +24,17 @@ public class DictService extends CommService<Dict>
     public void update(Dict dict)
     {
         Dict temp = this.get(Dict.class, dict.getId());
-        temp.setText(dict.getText());
-        this.commDao.update(temp);
+        temp.setName(dict.getName());
+        this.dictDao.save(temp);
     }
     
-    public List<Dict> getByPid(String pid){
-    	return this.dictDao.findByPid(pid);
+    public List<Dict> getByPid(String pid)
+    {
+        return this.dictDao.findByPid(pid);
+    }
+    
+    public List<Dict> getAll()
+    {
+        return this.dictDao.findAll();
     }
 }

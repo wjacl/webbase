@@ -24,11 +24,11 @@ public class DictController
         return "system/dict";
     }
     
-    @RequestMapping("getTree")
+    @RequestMapping("tree")
     @ResponseBody
-    public List<Dict> getRoots()
+    public List<Dict> getRoots(String id)
     {
-        return this.ds.getRoots();
+        return this.ds.getAll();
     }
     
     @RequestMapping("get")
@@ -38,12 +38,21 @@ public class DictController
         return this.ds.getByPid(pid);
     }
     
-    @RequestMapping("add")
+    @RequestMapping("save")
     @ResponseBody
-    public Object add(Dict dict)
+    public Object save(Dict dict)
     {
-        this.ds.add(dict);
-        return OpResult.addOk(dict);
+        OpResult res = null;
+        if (dict.getId() == null)
+        {
+            this.ds.add(dict);
+            return OpResult.addOk(dict.getId());
+        }
+        else
+        {
+            this.ds.update(dict);
+            return OpResult.updateOk();
+        }
     }
     
     @RequestMapping("remove")
@@ -58,11 +67,4 @@ public class DictController
         return OpResult.deleteOk();
     }
     
-    @RequestMapping("update")
-    @ResponseBody
-    public Object update(Dict dict)
-    {
-        this.ds.update(dict);
-        return OpResult.updateOk();
-    }
 }

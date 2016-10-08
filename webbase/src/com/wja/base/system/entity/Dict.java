@@ -1,13 +1,8 @@
 package com.wja.base.system.entity;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Where;
 
@@ -29,15 +24,10 @@ import com.wja.base.common.CommEntity;
 public class Dict extends CommEntity
 {
     @Column(length = 20, nullable = false)
-    private String text;
+    private String name;
     
     @Column(length = 32)
     private String pid;
-    
-    @OneToMany
-    @JoinColumn(name = "pid")
-    @Where(clause = " valid = " + CommConstants.DATA_VALID)
-    private Set<Dict> children;
     
     /**
      * 字典类型:s系统字典，b业务字典
@@ -45,14 +35,14 @@ public class Dict extends CommEntity
     @Column(length = 1, nullable = false)
     private String type = "b";
     
-    public String getText()
+    public String getName()
     {
-        return text;
+        return name;
     }
     
-    public void setText(String text)
+    public void setName(String name)
     {
-        this.text = text;
+        this.name = name;
     }
     
     public String getPid()
@@ -63,16 +53,6 @@ public class Dict extends CommEntity
     public void setPid(String pid)
     {
         this.pid = pid;
-    }
-    
-    public Set<Dict> getChildren()
-    {
-        return children;
-    }
-    
-    public void setChildren(Set<Dict> children)
-    {
-        this.children = children;
     }
     
     public String getType()

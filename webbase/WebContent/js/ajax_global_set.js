@@ -251,3 +251,84 @@ $.ad = {
 		},'json');
 	}
 }
+
+var ztreef = {
+		clickToEdit:function (event, treeId, treeNode, clickFlag){
+			$.fn.zTree.getZTreeObj(treeId).editName(treeNode);
+		},
+		
+		beforeRename:function (treeId, treeNode, newName, isCancel){
+			var ztree = $.fn.zTree.getZTreeObj(treeId);
+			if(newName.length == 0){
+				ztree.cancelEditName();
+				$.sm.alert(I18N.org_name_not_null);
+				return false;
+			}
+			
+			if(treeNode.name == newName){
+				return true;
+			}
+			
+			var res = false;
+			
+			$.ajax({ url: ztree.saveUrl,dataType:'json',data:{id:treeNode.id,name:newName,pid:treeNode.pid},async:false, 
+				success: function(data){
+					$.sm.handleResult(data);
+					if(!treeNode.id){
+						treeNode.id = data.data;
+					}
+					res = true;
+			      }});
+			
+			return res;
+		},
+		
+		beforeRemove:function (treeId, treeNode) {
+			var zTree = $.fn.zTree.getZTreeObj(treeId);
+			zTree.selectNode(treeNode);
+			$.sm.confirmDelete(function(){
+				var ids = [];
+				ztreef.getAllChildrenIds(treeNode,ids);
+				if(ids.length == 0){
+					orgzTree.removeNode(treeNode);
+					return;
+				}
+				
+				$.ajax({ url: zTree.deleteUrl,dataType:'json',method:"post",data:{ids:ids},async:false, 
+					success: function(data){
+						$.sm.handleResult(data);
+						orgzTree.removeNode(treeNode);
+				      }});
+			});
+			return false;
+		},
+		
+		getAllChildrenIds:function (node,ids){
+			if(node.id){
+				ids.push(node.id);
+			}
+			if(node.children && node.children.length>0){
+				for(var i in node.children){
+					this.getAllChildrenIds(node.children[i],ids);
+				}
+			}
+		},
+		
+		addHoverDom:function (treeId, treeNode) {
+			var sObj = $("#" + treeNode.tId + "_span");
+			if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+			var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+				+ "' title='" + I18N.add + "' onfocus='this.blur();'></span>";
+			sObj.after(addStr);
+			var btn = $("#addBtn_"+treeNode.tId);
+			if (btn) btn.bind("click", function(){
+				var zTree = $.fn.zTree.getZTreeObj(treeId);
+				zTree.addNodes(treeNode, {pid:treeNode.id, name:I18N.ztree_node_new});
+				return false;
+			});
+		},
+		
+		removeHoverDom:function orgRemoveHoverDom(treeId, treeNode) {
+			$("#addBtn_"+treeNode.tId).unbind().remove();
+		}
+}

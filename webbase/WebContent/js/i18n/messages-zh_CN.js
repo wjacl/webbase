@@ -31,9 +31,11 @@ var I18N = {
 	role_type_u:"用户自建",
 	role_sys_no_modify:"内置角色不可更改",
 	
+	ztree_node_new:"新节点",
+	
 	org:"机构",
-	org_new:"新机构",
 	org_name_not_null:"机构名称不能为空！",
 	
+	dict:"数据字典",
 	dict_root_not_delete:"数据字典节点不可删除！"
 }
