@@ -86,15 +86,15 @@
 			<div id="role_w" class="easyui-window"
 				data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
 				style="width: 620px; height: 480px; padding: 10px;">
-				<div class="content easyui-layout" style="width:580px;height:400px">
-						<div data-options="region:'center',border:false" style="width:50%;margin-left: 40px">
+				<div class="content easyui-layout" style="width:580px;height:420px">
+						<div data-options="region:'center',border:false" style="width:50%;height:400px;margin-left: 40px;">
 							<s:message code="role.priv"/>:
-							<div class="easyui-panel" style="padding:5px;width:260px">
+							<div class="easyui-panel" style="padding:5px;width:260px;height:340px;overflow:scroll">
 								<ul id="role_priv_tree" class="ztree"></ul>
 							</div>
 	                    </div>	
 	                    
-	                    <div data-options="region:'west',border:false" style="width:40%;padding-left:10px">	
+	                    <div data-options="region:'west',border:false" style="width:40%;height:400px;padding-left:10px">	
 							<form id="role_add" method="post" action="${ctx }/role/add">
 								<div style="margin-bottom: 20px">
 									<input class="easyui-textbox" name="name" style="width: 100%"
@@ -108,7 +108,7 @@
 			                    <input type="hidden" name="version" />
 							</form>
 								   
-							<div style="text-align: center; padding: 20px 0">
+							<div style="text-align: center;margin-top: 40px; padding: 20px 0">
 								<a href="javascript:void(0)" class="easyui-linkbutton"
 									onclick="addRole()" style="width: 80px">
 									<s:message code="comm.submit" /></a> 
