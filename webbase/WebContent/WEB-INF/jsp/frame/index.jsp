@@ -6,7 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>基础系统</title>
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp" %>
 <script type="text/javascript">
 	$(function() {

@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:message code="org.title" /></title>
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp"%>
 </head>
 <body>
