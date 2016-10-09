@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title><s:message code="user.title" /></title>
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp"%>
 </head>
 <body>
@@ -158,16 +157,18 @@
 				<form id="user_add" method="post" action="${ctx }/user/add">
 					<div style="margin-bottom: 20px">
 						<input class="easyui-textbox" name="name" style="width: 100%"
-							data-options="label:'<s:message code="user.name"/>:',required:true">
+							data-options="label:'<s:message code="user.name"/>:',required:true,validType:'length[1,30]'">
 					</div>
 					<div style="margin-bottom: 20px">
 						<input class="easyui-textbox" name="username" style="width: 100%"
-							data-options="label:'<s:message code="user.username"/>:',required:true">
+							data-options="label:'<s:message code="user.username"/>:',required:true,
+							validType:{length:[1,30],remote:['${ctx }/user/unameCheck','username']},
+							invalidMessage:I18N.user_uname_exits">
 					</div>
 					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="password" type="password"
+						<input class="easyui-textbox" name="password" type="password"  id="pwd"
 							style="width: 100%"
-							data-options="label:'<s:message code="user.pwd"/>:',required:true">
+							data-options="label:'<s:message code="user.pwd"/>:',required:true,validType:'length[6,20]'">
 					</div>
 					<div style="margin-bottom: 20px">
 						<input class="easyui-combobox" name="type"

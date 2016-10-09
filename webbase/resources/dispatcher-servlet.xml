@@ -76,12 +76,13 @@
 	<!-- 国际化配置 -->   
 	<bean id="messageSource" 
 	class="org.springframework.context.support.ResourceBundleMessageSource">
-  		<property name="basename" value="i18n.message"/>
-  		<!-- <property name="basenames">
+  		<!-- <property name="basename" value="i18n.message"/> -->
+  		<property name="basenames">
   			<array>
-  				<value></value>
+  				<value>i18n.message</value>
+  				<value>i18n.edu_message</value>
   			</array>
-  		</property> -->
+  		</property>
 	</bean> 
 	
 	<!-- 基于session的动态国际化配置 begin -->

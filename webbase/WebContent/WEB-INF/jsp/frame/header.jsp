@@ -21,7 +21,7 @@
 				<ul>
 					<c:if test="${not empty session_user }">
 					<li><a href="javascrit:void(0)"><s:message code="sys.header.hello"/>,${session_user.name }！</a></li>
-					<li><a href="/demo/main/index.php"><s:message code="sys.logout"/></a></li>
+					<li><a href="${ctx }/logout"><s:message code="sys.logout"/></a></li>
 					</c:if>
 				</ul>
 			</div>

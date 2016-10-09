@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+	<title><s:message code="sys.app.name" /></title>
 	<link rel="stylesheet" type="text/css" href="${ctx }/js/jquery-easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="${ctx }/css/kube.css" />
 	<link rel="stylesheet" type="text/css" href="${ctx }/css/main.css">

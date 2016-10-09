@@ -6,7 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>基础系统</title>
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp" %>
 <script type="text/javascript">
 	$(function() {
@@ -29,7 +28,6 @@
 				closable : true,
 				bodyCls : 'content-doc' ,
 				//content:'<iframe scrolling="auto" frameborder="0"  src="'+murl+'?inframe=yes" style="width:100%;height:100%;"></iframe>'
-				  bodyCls : 'content-doc' ,
 				extractor : function(data) {
 					data = $.fn.panel.defaults.extractor(data);
 					var tmp = $('<div></div>').html(data);
@@ -75,7 +73,7 @@
 		<div class="navbar navbar-right">
 			<ul>
 				<li><a href="javascrit:void(0)">您好，${session_user.name }！</a></li>
-				<li><a href="/demo/main/index.php">退出</a></li>
+				<li><a href="${ctx }/logout">退出</a></li>
 				<!-- <li><a href="/tutorial/index.php">Tutorial</a></li>
 				<li><a href="/documentation/index.php">Documentation</a></li>
 				<li><a href="/download/index.php">Download</a></li>

@@ -33,26 +33,23 @@
 				<div style="text-align: center; padding: 5px 0">
 					<a href="javascript:void(0)" class="easyui-linkbutton"
 						onclick="submitForm()" style="width: 80px"><s:message
-							code="login.submit" /></a> <a href="javascript:void(0)"
-						class="easyui-linkbutton" onclick="clearForm()"
-						style="width: 80px"><s:message code="comm.clear" /></a>
+							code="login.submit" /></a> 
+					<a href="${ctx}/user/regist"
+						class="easyui-linkbutton"
+						style="width: 80px"><s:message code="login.regist" /></a>
 				</div>
 
 				<script>
-        function submitForm(){
-            $('#ff').form('submit',{"ajax":false});
-        }
-        function clearForm(){
-            $('#ff').form('clear');
-        }
-        
-      	//绑定回车动作 
-        $('#ff').keydown(function(event){ 
-	        if(event.which==13){
-	        	submitForm();
-	        } 
-        });
-    </script>
+			        function submitForm(){
+			            $('#ff').form('submit',{"ajax":false});
+			        }
+			      	//绑定回车动作 
+			        $('#ff').keydown(function(event){ 
+				        if(event.which==13){
+				        	submitForm();
+				        } 
+			        });
+	    		</script>
 			</div>
 		</div>
 	</div>

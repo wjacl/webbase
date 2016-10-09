@@ -24,7 +24,10 @@ var I18N = {
 	add:"新增",
 	update:"修改",
 	remove:"删除",
+	
 	user:"用户",
+	user_uname_exits:"账号已被使用！",
+	user_regist_success:"注册成功！",
 	role:"角色",
 	
 	role_type_s:"系统内置",
@@ -37,5 +40,9 @@ var I18N = {
 	org_name_not_null:"机构名称不能为空！",
 	
 	dict:"数据字典",
-	dict_root_not_delete:"数据字典节点不可删除！"
+	dict_root_not_delete:"数据字典节点不可删除！",
+	
+	validator_equals:"{1}不一致！",
+	validator_minLength:"请输入最少 {0} 个字符",
+	validator_maxLength:"请输入不超过 {0} 个字符",
 }

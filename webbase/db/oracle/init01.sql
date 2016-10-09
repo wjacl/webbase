@@ -79,15 +79,3 @@ INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('sys-org','机构管理','/org/manage','sys','1',1,9130);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-org');
 
-INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
-VALUES('edu','教务管理',NULL,NULL,'2',1,2000);
-INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu');
-INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
-VALUES('edu-class','班级管理','/class/manage','edu','1',1,2020);
-INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-class');
-INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
-VALUES('edu-stu','学生管理','/stu/manage','edu','1',1,2030);
-INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-stu');
-INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
-VALUES('edu-tea','教师管理','/tea/manage','edu','1',1,2040);
-INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-tea');

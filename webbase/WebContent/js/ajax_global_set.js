@@ -332,3 +332,32 @@ var ztreef = {
 			$("#addBtn_"+treeNode.tId).unbind().remove();
 		}
 }
+
+
+/**
+ * easyui校验扩展
+ */
+$.extend($.fn.validatebox.defaults.rules, {
+    equals: {
+        validator: function(value,param){
+            return value == $(param[0]).val();
+        },
+        message: I18N.validator_equals
+    }
+});
+$.extend($.fn.validatebox.defaults.rules, {
+    minLength: {
+        validator: function(value, param){
+            return value.length >= param[0];
+        },
+        message: I18N.validator_minLength
+    }
+});
+$.extend($.fn.validatebox.defaults.rules, {
+    maxLength: {
+        validator: function(value, param){
+            return value.length <= param[0];
+        },
+        message: I18N.validator_maxLength
+    }
+});
