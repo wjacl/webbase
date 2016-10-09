@@ -90,4 +90,9 @@ public class UserService
     {
         return page.setPageData(this.userDao.findAll(new CommSpecification<User>(params), page.getPageRequest()));
     }
+    
+    public List<User> query(Map<String, Object> params)
+    {
+        return this.userDao.findAll(new CommSpecification<User>(params));
+    }
 }

@@ -1,6 +1,7 @@
 package com.wja.base.system.controller;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -112,6 +114,13 @@ public class UserController
     {
         Map<String, Object> paramMap = JSON.parseObject(params, Map.class);
         return this.userService.query(paramMap, page);
+    }
+    
+    @RequestMapping("find")
+    @ResponseBody
+    public List<User> find(@RequestParam Map<String, Object> params)
+    {
+        return this.userService.query(params);
     }
     
     @RequestMapping("privs")

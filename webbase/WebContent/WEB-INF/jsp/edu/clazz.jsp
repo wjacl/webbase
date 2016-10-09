@@ -62,7 +62,7 @@
 		<div>
 			<form id="clazz_query_form">
 				<s:message code="clazz.name" />
-				: <input class="easyui-textbox" style="width: 120px"
+				: <input class="easyui-textbox" style="width: 100px"
 					name="name_like_string">
 					
 		             <s:message code="clazz.major"/>:
@@ -78,7 +78,7 @@
 	                    ">
 	                    
 						<s:message code="clazz.school"/>:
-						<select name="school_in_string" class="easyui-combotree" style="width: 120px" id="clazz_school"
+						<select name="school_in_string" class="easyui-combotree" style="width: 160px" id="clazz_school"
 						        data-options="url:'${ctx }/org/tree',
 	                    		multiple:true,
 						        loadFilter:clazzOrgTreeFilter">
@@ -88,7 +88,7 @@
 						<input class="easyui-combobox" name="admin_in_string" id="clazz_admin"
 						style="width: 100px"
 						data-options="
-		                    url:'${ctx }/user/query?type_eq_string=user.type.A',
+		                    url:'${ctx }/user/find?type_eq_string=user.type.A',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
