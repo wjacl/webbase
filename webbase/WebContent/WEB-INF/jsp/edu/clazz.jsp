@@ -17,38 +17,7 @@
 	</h3>
 	
 		<script type="text/javascript">
-			function clazzOrgTreeFilter(data){
-				if(!data){
-					return null;
-				}
-				
-				return toEasyUiTree(data,['0'],'id','pid','name');
-				
-			}
 			
-			function toEasyUiTree(data,rootIds,id,pid,name){
-				var root = [];
-				for(var i in data){
-					data[i].id = data[i][id];
-					data[i].text = data[i][name];
-					
-					if(!data[i][pid] || $.inArray(data[i][pid], rootIds) != -1){
-						root.push(data[i]);
-					}
-					else{
-						for(var j in data){
-							if(data[i][pid] == data[j][id]){
-								if(!data[j].children){
-									data[j].children = [];
-								}
-								data[j].children.push(data[i]);
-								break;
-							}
-						}
-					}
-				}
-				return root;
-			}
 		</script>
 	<div id="clazz_tb" style="padding: 5px; height: auto">
 		<div style="margin-bottom: 5px">
@@ -81,7 +50,7 @@
 						<select name="school_in_string" class="easyui-combotree" style="width: 160px" id="clazz_school"
 						        data-options="url:'${ctx }/org/tree',
 	                    		multiple:true,
-						        loadFilter:clazzOrgTreeFilter">
+						        loadFilter:$.ad.easyTreeDefaultLoadFilter">
 						</select>
 						
 						<s:message code="clazz.admin"/>:
@@ -191,7 +160,7 @@
 	
 	<div id="clazz_w" class="easyui-window"
 		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
-		style="width: 400px; height: 400px; padding: 10px;">
+		style="width: 400px; height: 480px; padding: 10px;">
 		<div class="content">
 				<form id="clazz_add" method="post" action="${ctx }/clazz/add">
 					<div style="margin-bottom: 20px">
@@ -216,7 +185,7 @@
 					<div style="margin-bottom: 20px">
 						<select name="school" class="easyui-combotree" style="width: 100%"
 						        data-options="url:'${ctx }/org/tree',required:true,
-						        loadFilter:clazzOrgTreeFilter,
+						        loadFilter:$.ad.easyTreeDefaultLoadFilter,
 						        label:'<s:message code="clazz.school"/>:'">
 						</select>
                     </div>
@@ -224,7 +193,7 @@
 						<input class="easyui-combobox" name="admin"
 						style="width: 100%;"
 						data-options="
-		                    url:'${ctx }/user/query?type=user.type.A',
+		                    url:'${ctx }/user/find?type_eq_string=user.type.A',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
