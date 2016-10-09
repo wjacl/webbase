@@ -7,9 +7,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.wja.base.common.CommConstants;
 import com.wja.base.common.OpResult;
 import com.wja.base.system.dao.RoleDao;
 import com.wja.base.system.entity.Role;
@@ -33,6 +35,35 @@ public class UserController
     public String manage()
     {
         return "system/user";
+    }
+    
+    @RequestMapping(value = "regist", method = RequestMethod.GET)
+    public String toRegist()
+    {
+        return "system/regist";
+    }
+    
+    @RequestMapping(value = "regist", method = RequestMethod.POST)
+    @ResponseBody
+    public Object regist(User user)
+    {
+        if (this.userService.getUserByUsername(user.getUsername()) != null)
+        {
+            return OpResult.error("unameExits", null);
+        }
+        
+        user.setStatus(CommConstants.User.STATUS_LOCK);
+        this.userService.addUser(user);
+        
+        return OpResult.ok();
+    }
+    
+    @RequestMapping("unameCheck")
+    @ResponseBody
+    public boolean checkUsername(String username)
+    {
+        User user = this.userService.getUserByUsername(username);
+        return user == null;
     }
     
     @RequestMapping("add")

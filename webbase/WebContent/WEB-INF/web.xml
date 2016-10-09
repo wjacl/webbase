@@ -45,7 +45,7 @@
     <!-- 不需进行认证过滤的uri地址正则模式，多个以;间隔 -->
     <init-param>
       <param-name>except-uri-patterns</param-name>
-      <param-value>/js/.*;/css/.*;/images/.*;/html/.*</param-value>
+      <param-value>/js/.*;/css/.*;/images/.*;/html/.*;/user/regist;/dict/get;/user/unameCheck</param-value>
     </init-param>
   </filter>
  <filter-mapping>
