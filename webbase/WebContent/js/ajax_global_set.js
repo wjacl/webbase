@@ -171,11 +171,11 @@ $.ad = {
 	 * 往下来框框中增加全部选项，要求 值字段名为id,文本字段名为text
 	 */
 	addAllOption : function(data){
-		data.splice(0,0,{id:"",text:I18N.option_all});
+		data.splice(0,0,{id:"",name:I18N.option_all});
 		return data;
 	},
 	addChooseOption : function(data){
-		data.splice(0,0,{id:"",text:I18N.option_choose});
+		data.splice(0,0,{id:"",name:I18N.option_choose});
 		return data;
 	},
 	

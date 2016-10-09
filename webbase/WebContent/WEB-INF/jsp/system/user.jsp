@@ -40,7 +40,7 @@
 	                    url:'${ctx }/dict/get?pid=user.type',
 	                    method:'get',
 	                    valueField:'id',
-	                    textField:'text',
+	                    textField:'name',
 	                    panelHeight:'auto',
 	                    multiple:true
                     ">
@@ -114,7 +114,7 @@
 		
 			for(var i in userTypes){
 				if(userTypes[i].id == value){
-					return userTypes[i].text;
+					return userTypes[i].name;
 				}
 			}
 		}
@@ -128,7 +128,7 @@
 			
 			for(var i in userStatus){
 				if(userStatus[i].id == value){
-					return userStatus[i].text;
+					return userStatus[i].name;
 				}
 			}
 		}
@@ -177,7 +177,7 @@
 		                    url:'${ctx }/dict/get?pid=user.type',
 		                    method:'get',
 		                    valueField:'id',
-		                    textField:'text',
+		                    textField:'name',
 		                    panelHeight:'auto',
 		                    required:true,
 		                    label:'<s:message code="user.type"/>:'
