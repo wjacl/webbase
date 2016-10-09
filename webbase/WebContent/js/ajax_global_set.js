@@ -290,14 +290,14 @@ var ztreef = {
 				var ids = [];
 				ztreef.getAllChildrenIds(treeNode,ids);
 				if(ids.length == 0){
-					orgzTree.removeNode(treeNode);
+					zTree.removeNode(treeNode);
 					return;
 				}
 				
 				$.ajax({ url: zTree.deleteUrl,dataType:'json',method:"post",data:{ids:ids},async:false, 
 					success: function(data){
 						$.sm.handleResult(data);
-						orgzTree.removeNode(treeNode);
+						zTree.removeNode(treeNode);
 				      }});
 			});
 			return false;

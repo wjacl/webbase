@@ -45,7 +45,7 @@
 				};
 
 				var orgTreezNodes =[
-					{ id:0, pid:0, name:"组织机构"}
+					{ id:0, pid:null, name:I18N.org}
 				];
 				
 				$.ajax({ url: "${ctx }/org/tree",async:false,dataType:'json', success: function(data){

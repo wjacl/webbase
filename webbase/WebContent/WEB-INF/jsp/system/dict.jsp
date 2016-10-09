@@ -16,7 +16,7 @@
 			<h3>
 				<s:message code="dict.title" />
 			</h3>
-			<div class="easyui-panel" style="padding: 5px;width:300px">
+			<div class="easyui-panel" style="padding: 5px;width:400px">
 				<ul id="dictTree" class="ztree"></ul>
 					
 				<script type="text/javascript">
