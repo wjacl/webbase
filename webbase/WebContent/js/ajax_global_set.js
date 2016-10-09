@@ -181,8 +181,8 @@ $.ad = {
 	
 	gridQuery:function(formId,gridId){
 		var jsonData = $("#" + formId).serializeJson();
-		
-		$('#' + gridId).datagrid('load',{params:JSON.stringify(jsonData)});
+		//{params:JSON.stringify(jsonData)}
+		$('#' + gridId).datagrid('load',jsonData);
 		
 	},
 	
@@ -249,6 +249,48 @@ $.ad = {
 				$("#" + gridId).datagrid("reload");
 			});
 		},'json');
+	},
+	
+	/**
+	 * 将有父子关系的数据数组，转为easyui-tree的树结构<br>
+	 * @param data []  待转的数据数组<br>
+	 * @param rootIds [] 父id的值在这个rootIds[]数组中的作为根节点<br>
+	 * @param id String 数据的id属性名<br>
+	 * @param pid String 数据的父id属性名<br>
+	 * @param name String 数据的名称属性名<br>
+	 * @returns {Array}
+	 */
+	toEasyUiTree : function (data,rootIds,id,pid,name){
+		var root = [];
+		for(var i in data){
+			data[i].id = data[i][id];
+			data[i].text = data[i][name];
+			
+			if(!data[i][pid] || $.inArray(data[i][pid], rootIds) != -1){
+				root.push(data[i]);
+			}
+			else{
+				for(var j in data){
+					if(data[i][pid] == data[j][id]){
+						if(!data[j].children){
+							data[j].children = [];
+						}
+						data[j].children.push(data[i]);
+						break;
+					}
+				}
+			}
+		}
+		return root;
+	},
+	
+	easyTreeDefaultLoadFilter : function (data){
+		if(!data){
+			return null;
+		}
+		
+		return $.ad.toEasyUiTree(data,['0'],'id','pid','name');
+		
 	}
 }
 
