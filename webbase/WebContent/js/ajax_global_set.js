@@ -222,14 +222,29 @@ $.ad = {
 		$("#" + wid).window("open");
 	},
 	
-	toUpdate:function(gridId,wid,wTitle,formId,url){
+	/**
+	 * 从表格选择数据修改的方法<br>
+	 * @param gridId 表格id<br>
+	 * @param wid  窗口id<br>
+	 * @param wTitle  标题<br>
+	 * @param formId  表单id<br>
+	 * @param url 提交的url<br>
+	 * @param addAttr  非必须，{key:dataKey} 要向表格数据中补充的属性,key指定属性名，dataKey指定要用到的数据的key,<br>
+	 * 该参数加入的原因是:修改界面有唯一校验，以补充属性的方式给表单填充一个隐藏值。参见user.jsp上的使用
+	 */
+	toUpdate:function(gridId,wid,wTitle,formId,url,addAttr){
 		var selRows = $("#" + gridId).datagrid("getSelections");
 		if(selRows.length != 1){
 			$.sm.alert(I18N.alert_select_one);
 			return;
 		}
-
-		$('#' + formId).form('load',selRows[0]);
+		var fdata = selRows[0];
+		if(addAttr){
+			for(var key in addAttr){
+				fdata[key] = fdata[addAttr[key]];
+			}
+		}
+		$('#' + formId).form('load',fdata);
 		
 		if(url){
 			$('#' + formId).form({url:url});
@@ -299,11 +314,11 @@ $.ad = {
 	},
 	
 	/**
-	 * 从数组中取值对应的名字的方法
-	 * @param value  值
-	 * @param array  数组
-	 * @param vAttr  值对应的属性名，默认为 id
-	 * @param nameAttr 名字对应的属性名，默认为 name 
+	 * 从数组中取值对应的名字的方法<br>
+	 * @param value  值<br>
+	 * @param array  数组<br>
+	 * @param vAttr  值对应的属性名，默认为 id<br>
+	 * @param nameAttr 名字对应的属性名，默认为 name <br>
 	 * @returns 找到了则为名字，否则为""
 	 */
 	getName:function(value,array,vAttr,nameAttr){
@@ -432,5 +447,21 @@ $.extend($.fn.validatebox.defaults.rules, {
             return value.length <= param[0];
         },
         message: I18N.validator_maxLength
+    }
+});
+$.extend($.fn.validatebox.defaults.rules, {
+    myRemote: {
+        validator: function(value, param){
+        	if(value == $(param[2]).val()){
+        		return true;
+        	}
+        	else{
+        		var _48={};
+        		_48[param[1]]=value;
+        		var _49=$.ajax({url:param[0],dataType:"json",data:_48,async:false,cache:false,type:"post"}).responseText;
+        		return _49=="true";
+        	}
+        },
+        message: I18N.validator_exits
     }
 });

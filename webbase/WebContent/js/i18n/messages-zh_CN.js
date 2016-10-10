@@ -45,4 +45,5 @@ var I18N = {
 	validator_equals:"{1}不一致！",
 	validator_minLength:"请输入最少 {0} 个字符",
 	validator_maxLength:"请输入不超过 {0} 个字符",
+	validator_exits:"已存在！",
 }

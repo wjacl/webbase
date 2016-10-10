@@ -20,7 +20,7 @@
 		<div style="margin-bottom: 5px">
 			<a href="javascript:$('#userRoleComb').combobox('reload');$.ad.toAdd('user_w',I18N.user,'user_add','${ctx }/user/add');" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.add' />"
 				iconCls="icon-add" plain="true"></a> 
-			<a href="javascript:$.ad.toUpdate('user_grid','user_w',I18N.user,'user_add','${ctx }/user/update');userUpdate()"
+			<a href="javascript:$.ad.toUpdate('user_grid','user_w',I18N.user,'user_add','${ctx }/user/update',{oldUsername:'username'});userUpdate()"
 				class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.update' />" iconCls="icon-edit" plain="true"></a>
 			<a href="javascript:$.ad.doDelete('user_grid','${ctx }/user/remove')" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.remove' />" iconCls="icon-remove"
 				plain="true"></a>
@@ -162,13 +162,14 @@
 					<div style="margin-bottom: 20px">
 						<input class="easyui-textbox" name="username" style="width: 100%"
 							data-options="label:'<s:message code="user.username"/>:',required:true,
-							validType:{length:[1,30],remote:['${ctx }/user/unameCheck','username']},
+							validType:{length:[1,30],myRemote:['${ctx }/user/unameCheck','username','#oldUsername']},
 							invalidMessage:I18N.user_uname_exits">
+						<input type="hidden" name="oldUsername" id="oldUsername" />
 					</div>
 					<div style="margin-bottom: 20px">
 						<input class="easyui-textbox" name="password" type="password"  id="pwd"
 							style="width: 100%"
-							data-options="label:'<s:message code="user.pwd"/>:',required:true,validType:'length[6,20]'">
+							data-options="label:'<s:message code="user.pwd"/>:',required:true,validType:'length[6,32]'">
 					</div>
 					<div style="margin-bottom: 20px">
 						<input class="easyui-combobox" name="type"
