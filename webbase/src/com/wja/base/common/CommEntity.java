@@ -9,6 +9,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.wja.base.util.DateUtil;
 
 /**
  * 业务实体基类<br>
@@ -34,12 +38,16 @@ public abstract class CommEntity
     private String createUser;
     
     @Column(name = "create_time")
+    @DateTimeFormat(pattern = DateUtil.DATE_TIME)
+    @JSONField(format = DateUtil.DATE_TIME)
     private Date createTime;
     
     @Column(name = "last_modify_user", length = 32)
     private String lastModifyUser;
     
     @Column(name = "last_modify_time")
+    @DateTimeFormat(pattern = DateUtil.DATE_TIME)
+    @JSONField(format = DateUtil.DATE_TIME)
     private Date lastModifyTime;
     
     /**
