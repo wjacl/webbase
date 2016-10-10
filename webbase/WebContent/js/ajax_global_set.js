@@ -468,3 +468,4 @@ $.extend($.fn.validatebox.defaults.rules, {
         message: I18N.validator_exits
     }
 });
+

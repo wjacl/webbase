@@ -50,7 +50,21 @@
 		                    textField:'name',
 		                    panelHeight:'auto',
 		                    required:true,
+		                    onChange:registClass,
 		                    label:'<s:message code="user.type"/>:'
+	                    ">
+                    </div>
+                    <div style="margin-bottom: 20px" id="clazzDiv">
+						<input class="easyui-combobox" name="clazz"
+						style="width: 100%;"
+						data-options="
+		                    url:'${ctx }/clazz/registGet',
+		                    method:'get',
+		                    valueField:'id',
+		                    textField:'name',
+		                    panelHeight:'auto',
+		                    validType:,
+		                    label:'<s:message code="clazz"/>:'
 	                    ">
                     </div>
 				</form>
@@ -64,6 +78,34 @@
 				</div>
 
 				<script>
+				
+				$.extend($.fn.validatebox.defaults.rules, {
+				    conditionRequired: {
+				        validator: function(value, param){
+				        	if($(param[0]).val() == param[1]){
+				        		if(!value){
+				        			return false;
+				        		}
+				        		else{
+				        			return true;
+				        		}
+				        	}
+				        	else{
+				        		return true;
+				        	}
+				        },
+				        message: I18N.validator_exits
+				    }
+				});
+					function registClass(newValue){
+						if(newValue == 'user.type.S'){
+							$('#clazzDiv').show();
+						}
+						else{
+							$('#clazzDiv').hide();
+						}
+					}
+				
 			        function submitForm(){
 			        	$.messager.progress('close');
 			            $('#ff').form('submit',{success: function(data){
@@ -77,6 +119,10 @@
 			        		}
 			        	}});
 			        }
+			        
+			        $(document).ready(function(){
+			        	$('#clazzDiv').hide();
+			        });
 			       
     			</script>
 			</div>

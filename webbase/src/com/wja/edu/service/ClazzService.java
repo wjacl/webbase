@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.wja.base.common.CommSpecification;
@@ -54,6 +55,11 @@ public class ClazzService
         {
             return list.get(0);
         }
+    }
+    
+    public List<Clazz> query(Map<String, Object> params, Sort sort)
+    {
+        return this.clazzDao.findAll(new CommSpecification<Clazz>(params), sort);
     }
     
     public Page<Clazz> pageQuery(Map<String, Object> params, Page<Clazz> page)

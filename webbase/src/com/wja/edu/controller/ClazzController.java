@@ -1,9 +1,13 @@
 package com.wja.edu.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +29,16 @@ public class ClazzController
     public String manage()
     {
         return "edu/clazz";
+    }
+    
+    @RequestMapping("registGet")
+    @ResponseBody
+    public List<Clazz> registsGet()
+    {
+        Map<String, Object> params = new HashMap<>();
+        params.put("status_in", new String[] {Clazz.STATUS_NOT_START, Clazz.STATUS_STARTED});
+        Sort sort = new Sort(Direction.DESC, "startTime");
+        return this.clazzService.query(params, sort);
     }
     
     @RequestMapping("nameExits")
