@@ -29,7 +29,7 @@ import com.wja.base.common.CommEntity;
 public class User extends CommEntity
 {
     
-    @Column(length = 20, unique = true, nullable = false)
+    @Column(length = 20, nullable = false)
     private String username;
     
     @Column(length = 32, nullable = false)
