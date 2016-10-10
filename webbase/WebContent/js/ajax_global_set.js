@@ -259,16 +259,19 @@ $.ad = {
 			$.sm.alert(I18N.alert_select);
 			return;
 		}
-		var ids = "";
-		for(var i in selRows){
-			ids += "&id=" + selRows[i].id;
-		}
 		
-		$.post(url,ids,function(data){
-			$.sm.handleResult(data,function(data){
-				$("#" + gridId).datagrid("reload");
-			});
-		},'json');
+		$.sm.confirmDelete(function(){
+			var ids = [];
+			for(var i in selRows){
+				ids.push(selRows[i].id);
+			}
+			
+			$.post(url,{id:ids},function(data){
+				$.sm.handleResult(data,function(data){
+					$("#" + gridId).datagrid("reload");
+				});
+			},'json');
+		});
 	},
 	
 	/**
