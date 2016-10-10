@@ -15,17 +15,50 @@
 	<h3>
 		<s:message code="clazz.title" />
 	</h3>
-	
-		<script type="text/javascript">
-			
-		</script>
+		
+	<script type="text/javascript">
+		var clazz = {
+				majors:null,
+				majorFormatter:function(value,row,index){
+					if(!clazz.majors){
+						clazz.majors = $('#major').combobox("getData");
+					}
+					return $.ad.getName(value,clazz.majors);
+				},
+				
+				schools:null,
+				schoolLoadFilter:function(data){
+					clazz.schools = data;
+					return $.ad.easyTreeDefaultLoadFilter(data);
+				},
+				schoolFormatter:function(value,row,index){
+					return $.ad.getName(value,clazz.schools);
+				},
+				
+				status:null,
+				statusFormatter:function(value,row,index){
+					if(!clazz.status){
+						clazz.status = $('#clazz_status').combobox("getData");
+					}
+					return $.ad.getName(value,clazz.status);
+				},
+				
+				admins:null,
+				adminFormatter:function(value){
+					if(!clazz.admins){
+						clazz.admins = $('#clazz_admin').combobox("getData");
+					}
+					return $.ad.getName(value,clazz.admins);
+				}				
+		};
+	</script>
 	<div id="clazz_tb" style="padding: 5px; height: auto">
 		<div style="margin-bottom: 5px">
 			<a href="javascript:$.ad.toAdd('clazz_w','<s:message code='clazz' />','clazz_add','${ctx }/clazz/add');" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.add' />"
 				iconCls="icon-add" plain="true"></a> 
-			<a href="javascript:$.ad.toUpdate('clazz_grid','clazz_w','<s:message code='clazz' />','clazz_add','${ctx }/clazz/update')"
+			<a href="javascript:$.ad.toUpdate('clazz_grid','clazz_w','<s:message code='clazz' />','clazz_add','${ctx }/clazz/update',{oldname:'name'})"
 				class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.update' />" iconCls="icon-edit" plain="true"></a>
-			<a href="javascript:$.ad.doDelete('clazz_grid','${ctx }/clazz/remove')" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.remove' />" iconCls="icon-remove"
+			<a href="javascript:$.ad.doDelete('clazz_grid','${ctx }/clazz/delete')" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.remove' />" iconCls="icon-remove"
 				plain="true"></a>
 		</div>
 		<div>
@@ -50,7 +83,7 @@
 						<select name="school_in_string" class="easyui-combotree" style="width: 160px" id="clazz_school"
 						        data-options="url:'${ctx }/org/tree',
 	                    		multiple:true,
-						        loadFilter:$.ad.easyTreeDefaultLoadFilter">
+						        loadFilter:clazz.schoolLoadFilter">
 						</select>
 						
 						<s:message code="clazz.admin"/>:
@@ -111,63 +144,18 @@
 			</tr>
 		</thead>
 	</table>
-	<script type="text/javascript">
-		var clazz = {
-				majors:null,
-				majorFormatter:function(value,row,index){
-					if(!this.majors){
-						this.majors = $('#major').combobox("getData");
-					}
-					return this.getName(value,this.majors);
-				},
-				
-				schools:null,
-				schoolFormatter:function(value,row,index){
-					if(!this.schools){
-						this.schools = $('#clazz_school').combobox("getData");
-					}
-					return this.getName(value,this.schools);
-				},
-				
-				status:null,
-				statusFormatter:function(value,row,index){
-					if(!this.status){
-						this.status = $('#clazz_status').combobox("getData");
-					}
-					return this.getName(value,this.status);
-				},
-				
-				admins:null,
-				adminFormatter:function(value){
-					if(!this.admins){
-						this.admins = $('#clazz_admin').combobox("getData");
-					}
-					return this.getName(value,this.admins);
-				},
-				
-				getName:function(value,data){
-					for(var i in data){
-						if(data[i].id == value){
-							return data[i].name;
-						}
-					}
-				}
-					
-		};
-		
-		
-	</script>
 	
 	<div id="clazz_w" class="easyui-window"
 		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
-		style="width: 400px; height: 480px; padding: 10px;">
+		style="width: 400px; height: 490px; padding: 10px;">
 		<div class="content">
 				<form id="clazz_add" method="post" action="${ctx }/clazz/add">
 					<div style="margin-bottom: 20px">
 						<input class="easyui-textbox" name="name" style="width: 100%"
 							data-options="label:'<s:message code="clazz.name"/>:',required:true,
-							validType:{length:[1,30],remote:['${ctx }/clazz/nameCheck','name']},
+							validType:{length:[1,30],myRemote:['${ctx }/clazz/nameExits','name','#clazz_oldname']},
 							invalidMessage:'<s:message code="clazz.name.exits"/>'">
+						<input type="hidden" name="oldname" id="clazz_oldname" />
 					</div>
 					<div style="margin-bottom: 20px">
 						<input class="easyui-combobox" name="major"

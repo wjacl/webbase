@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.wja.base.common.CommConstants;
 import com.wja.base.common.CommEntity;
+import com.wja.base.util.DateUtil;
 
 @Entity
 @Table(name = "t_edu_class")
@@ -31,11 +34,15 @@ public class Clazz extends CommEntity
     /**
      * 开班时间
      */
+    @DateTimeFormat(pattern = DateUtil.DATE)
+    @JSONField(format = DateUtil.DATE)
     private Date startTime;
     
     /**
      * 毕业时间
      */
+    @DateTimeFormat(pattern = DateUtil.DATE)
+    @JSONField(format = DateUtil.DATE)
     private Date finishTime;
     
     /**

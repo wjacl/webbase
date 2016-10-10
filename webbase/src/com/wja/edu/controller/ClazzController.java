@@ -2,12 +2,13 @@ package com.wja.edu.controller;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.wja.base.common.OpResult;
 import com.wja.base.util.Page;
 import com.wja.edu.entity.Clazz;
@@ -26,11 +27,18 @@ public class ClazzController
         return "edu/clazz";
     }
     
+    @RequestMapping("nameExits")
+    @ResponseBody
+    public boolean nameExits(String name)
+    {
+        return this.clazzService.getClazzByName(name) == null;
+    }
+    
     @RequestMapping({"add", "update"})
     @ResponseBody
     public OpResult save(Clazz c)
     {
-        boolean add = c.getId() == null;
+        boolean add = StringUtils.isBlank(c.getId());
         this.clazzService.save(c);
         if (add)
         {
@@ -44,10 +52,16 @@ public class ClazzController
     
     @RequestMapping("query")
     @ResponseBody
-    public Page<Clazz> save(String params, Page<Clazz> page)
+    public Page<Clazz> save(@RequestParam Map<String, Object> params, Page<Clazz> page)
     {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> param = JSON.parseObject(params, Map.class);
-        return this.clazzService.pageQuery(param, page);
+        return this.clazzService.pageQuery(params, page);
+    }
+    
+    @RequestMapping("delete")
+    @ResponseBody
+    public OpResult delete(String[] id)
+    {
+        this.clazzService.delete(id);
+        return OpResult.deleteOk();
     }
 }
