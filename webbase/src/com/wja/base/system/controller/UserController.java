@@ -46,7 +46,7 @@ public class UserController
     
     @RequestMapping(value = "regist", method = RequestMethod.POST)
     @ResponseBody
-    public Object regist(User user)
+    public Object regist(User user, String clazz)
     {
         if (this.userService.getUserByUsername(user.getUsername()) != null)
         {
