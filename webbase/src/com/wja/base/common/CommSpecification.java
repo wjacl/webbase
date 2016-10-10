@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -26,6 +28,19 @@ public class CommSpecification<T> implements Specification<T>
      * serialVersionUID
      */
     private static final long serialVersionUID = -3534444094503385668L;
+    
+    /**
+     * 忽略的参数名：分页、排序
+     */
+    private static final Set<String> ignors = new HashSet<>();
+    
+    static
+    {
+        ignors.add("pageNum");
+        ignors.add("size");
+        ignors.add("sort");
+        ignors.add("order");
+    }
     
     private Map<String, Object> params;
     
@@ -47,7 +62,8 @@ public class CommSpecification<T> implements Specification<T>
             
             for (String key : this.params.keySet())
             {
-                if (StringUtils.isNotBlank(key)) // key 的组成 [(or)_]fieldName[_操作符][_数据类型|时间格式] []表示可以没有
+                if (StringUtils.isNotBlank(key) && !ignors.contains(key)) // key 的组成 [(or)_]fieldName[_操作符][_数据类型|时间格式]
+                                                                          // []表示可以没有
                 {
                     try
                     {
@@ -388,6 +404,10 @@ public class CommSpecification<T> implements Specification<T>
             {
                 datas = (List<Integer>)value;
             }
+            else if (value instanceof int[] || value instanceof Integer[])
+            {
+                datas = Arrays.asList((Integer[])value);
+            }
             else if (value instanceof String[])
             {
                 for (String s : (String[])value)
@@ -395,12 +415,16 @@ public class CommSpecification<T> implements Specification<T>
                     datas.add(Integer.valueOf(s));
                 }
             }
-            else
+            else if (value instanceof String)
             {
-                String v = (String)value;
-                if (StringUtils.isNotBlank(v))
+                String vv = (String)value;
+                if (StringUtils.isNotBlank(vv))
                 {
-                    datas.add(Integer.valueOf(v));
+                    String[] vs = vv.split(",");
+                    for (String v : vs)
+                    {
+                        datas.add(Integer.valueOf(v));
+                    }
                 }
             }
             return datas;
@@ -432,6 +456,10 @@ public class CommSpecification<T> implements Specification<T>
             {
                 datas = (List<Double>)value;
             }
+            else if (value instanceof double[] || value instanceof Double[])
+            {
+                datas = Arrays.asList((Double[])value);
+            }
             else if (value instanceof String[])
             {
                 for (String s : (String[])value)
@@ -439,12 +467,16 @@ public class CommSpecification<T> implements Specification<T>
                     datas.add(Double.valueOf(s));
                 }
             }
-            else
+            else if (value instanceof String)
             {
-                String v = (String)value;
-                if (StringUtils.isNotBlank(v))
+                String vv = (String)value;
+                if (StringUtils.isNotBlank(vv))
                 {
-                    datas.add(Double.valueOf(v));
+                    String[] vs = vv.split(",");
+                    for (String v : vs)
+                    {
+                        datas.add(Double.valueOf(v));
+                    }
                 }
             }
             return datas;

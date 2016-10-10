@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.wja.base.common.CommConstants;
 import com.wja.base.common.OpResult;
 import com.wja.base.system.dao.RoleDao;
@@ -110,10 +109,9 @@ public class UserController
     
     @RequestMapping("query")
     @ResponseBody
-    public Object query(String params, Page<User> page)
+    public Object query(@RequestParam Map<String, Object> params, Page<User> page)
     {
-        Map<String, Object> paramMap = JSON.parseObject(params, Map.class);
-        return this.userService.query(paramMap, page);
+        return this.userService.query(params, page);
     }
     
     @RequestMapping("find")

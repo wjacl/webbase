@@ -181,7 +181,12 @@ $.ad = {
 	
 	gridQuery:function(formId,gridId){
 		var jsonData = $("#" + formId).serializeJson();
-		//{params:JSON.stringify(jsonData)}
+		//为解决数组多值，mvc中map接收只能接收到一个的问题，而将数组转为以","间隔的字符串来传递。
+		for(var i in jsonData){
+			if(jsonData[i] instanceof Array){
+				jsonData[i] = jsonData[i].join(",");
+			}
+		}
 		$('#' + gridId).datagrid('load',jsonData);
 		
 	},
