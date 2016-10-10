@@ -41,7 +41,7 @@
 								validType:{equals:['#pwd','<s:message code="user.pwd"/>']}">
 					</div>
 					<div style="margin-bottom: 20px">
-						<input class="easyui-combobox" name="type"
+						<input class="easyui-combobox" name="type" id="regUserType"
 						style="width: 100%;"
 						data-options="
 		                    url:'${ctx }/dict/get?pid=user.type',
@@ -63,7 +63,7 @@
 		                    valueField:'id',
 		                    textField:'name',
 		                    panelHeight:'auto',
-		                    validType:,
+		                    validType:{conditionRequired:['#regUserType','user.type.S']},
 		                    label:'<s:message code="clazz"/>:'
 	                    ">
                     </div>
@@ -94,7 +94,7 @@
 				        		return true;
 				        	}
 				        },
-				        message: I18N.validator_exits
+				        message: I18N.validator_select
 				    }
 				});
 					function registClass(newValue){
