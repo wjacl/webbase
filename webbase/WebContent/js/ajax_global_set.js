@@ -296,6 +296,32 @@ $.ad = {
 		
 		return $.ad.toEasyUiTree(data,['0'],'id','pid','name');
 		
+	},
+	
+	/**
+	 * 从数组中取值对应的名字的方法
+	 * @param value  值
+	 * @param array  数组
+	 * @param vAttr  值对应的属性名，默认为 id
+	 * @param nameAttr 名字对应的属性名，默认为 name 
+	 * @returns 找到了则为名字，否则为""
+	 */
+	getName:function(value,array,vAttr,nameAttr){
+		if(!vAttr){
+			vAttr = 'id';
+		}
+		if(!nameAttr){
+			nameAttr = "name";
+		}
+		var vname = "";
+		if((array instanceof Array) && array.length > 0) {
+			for(var i in array){
+				if(array[i][vAttr] == value){
+					return array[i][nameAttr];
+				}
+			}
+		}
+		return "";
 	}
 }
 
