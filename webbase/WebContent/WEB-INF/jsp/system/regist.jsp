@@ -55,7 +55,7 @@
 	                    ">
                     </div>
                     <div style="margin-bottom: 20px" id="clazzDiv">
-						<input class="easyui-combobox" name="clazz"
+						<input class="easyui-combobox" name="clazz" id="inputClazz"
 						style="width: 100%;"
 						data-options="
 		                    url:'${ctx }/clazz/registGet',
@@ -63,7 +63,6 @@
 		                    valueField:'id',
 		                    textField:'name',
 		                    panelHeight:'auto',
-		                    validType:{conditionRequired:['#regUserType','user.type.S']},
 		                    label:'<s:message code="clazz"/>:'
 	                    ">
                     </div>
@@ -79,24 +78,6 @@
 
 				<script>
 				
-				$.extend($.fn.validatebox.defaults.rules, {
-				    conditionRequired: {
-				        validator: function(value, param){
-				        	if($(param[0]).val() == param[1]){
-				        		if(!value){
-				        			return false;
-				        		}
-				        		else{
-				        			return true;
-				        		}
-				        	}
-				        	else{
-				        		return true;
-				        	}
-				        },
-				        message: I18N.validator_select
-				    }
-				});
 					function registClass(newValue){
 						if(newValue == 'user.type.S'){
 							$('#clazzDiv').show();
@@ -107,17 +88,24 @@
 					}
 				
 			        function submitForm(){
-			        	$.messager.progress('close');
-			            $('#ff').form('submit',{success: function(data){
-			            	var data = eval('(' + data + ')');
-			            	
-			        		if(data.mess == "unameExits"){
-			        			$.sm.alert(I18N.user_uname_exits);
+			        	if($('#regUserType').combobox("getValue") == 'user.type.S'){
+			        		var value = $('#inputClazz').combobox("getValue");
+			        		if(value==undefined || value==""){
+			        			$.sm.alert(I18N.regist_select_clazz);
+			        			return;
 			        		}
-			        		else if(data.status == $.sm.ResultStatus_Ok){
-			        			$.sm.show(I18N.user_regist_success);
-			        		}
-			        	}});
+			        	}
+				        	$.messager.progress('close');
+				            $('#ff').form('submit',{success: function(data){
+				            	var data = eval('(' + data + ')');
+				            	
+				        		if(data.mess == "unameExits"){
+				        			$.sm.alert(I18N.user_uname_exits);
+				        		}
+				        		else if(data.status == $.sm.ResultStatus_Ok){
+				        			$.sm.show(I18N.user_regist_success);
+				        		}
+				        	}});
 			        }
 			        
 			        $(document).ready(function(){
