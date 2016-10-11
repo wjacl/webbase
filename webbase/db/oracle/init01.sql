@@ -7,6 +7,12 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('user.status',
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('6','正常','N',6,'user.status','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('7','锁定','L',7,'user.status','s',1);
 
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('20','审核状态','audit',20,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('21','草稿','c',21,'20','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('22','待审核','w',22,'20','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('23','审核通过','p',23,'20','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('24','待审核','n',24,'20','s',1);
+
 
 INSERT INTO t_sys_role(ID,NAME,TYPE,valid)
 VALUES('admin','超级管理员','s',1);
