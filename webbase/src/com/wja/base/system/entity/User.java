@@ -44,7 +44,7 @@ public class User extends CommEntity
     /**
      * 用户类别
      */
-    @Column(length = 32, nullable = false)
+    @Column(length = 1, nullable = false)
     private String type;
     
     /**
@@ -52,7 +52,7 @@ public class User extends CommEntity
      * 
      * @see CommConstants.User
      */
-    @Column(length = 32, nullable = false)
+    @Column(length = 1, nullable = false)
     private String status = CommConstants.User.STATUS_NORMAL;
     
     @ManyToMany
