@@ -71,7 +71,7 @@
 						<input class="easyui-combobox" name="major_in_string" id="major"
 						style="width: 100px"
 						data-options="
-		                    url:'${ctx }/dict/get?pid=major',
+		                    url:'${ctx }/dict/get?pvalue=major',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
@@ -101,7 +101,7 @@
 						<input class="easyui-combobox" name="status_in_string" id="clazz_status"
 						style="width: 80px;"
 						data-options="
-		                    url:'${ctx }/dict/get?pid=clazz.status',
+		                    url:'${ctx }/dict/get?pvalue=clazz.status',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
@@ -161,7 +161,7 @@
 						<input class="easyui-combobox" name="major"
 						style="width: 100%;"
 						data-options="
-		                    url:'${ctx }/dict/get?pid=major',
+		                    url:'${ctx }/dict/get?pvalue=major',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
@@ -194,7 +194,7 @@
 						<input class="easyui-combobox" name="status"
 						style="width: 100%;"
 						data-options="
-		                    url:'${ctx }/dict/get?pid=clazz.status',
+		                    url:'${ctx }/dict/get?pvalue=clazz.status',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
