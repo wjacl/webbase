@@ -23,7 +23,7 @@
 					if(!clazz.majors){
 						clazz.majors = $('#major').combobox("getData");
 					}
-					return $.ad.getName(value,clazz.majors);
+					return $.ad.getName(value,clazz.majors,'value');
 				},
 				
 				schools:null,
@@ -40,7 +40,7 @@
 					if(!clazz.status){
 						clazz.status = $('#clazz_status').combobox("getData");
 					}
-					return $.ad.getName(value,clazz.status);
+					return $.ad.getName(value,clazz.status,'value');
 				},
 				
 				admins:null,
@@ -73,7 +73,7 @@
 						data-options="
 		                    url:'${ctx }/dict/get?pvalue=major',
 		                    method:'get',
-		                    valueField:'id',
+		                    valueField:'value',
 		                    textField:'name',
 		                    panelHeight:'auto',
 	                    	multiple:true
@@ -90,7 +90,7 @@
 						<input class="easyui-combobox" name="admin_in_string" id="clazz_admin"
 						style="width: 100px"
 						data-options="
-		                    url:'${ctx }/user/find?type_eq_string=user.type.A',
+		                    url:'${ctx }/user/find?type_eq_string=A',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
@@ -103,7 +103,7 @@
 						data-options="
 		                    url:'${ctx }/dict/get?pvalue=clazz.status',
 		                    method:'get',
-		                    valueField:'id',
+		                    valueField:'value',
 		                    textField:'name',
 		                    panelHeight:'auto',
 	                    	multiple:true
@@ -163,7 +163,7 @@
 						data-options="
 		                    url:'${ctx }/dict/get?pvalue=major',
 		                    method:'get',
-		                    valueField:'id',
+		                    valueField:'value',
 		                    textField:'name',
 		                    panelHeight:'auto',
 		                    required:true,
@@ -181,7 +181,7 @@
 						<input class="easyui-combobox" name="admin"
 						style="width: 100%;"
 						data-options="
-		                    url:'${ctx }/user/find?type_eq_string=user.type.A',
+		                    url:'${ctx }/user/find?type_eq_string=A',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
@@ -196,7 +196,7 @@
 						data-options="
 		                    url:'${ctx }/dict/get?pvalue=clazz.status',
 		                    method:'get',
-		                    valueField:'id',
+		                    valueField:'value',
 		                    textField:'name',
 		                    panelHeight:'auto',
 		                    required:true,
