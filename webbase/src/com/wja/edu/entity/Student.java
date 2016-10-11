@@ -95,8 +95,8 @@ public class Student extends CommEntity
     /**
      * 状态：标识是否审核通过
      */
-    @Column(name = "audit_sta", length = 10)
-    private String AuditStatus;
+    @Column(name = "audit_sta", length = 1)
+    private String AuditStatus = CommConstants.AUDIT_STATUS_WAIT;
     
     public String getAuditStatus()
     {
