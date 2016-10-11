@@ -61,6 +61,12 @@ public class Student extends CommEntity
     private String education;
     
     /**
+     * 专业
+     */
+    @Column(length = 30)
+    private String major;
+    
+    /**
      * 毕业院校
      */
     @Column(length = 60)
@@ -96,16 +102,16 @@ public class Student extends CommEntity
      * 状态：标识是否审核通过
      */
     @Column(name = "audit_sta", length = 1)
-    private String AuditStatus = CommConstants.AUDIT_STATUS_WAIT;
+    private String auditStatus = CommConstants.AUDIT_STATUS_WAIT;
     
     public String getAuditStatus()
     {
-        return AuditStatus;
+        return this.auditStatus;
     }
     
     public void setAuditStatus(String auditStatus)
     {
-        AuditStatus = auditStatus;
+        this.auditStatus = auditStatus;
     }
     
     public String getUserId()
@@ -206,6 +212,16 @@ public class Student extends CommEntity
     public void setEducation(String education)
     {
         this.education = education;
+    }
+    
+    public String getMajor()
+    {
+        return major;
+    }
+    
+    public void setMajor(String major)
+    {
+        this.major = major;
     }
     
     public String getSchool()
