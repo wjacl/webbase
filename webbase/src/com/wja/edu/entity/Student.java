@@ -19,6 +19,8 @@ import com.wja.base.util.DateUtil;
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class Student extends CommEntity
 {
+    public static final String STATUS_NEED_AUDIT = "w";
+    
     /**
      * 学生对应的用户id
      */
@@ -49,6 +51,20 @@ public class Student extends CommEntity
     private String address;
     
     /**
+     * 入学时间
+     */
+    @DateTimeFormat(pattern = DateUtil.DATE)
+    @JSONField(format = DateUtil.DATE)
+    private Date startTime;
+    
+    /**
+     * 毕业时间
+     */
+    @DateTimeFormat(pattern = DateUtil.DATE)
+    @JSONField(format = DateUtil.DATE)
+    private Date finishTime;
+    
+    /**
      * 所在班级
      */
     @Column(length = 32)
@@ -73,7 +89,7 @@ public class Student extends CommEntity
     private String school;
     
     /**
-     * 毕业时间
+     * 院校毕业时间
      */
     @Column(name = "grad_time")
     @DateTimeFormat(pattern = DateUtil.DATE)
@@ -99,19 +115,35 @@ public class Student extends CommEntity
     private String homePhone;
     
     /**
-     * 状态：标识是否审核通过
+     * 状态
      */
-    @Column(name = "audit_sta", length = 1)
-    private String auditStatus = CommConstants.AUDIT_STATUS_WAIT;
+    @Column(name = "status", length = 1)
+    private String status;
     
-    public String getAuditStatus()
+    /**
+     * 备注信息
+     */
+    @Column(length = 200)
+    private String remark;
+    
+    public String getRemark()
     {
-        return this.auditStatus;
+        return remark;
     }
     
-    public void setAuditStatus(String auditStatus)
+    public void setRemark(String remark)
     {
-        this.auditStatus = auditStatus;
+        this.remark = remark;
+    }
+    
+    public String getStatus()
+    {
+        return status;
+    }
+    
+    public void setStatus(String status)
+    {
+        this.status = status;
     }
     
     public String getUserId()
@@ -202,6 +234,26 @@ public class Student extends CommEntity
     public void setClazz(String clazz)
     {
         this.clazz = clazz;
+    }
+    
+    public Date getStartTime()
+    {
+        return startTime;
+    }
+    
+    public void setStartTime(Date startTime)
+    {
+        this.startTime = startTime;
+    }
+    
+    public Date getFinishTime()
+    {
+        return finishTime;
+    }
+    
+    public void setFinishTime(Date finishTime)
+    {
+        this.finishTime = finishTime;
     }
     
     public String getEducation()

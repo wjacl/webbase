@@ -20,6 +20,21 @@ import com.wja.base.util.DateUtil;
 public class Teacher extends CommEntity
 {
     /**
+     * 状态：待审核
+     */
+    public static final String STATUS_NEED_AUDIT = "w";
+    
+    /**
+     * 状态：在职
+     */
+    public static final String STATUS_AT_JOB = "s";
+    
+    /**
+     * 状态：离职
+     */
+    public static final String STATUS_LEAVE = "l";
+    
+    /**
      * 对应的用户id
      */
     @Column(name = "user_id", length = 32)
@@ -91,17 +106,69 @@ public class Teacher extends CommEntity
     /**
      * 状态：标识是否审核通过
      */
-    @Column(name = "audit_sta", length = 1)
-    private String auditStatus = CommConstants.AUDIT_STATUS_WAIT;
+    @Column(length = 1)
+    private String status;
     
-    public String getAuditStatus()
+    /**
+     * 入职时间
+     */
+    @DateTimeFormat(pattern = DateUtil.DATE)
+    @JSONField(format = DateUtil.DATE)
+    @Column(name = "entry_time")
+    private Date entryTime;
+    
+    /**
+     * 离职时间
+     */
+    @DateTimeFormat(pattern = DateUtil.DATE)
+    @JSONField(format = DateUtil.DATE)
+    @Column(name = "leave_time")
+    private Date leaveTime;
+    
+    /**
+     * 备注信息
+     */
+    @Column(length = 200)
+    private String remark;
+    
+    public Date getEntryTime()
     {
-        return this.auditStatus;
+        return entryTime;
     }
     
-    public void setAuditStatus(String auditStatus)
+    public void setEntryTime(Date entryTime)
     {
-        this.auditStatus = auditStatus;
+        this.entryTime = entryTime;
+    }
+    
+    public Date getLeaveTime()
+    {
+        return leaveTime;
+    }
+    
+    public void setLeaveTime(Date leaveTime)
+    {
+        this.leaveTime = leaveTime;
+    }
+    
+    public String getRemark()
+    {
+        return remark;
+    }
+    
+    public void setRemark(String remark)
+    {
+        this.remark = remark;
+    }
+    
+    public String getStatus()
+    {
+        return status;
+    }
+    
+    public void setStatus(String status)
+    {
+        this.status = status;
     }
     
     public String getUserId()

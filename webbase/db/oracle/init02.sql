@@ -10,6 +10,18 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('14','未开�
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('15','已开班','s',15,'clazz.status','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('16','已毕业','f',16,'clazz.status','s',1);
 
+/*10-12 */
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('stu.status','学生状态','stu.status',30,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('31','待审核','w',31,'stu.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('32','在学','s',32,'stu.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('33','已毕业','f',33,'stu.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('34','辍学','l',34,'stu.status','s',1);
+
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('tea.status','教师状态','tea.status',35,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('36','待审核','w',35,'tea.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('37','在职','s',36,'tea.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('38','离职','f',37,'tea.status','s',1);
+
 
 
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
@@ -19,8 +31,8 @@ INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('edu-class','班级管理','/clazz/manage','edu','1',1,2020);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-class');
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
-VALUES('edu-stu','学生管理','/stu/manage','edu','1',1,2030);
+VALUES('edu-stu','学生管理','/student/manage','edu','1',1,2030);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-stu');
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
-VALUES('edu-tea','教师管理','/tea/manage','edu','1',1,2040);
+VALUES('edu-tea','教师管理','/teacher/manage','edu','1',1,2040);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-tea');

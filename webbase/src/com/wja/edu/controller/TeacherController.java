@@ -17,7 +17,7 @@ import com.wja.edu.entity.Teacher;
 import com.wja.edu.service.TeacherService;
 
 @Controller
-@RequestMapping("/Teacher")
+@RequestMapping("/teacher")
 public class TeacherController
 {
     @Autowired
@@ -26,7 +26,7 @@ public class TeacherController
     @RequestMapping("manage")
     public String manage()
     {
-        return "edu/Teacher";
+        return "edu/teacher";
     }
     
     @RequestMapping({"add", "update"})

@@ -63,7 +63,7 @@
 		</div>
 		<div>
 			<form id="student_query_form">
-				<s:message code="student.name" />
+				<s:message code="p.name" />
 				: <input class="easyui-textbox" style="width: 100px"
 					name="name_like_string">
 					
@@ -136,11 +136,14 @@
 					data-options="field:'qq',width:100"><s:message
 						code="p.qq" /></th>
 				<th
-					data-options="field:'email',width:100"><s:message
-						code="p.email" /></th>
+					data-options="field:'startTime',width:100"><s:message
+						code="student.startTime" /></th>
 				<th
-					data-options="field:'auditStatus',width:100,align:'center',sortable:'true',formatter:student.auditStatusFormatter"><s:message
-						code="p.auditStatus" /></th>
+					data-options="field:'status',width:100,align:'center',sortable:'true',formatter:student.statusFormatter"><s:message
+						code="p.status" /></th>
+				<th
+					data-options="field:'finishTime',width:100"><s:message
+						code="p.graduateTime" /></th>
 			</tr>
 		</thead>
 	</table>
@@ -152,9 +155,8 @@
 				<form id="student_add" method="post" action="${ctx }/student/add">
 					<div style="margin-bottom: 20px">
 						<input class="easyui-textbox" name="name" style="width: 100%"
-							data-options="label:'<s:message code="student.name"/>:',required:true,
-							validType:{length:[1,30],myRemote:['${ctx }/student/nameExits','name','#student_oldname']},
-							invalidMessage:'<s:message code="student.name.exits"/>'">
+							data-options="label:'<s:message code="p.name"/>:',required:true,
+							validType:{length:[1,30]}">
 						<input type="hidden" name="oldname" id="student_oldname" />
 					</div>
 					<div style="margin-bottom: 20px">
@@ -167,14 +169,14 @@
 		                    textField:'name',
 		                    panelHeight:'auto',
 		                    required:true,
-		                    label:'<s:message code="student.major"/>:'
+		                    label:'<s:message code="major"/>:'
 	                    ">
                     </div>
 					<div style="margin-bottom: 20px">
 						<select name="school" class="easyui-combotree" style="width: 100%"
 						        data-options="url:'${ctx }/org/tree',required:true,
 						        loadFilter:$.ad.easyTreeDefaultLoadFilter,
-						        label:'<s:message code="student.school"/>:'">
+						        label:'<s:message code="p.school"/>:'">
 						</select>
                     </div>
                     <div style="margin-bottom: 20px">
