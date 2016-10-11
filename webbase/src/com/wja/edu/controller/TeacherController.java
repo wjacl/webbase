@@ -1,6 +1,5 @@
 package com.wja.edu.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,44 +13,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.wja.base.common.OpResult;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
-import com.wja.edu.entity.Clazz;
-import com.wja.edu.service.ClazzService;
+import com.wja.edu.entity.Teacher;
+import com.wja.edu.service.TeacherService;
 
 @Controller
-@RequestMapping("/clazz")
-public class ClazzController
+@RequestMapping("/Teacher")
+public class TeacherController
 {
     @Autowired
-    private ClazzService clazzService;
+    private TeacherService service;
     
     @RequestMapping("manage")
     public String manage()
     {
-        return "edu/clazz";
-    }
-    
-    @RequestMapping("registGet")
-    @ResponseBody
-    public List<Clazz> registsGet()
-    {
-        Map<String, Object> params = new HashMap<>();
-        params.put("status_in", new String[] {Clazz.STATUS_NOT_START, Clazz.STATUS_STARTED});
-        return this.clazzService.query(params, Sort.desc("startTime"));
-    }
-    
-    @RequestMapping("nameExits")
-    @ResponseBody
-    public boolean nameExits(String name)
-    {
-        return this.clazzService.getClazzByName(name) == null;
+        return "edu/Teacher";
     }
     
     @RequestMapping({"add", "update"})
     @ResponseBody
-    public OpResult save(Clazz c)
+    public OpResult save(Teacher c)
     {
         boolean add = StringUtils.isBlank(c.getId());
-        this.clazzService.save(c);
+        this.service.save(c);
         if (add)
         {
             return OpResult.addOk(c.getId());
@@ -64,16 +47,23 @@ public class ClazzController
     
     @RequestMapping("query")
     @ResponseBody
-    public Page<Clazz> pageQuery(@RequestParam Map<String, Object> params, Page<Clazz> page)
+    public Page<Teacher> pageQuery(@RequestParam Map<String, Object> params, Page<Teacher> page)
     {
-        return this.clazzService.pageQuery(params, page);
+        return this.service.pageQuery(params, page);
+    }
+    
+    @RequestMapping("list")
+    @ResponseBody
+    public List<Teacher> query(@RequestParam Map<String, Object> params, Sort sort)
+    {
+        return this.service.query(params, sort);
     }
     
     @RequestMapping("delete")
     @ResponseBody
     public OpResult delete(String[] id)
     {
-        this.clazzService.delete(id);
+        this.service.delete(id);
         return OpResult.deleteOk();
     }
 }

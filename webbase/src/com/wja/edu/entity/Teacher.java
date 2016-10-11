@@ -15,17 +15,19 @@ import com.wja.base.common.CommEntity;
 import com.wja.base.util.DateUtil;
 
 @Entity
-@Table(name = "t_edu_student")
+@Table(name = "t_edu_teacher")
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
-public class Student extends CommEntity
+public class Teacher extends CommEntity
 {
     /**
-     * 学生对应的用户id
+     * 对应的用户id
      */
     @Column(name = "user_id", length = 32)
     private String userId;
     
-    // 学生个人信息
+    /**
+     * 姓名
+     */
     @Column(length = 30, nullable = false)
     private String name;
     
@@ -49,12 +51,6 @@ public class Student extends CommEntity
     private String address;
     
     /**
-     * 所在班级
-     */
-    @Column(length = 32)
-    private String clazz;
-    
-    /**
      * 学历
      */
     @Column(length = 10)
@@ -75,22 +71,16 @@ public class Student extends CommEntity
     private Date graduateTime;
     
     /**
-     * 父母姓名
+     * 紧急联系人
      */
-    @Column(length = 40)
-    private String parent;
+    @Column(name = "eme_contact", length = 30)
+    private String emeContact;
     
     /**
-     * 家庭住址
+     * 紧急联系人电话
      */
-    @Column(length = 80)
-    private String home;
-    
-    /**
-     * 家庭联系电话
-     */
-    @Column(name = "home_phone", length = 40)
-    private String homePhone;
+    @Column(name = "eme_contact_phone", length = 40)
+    private String emeContactPhone;
     
     /**
      * 状态：标识是否审核通过
@@ -188,16 +178,6 @@ public class Student extends CommEntity
         this.address = address;
     }
     
-    public String getClazz()
-    {
-        return clazz;
-    }
-    
-    public void setClazz(String clazz)
-    {
-        this.clazz = clazz;
-    }
-    
     public String getEducation()
     {
         return education;
@@ -228,34 +208,24 @@ public class Student extends CommEntity
         this.graduateTime = graduateTime;
     }
     
-    public String getParent()
+    public String getEmeContact()
     {
-        return parent;
+        return emeContact;
     }
     
-    public void setParent(String parent)
+    public void setEmeContact(String emeContact)
     {
-        this.parent = parent;
+        this.emeContact = emeContact;
     }
     
-    public String getHome()
+    public String getEmeContactPhone()
     {
-        return home;
+        return emeContactPhone;
     }
     
-    public void setHome(String home)
+    public void setEmeContactPhone(String emeContactPhone)
     {
-        this.home = home;
-    }
-    
-    public String getHomePhone()
-    {
-        return homePhone;
-    }
-    
-    public void setHomePhone(String homePhone)
-    {
-        this.homePhone = homePhone;
+        this.emeContactPhone = emeContactPhone;
     }
     
 }

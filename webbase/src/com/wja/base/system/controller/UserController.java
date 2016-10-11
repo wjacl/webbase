@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.wja.base.common.CommConstants;
 import com.wja.base.common.OpResult;
 import com.wja.base.system.dao.RoleDao;
 import com.wja.base.system.entity.Role;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
+import com.wja.base.util.CollectionUtil;
 import com.wja.base.util.Page;
 import com.wja.base.web.RequestThreadLocal;
 
@@ -53,8 +53,8 @@ public class UserController
             return OpResult.error("unameExits", null);
         }
         
-        user.setStatus(CommConstants.User.STATUS_LOCK);
-        this.userService.addUser(user);
+        // user.setStatus(CommConstants.User.STATUS_LOCK);
+        this.userService.addUser(user, clazz);
         
         return OpResult.ok();
     }
@@ -69,17 +69,17 @@ public class UserController
     
     @RequestMapping("add")
     @ResponseBody
-    public Object addUser(User user, String[] roleIds)
+    public Object addUser(User user, String[] roleIds, String clazz)
     {
         
-        if (roleIds != null && roleIds.length > 1)
+        if (!CollectionUtil.isEmpty(roleIds))
         {
             Set<Role> roles = new HashSet<>();
             roles.addAll(this.roleDao.findAll(roleIds));
             user.setRoles(roles);
         }
         
-        this.userService.addUser(user);
+        this.userService.addUser(user, clazz);
         
         return OpResult.addOk();
         
@@ -97,7 +97,7 @@ public class UserController
     @ResponseBody
     public Object updateUser(User user, String[] roleIds)
     {
-        if (roleIds != null && roleIds.length > 0)
+        if (!CollectionUtil.isEmpty(roleIds))
         {
             Set<Role> roles = new HashSet<>();
             roles.addAll(this.roleDao.findAll(roleIds));

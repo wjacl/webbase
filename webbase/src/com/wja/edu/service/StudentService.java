@@ -13,40 +13,50 @@ import com.wja.base.util.BeanUtil;
 import com.wja.base.util.CollectionUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
-import com.wja.edu.dao.ClazzDao;
-import com.wja.edu.entity.Clazz;
+import com.wja.edu.dao.StudentDao;
+import com.wja.edu.entity.Student;
 
 @Service
-public class ClazzService
+public class StudentService
 {
     @Autowired
-    private ClazzDao clazzDao;
+    private StudentDao studentDao;
     
-    public void save(Clazz c)
+    public Student get(String id)
+    {
+        if (StringUtils.isBlank(id))
+        {
+            return null;
+        }
+        
+        return this.studentDao.getOne(id);
+    }
+    
+    public void save(Student c)
     {
         if (StringUtils.isNotBlank(c.getId()))
         {
-            Clazz dbc = this.clazzDao.getOne(c.getId());
+            Student dbc = this.studentDao.getOne(c.getId());
             BeanUtil.copyPropertiesIgnoreNull(c, dbc);
             c = dbc;
         }
         
-        this.clazzDao.save(c);
+        this.studentDao.save(c);
     }
     
     public void delete(String[] ids)
     {
         if (!CollectionUtil.isEmpty(ids))
         {
-            this.clazzDao.logicDeleteInBatch(ids);
+            this.studentDao.logicDeleteInBatch(ids);
         }
     }
     
-    public Clazz getClazzByName(String name)
+    public Student getStudentByName(String name)
     {
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
-        List<Clazz> list = this.clazzDao.findAll(new CommSpecification<Clazz>(params));
+        List<Student> list = this.studentDao.findAll(new CommSpecification<Student>(params));
         if (CollectionUtil.isEmpty(list))
         {
             return null;
@@ -57,13 +67,14 @@ public class ClazzService
         }
     }
     
-    public List<Clazz> query(Map<String, Object> params, Sort sort)
+    public List<Student> query(Map<String, Object> params, Sort sort)
     {
-        return this.clazzDao.findAll(new CommSpecification<Clazz>(params), sort == null ? null : sort.getSpringSort());
+        return this.studentDao.findAll(new CommSpecification<Student>(params),
+            sort == null ? null : sort.getSpringSort());
     }
     
-    public Page<Clazz> pageQuery(Map<String, Object> params, Page<Clazz> page)
+    public Page<Student> pageQuery(Map<String, Object> params, Page<Student> page)
     {
-        return page.setPageData(this.clazzDao.findAll(new CommSpecification<Clazz>(params), page.getPageRequest()));
+        return page.setPageData(this.studentDao.findAll(new CommSpecification<Student>(params), page.getPageRequest()));
     }
 }

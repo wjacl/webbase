@@ -14,6 +14,10 @@ import com.wja.base.system.entity.User;
 import com.wja.base.util.BeanUtil;
 import com.wja.base.util.MD5;
 import com.wja.base.util.Page;
+import com.wja.edu.entity.Student;
+import com.wja.edu.entity.Teacher;
+import com.wja.edu.service.StudentService;
+import com.wja.edu.service.TeacherService;
 
 @Service
 public class UserService
@@ -21,6 +25,11 @@ public class UserService
     
     @Autowired
     private UserDao userDao;
+    
+    @Autowired
+    private StudentService studentService;
+    
+    private TeacherService teacherService;
     
     public User getUser(String id)
     {
@@ -70,7 +79,7 @@ public class UserService
         this.userDao.save(dbUser);
     }
     
-    public void addUser(User user)
+    public void addUser(User user, String clazz)
     {
         if (user == null)
         {
@@ -79,6 +88,24 @@ public class UserService
         
         user.setPassword(MD5.encode(user.getPassword()));
         this.userDao.save(user);
+        
+        // 学生-增加学生记录
+        if (CommConstants.User.TYPE_STUDENT.equals(user.getType()))
+        {
+            Student s = new Student();
+            s.setClazz(clazz);
+            s.setUserId(user.getId());
+            s.setName(user.getName());
+            studentService.save(s);
+        }
+        else if (CommConstants.User.TYPE_STAFF.equals(user.getType()))
+        {
+            // 教师-增加教师记录
+            Teacher t = new Teacher();
+            t.setUserId(user.getId());
+            t.setName(user.getName());
+            teacherService.save(t);
+        }
     }
     
     public List<Privilege> getUserPrivileges(String id)
