@@ -46,7 +46,7 @@
 						data-options="
 		                    url:'${ctx }/dict/get?pvalue=user.type',
 		                    method:'get',
-		                    valueField:'id',
+		                    valueField:'value',
 		                    textField:'name',
 		                    panelHeight:'auto',
 		                    required:true,

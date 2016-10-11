@@ -39,7 +39,7 @@
 					data-options="
 	                    url:'${ctx }/dict/get?pvalue=user.type',
 	                    method:'get',
-	                    valueField:'id',
+	                    valueField:'value',
 	                    textField:'name',
 	                    panelHeight:'auto',
 	                    multiple:true
@@ -113,7 +113,7 @@
 			}
 		
 			for(var i in userTypes){
-				if(userTypes[i].id == value){
+				if(userTypes[i].value == value){
 					return userTypes[i].name;
 				}
 			}
@@ -127,7 +127,7 @@
 			}
 			
 			for(var i in userStatus){
-				if(userStatus[i].id == value){
+				if(userStatus[i].value == value){
 					return userStatus[i].name;
 				}
 			}
@@ -177,7 +177,7 @@
 						data-options="
 		                    url:'${ctx }/dict/get?pvalue=user.type',
 		                    method:'get',
-		                    valueField:'id',
+		                    valueField:'value',
 		                    textField:'name',
 		                    panelHeight:'auto',
 		                    required:true,
