@@ -37,7 +37,7 @@
 				: <input class="easyui-combobox" name="type_in_string" id="userType"
 					style="width: 120px;"
 					data-options="
-	                    url:'${ctx }/dict/get?pid=user.type',
+	                    url:'${ctx }/dict/get?pvalue=user.type',
 	                    method:'get',
 	                    valueField:'id',
 	                    textField:'name',
@@ -121,7 +121,7 @@
 		var userStatus;
 		function userStatusFormatter(value,row,index){
 			if(!userStatus){
-				$.ajax({ url: "${ctx }/dict/get?pid=user.status",async:false, success: function(data){
+				$.ajax({ url: "${ctx }/dict/get?pvalue=user.status",async:false, success: function(data){
 			        userStatus = data;
 			      },dataType:'json'});
 			}
@@ -175,7 +175,7 @@
 						<input class="easyui-combobox" name="type"
 						style="width: 100%;"
 						data-options="
-		                    url:'${ctx }/dict/get?pid=user.type',
+		                    url:'${ctx }/dict/get?pvalue=user.type',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',

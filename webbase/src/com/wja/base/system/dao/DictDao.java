@@ -14,5 +14,7 @@ public interface DictDao extends CommRepository<Dict, String>
     @Query("from Dict t where t.pid is null ")
     List<Dict> getRoots();
     
-    List<Dict> findByPid(String pid);
+    List<Dict> findByPidOrderByOrdnoAsc(String pid);
+    
+    Dict findByValueAndPid(String value, String pid);
 }

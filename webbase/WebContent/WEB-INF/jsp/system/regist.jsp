@@ -44,7 +44,7 @@
 						<input class="easyui-combobox" name="type" id="regUserType"
 						style="width: 100%;"
 						data-options="
-		                    url:'${ctx }/dict/get?pid=user.type',
+		                    url:'${ctx }/dict/get?pvalue=user.type',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',

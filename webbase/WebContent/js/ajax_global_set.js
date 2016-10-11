@@ -78,7 +78,7 @@ $.sm = {
 		confirmDelete:function(fun){
 			 $.messager.confirm(I18N.CONFIRM_TITLE, I18N.CONFIRM_DELETE_MESS, function(r){		 
 				 if(r){
-	                fun.apply();
+	                fun.call(this);
 				 }
 	           });
 		},
@@ -114,7 +114,7 @@ $.sm = {
 				
 				if(success){
 					if(typeof success == "function"){
-						success.apply(res.data);
+						success.call(this,res.data);
 					}
 				}
 			}
@@ -131,7 +131,7 @@ $.sm = {
 				
 				if(faild){
 					if(typeof faild == "function"){
-						faild.apply(res.data);
+						faild.call(this,res.data);
 					}
 				}
 			}
@@ -461,6 +461,12 @@ $.extend($.fn.validatebox.defaults.rules, {
         	else{
         		var _48={};
         		_48[param[1]]=value;
+        		//附加参数，在param数组中依次成对出现（名、值）
+        		if(param.length > 3){
+        			for(var i = 3; i < param.length;i+=2){
+        				_48[param[i]]=param[i+1];
+        			}
+        		}
         		var _49=$.ajax({url:param[0],dataType:"json",data:_48,async:false,cache:false,type:"post"}).responseText;
         		return _49=="true";
         	}

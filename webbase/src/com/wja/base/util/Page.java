@@ -1,13 +1,8 @@
 package com.wja.base.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 
 public class Page<T>
 {
@@ -140,61 +135,7 @@ public class Page<T>
     
     public PageRequest getPageRequest()
     {
-        return new PageRequest(this.pageNum - 1, this.size, this.processSort());
-    }
-    
-    private Sort processSort()
-    {
-        
-        List<Order> list = null;
-        
-        if (StringUtils.isNotBlank(sort))
-        {
-            String[] ss = sort.split(",");
-            String[] os = new String[ss.length];
-            if (StringUtils.isNotBlank(order))
-            {
-                String[] ods = order.split(",");
-                for (int i = 0; i < os.length && i < ods.length; i++)
-                {
-                    os[i] = ods[i];
-                }
-            }
-            
-            list = new ArrayList<>();
-            
-            for (int i = 0; i < ss.length; i++)
-            {
-                String p = ss[i].trim();
-                if (StringUtils.isNotBlank(p))
-                {
-                    String o = os[i];
-                    Direction d = Direction.ASC;
-                    if (StringUtils.isNotBlank(o))
-                    {
-                        try
-                        {
-                            d = Direction.valueOf(os[i].trim().toUpperCase());
-                        }
-                        catch (Exception e)
-                        {
-                            Log.LOGGER.error("排序处理异常", e);
-                        }
-                    }
-                    
-                    list.add(new Order(d, p));
-                }
-            }
-        }
-        
-        Sort st = null;
-        
-        if (list != null && !list.isEmpty())
-        {
-            st = new Sort(list);
-        }
-        
-        return st;
+        return new PageRequest(this.pageNum - 1, this.size, new Sort(this.sort, this.order).getSpringSort());
     }
     
     public Page<T> setPageData(org.springframework.data.domain.Page<T> p)

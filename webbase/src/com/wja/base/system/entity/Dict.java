@@ -23,17 +23,47 @@ import com.wja.base.common.CommEntity;
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class Dict extends CommEntity
 {
+    public static final String ROOT_ID = "0";
+    
     @Column(length = 20, nullable = false)
     private String name;
     
     @Column(length = 32)
     private String pid;
     
+    @Column(length = 20, nullable = false)
+    private String value;
+    
+    /**
+     * 序号
+     */
+    private Integer ordno;
+    
     /**
      * 字典类型:s系统字典，b业务字典
      */
     @Column(length = 1, nullable = false)
     private String type = "b";
+    
+    public String getValue()
+    {
+        return value;
+    }
+    
+    public void setValue(String value)
+    {
+        this.value = value;
+    }
+    
+    public Integer getOrdno()
+    {
+        return ordno;
+    }
+    
+    public void setOrdno(Integer ordno)
+    {
+        this.ordno = ordno;
+    }
     
     public String getName()
     {

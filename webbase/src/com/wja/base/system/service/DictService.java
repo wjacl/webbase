@@ -1,13 +1,16 @@
 package com.wja.base.system.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wja.base.common.CommSpecification;
 import com.wja.base.common.service.CommService;
 import com.wja.base.system.dao.DictDao;
 import com.wja.base.system.entity.Dict;
+import com.wja.base.util.Sort;
 
 @Service
 public class DictService extends CommService<Dict>
@@ -30,11 +33,22 @@ public class DictService extends CommService<Dict>
     
     public List<Dict> getByPid(String pid)
     {
-        return this.dictDao.findByPid(pid);
+        return this.dictDao.findByPidOrderByOrdnoAsc(pid);
     }
     
-    public List<Dict> getAll()
+    public List<Dict> getGroupByPvalue(String pvalue)
     {
-        return this.dictDao.findAll();
+        Dict p = this.dictDao.findByValueAndPid(pvalue, Dict.ROOT_ID);
+        return this.getByPid(p.getId());
+    }
+    
+    public List<Dict> getAll(Sort sort)
+    {
+        return this.dictDao.findAll(sort.getSpringSort());
+    }
+    
+    public List<Dict> query(Map<String, Object> params, Sort sort)
+    {
+        return this.dictDao.findAll(new CommSpecification<Dict>(params), sort == null ? null : sort.getSpringSort());
     }
 }
