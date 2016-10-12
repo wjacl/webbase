@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,9 @@ import com.wja.base.system.dao.RoleDao;
 import com.wja.base.system.entity.Role;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
+import com.wja.base.util.MD5;
 import com.wja.base.util.Page;
+import com.wja.base.web.AppContext;
 import com.wja.base.web.RequestThreadLocal;
 
 @Controller
@@ -36,6 +39,33 @@ public class UserController
     public String manage()
     {
         return "system/user";
+    }
+    
+    @RequestMapping("oldPwdCheck")
+    @ResponseBody
+    public boolean oldPwdCheck(String pwd)
+    {
+        return RequestThreadLocal.currUser.get().getPassword().equals(MD5.encode(pwd));
+    }
+    
+    public Object updatePwd(String oldpwd, String password)
+    {
+        User user = RequestThreadLocal.currUser.get();
+        if (!user.getPassword().equals(MD5.encode(oldpwd)))
+        {
+            return OpResult.updateError(AppContext.getMessage("user.oldpwd.error"), null);
+        }
+        
+        if (StringUtils.isBlank(password))
+        {
+            return OpResult.updateError(AppContext.getMessage("user.pwd.notnull"), null);
+        }
+        
+        User temp = new User();
+        temp.setId(user.getId());
+        temp.setPassword(password);
+        this.userService.updateUser(user);
+        return OpResult.updateOk();
     }
     
     @RequestMapping(value = "regist", method = RequestMethod.GET)

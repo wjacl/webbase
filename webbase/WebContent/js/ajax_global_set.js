@@ -202,7 +202,10 @@ $.ad = {
 				$.sm.handleResult(data,function(data){
 					$('#' + wid).window('close');
 					$('#' + formId).form('clear');
-					$('#' + gridId).datagrid('load'); 
+					
+					if(gridId){
+						$('#' + gridId).datagrid('load'); 
+					}
 				});
 			};
 		}
