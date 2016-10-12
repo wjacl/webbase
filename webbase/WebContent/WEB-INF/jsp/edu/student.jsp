@@ -55,7 +55,7 @@
 		};
 	</script>
 	<div id="student_tb" style="padding: 5px; height: auto">
-		<div style="margin-bottom: 5px">
+		<div style="margin-bottom: 5px"> 
 			<%-- <a href="javascript:$.ad.toAdd('student_w','<s:message code='student' />','student_add','${ctx }/student/add');" class="easyui-linkbutton"
 				iconCls="icon-add" plain="true"><s:message code='comm.add' /></a>  --%>
 			<a href="javascript:$.ad.toUpdate('student_grid','student_w','<s:message code='student' />','student_add','${ctx }/student/update',{oldname:'name'})"
