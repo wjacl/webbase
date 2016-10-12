@@ -22,6 +22,11 @@ public class ClazzService
     @Autowired
     private ClazzDao clazzDao;
     
+    public Clazz get(String id)
+    {
+        return this.clazzDao.getOne(id);
+    }
+    
     public void save(Clazz c)
     {
         if (StringUtils.isNotBlank(c.getId()))

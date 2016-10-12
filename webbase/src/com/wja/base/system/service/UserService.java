@@ -14,8 +14,10 @@ import com.wja.base.system.entity.User;
 import com.wja.base.util.BeanUtil;
 import com.wja.base.util.MD5;
 import com.wja.base.util.Page;
+import com.wja.edu.entity.Clazz;
 import com.wja.edu.entity.Student;
 import com.wja.edu.entity.Teacher;
+import com.wja.edu.service.ClazzService;
 import com.wja.edu.service.StudentService;
 import com.wja.edu.service.TeacherService;
 
@@ -29,7 +31,11 @@ public class UserService
     @Autowired
     private StudentService studentService;
     
+    @Autowired
     private TeacherService teacherService;
+    
+    @Autowired
+    private ClazzService clazzService;
     
     public User getUser(String id)
     {
@@ -92,10 +98,14 @@ public class UserService
         // 学生-增加学生记录
         if (CommConstants.User.TYPE_STUDENT.equals(user.getType()))
         {
+            Clazz c = this.clazzService.get(clazz);
             Student s = new Student();
             s.setClazz(clazz);
+            s.setLearnMajor(c.getMajor());
+            s.setStartTime(c.getStartTime());
             s.setUserId(user.getId());
             s.setName(user.getName());
+            s.setStatus(Student.STATUS_NEED_AUDIT);
             studentService.save(s);
         }
         else if (CommConstants.User.TYPE_STAFF.equals(user.getType()))
@@ -104,6 +114,7 @@ public class UserService
             Teacher t = new Teacher();
             t.setUserId(user.getId());
             t.setName(user.getName());
+            t.setStatus(Teacher.STATUS_NEED_AUDIT);
             teacherService.save(t);
         }
     }

@@ -69,6 +69,13 @@ public class ClazzController
         return this.clazzService.pageQuery(params, page);
     }
     
+    @RequestMapping("list")
+    @ResponseBody
+    public List<Clazz> pageQuery(@RequestParam Map<String, Object> params, Sort sort)
+    {
+        return this.clazzService.query(params, sort);
+    }
+    
     @RequestMapping("delete")
     @ResponseBody
     public OpResult delete(String[] id)

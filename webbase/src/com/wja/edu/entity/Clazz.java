@@ -19,11 +19,11 @@ import com.wja.base.util.DateUtil;
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class Clazz extends CommEntity
 {
-    public static final String STATUS_NOT_START = "notStart";
+    public static final String STATUS_NOT_START = "n";
     
-    public static final String STATUS_STARTED = "started";
+    public static final String STATUS_STARTED = "s";
     
-    public static final String STATUS_FINISHED = "finished";
+    public static final String STATUS_FINISHED = "f";
     
     /**
      * 班级名

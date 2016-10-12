@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wja.base.common.CommSpecification;
+import com.wja.base.system.entity.User;
+import com.wja.base.system.service.UserService;
 import com.wja.base.util.BeanUtil;
 import com.wja.base.util.CollectionUtil;
 import com.wja.base.util.Page;
@@ -20,6 +22,9 @@ public class TeacherService
 {
     @Autowired
     private TeacherDao dao;
+    
+    @Autowired
+    private UserService userService;
     
     public Teacher get(String id)
     {
@@ -36,6 +41,15 @@ public class TeacherService
         if (StringUtils.isNotBlank(e.getId()))
         {
             Teacher dbc = this.dao.getOne(e.getId());
+            if (!e.getName().equals(dbc.getName()))
+            {
+                // 该名字了，用户表中的姓名跟着变
+                User u = this.userService.getUser(dbc.getUserId());
+                if (u != null)
+                {
+                    u.setName(e.getName());
+                }
+            }
             BeanUtil.copyPropertiesIgnoreNull(e, dbc);
             e = dbc;
         }
@@ -47,6 +61,15 @@ public class TeacherService
     {
         if (!CollectionUtil.isEmpty(ids))
         {
+            // 删除对应的用户数据
+            List<Teacher> list = this.dao.findAll(ids);
+            String[] uids = new String[list.size()];
+            int i = 0;
+            for (Teacher s : list)
+            {
+                uids[i++] = s.getUserId();
+            }
+            this.userService.deleteUser(uids);
             this.dao.logicDeleteInBatch(ids);
         }
     }

@@ -18,48 +18,50 @@
 		
 	<script type="text/javascript">
 		var student = {
-				majors:null,
+				sexs:false,
+				sexFormatter :function(value,row,index){
+					if(!student.sexs){
+						$.ajax({url:'${ctx}/dict/get?pvalue=sex',async:false,dataType:'json',
+							success:function(data){
+							student.sexs = data;
+						}});
+					}
+					return $.ad.getName(value,student.sexs,'value');
+				},
+				majors:false,
 				majorFormatter:function(value,row,index){
 					if(!student.majors){
-						student.majors = $('#major').combobox("getData");
+						student.majors = $('#studentMajor').combobox("getData");
 					}
 					return $.ad.getName(value,student.majors,'value');
 				},
 				
-				schools:null,
-				schoolLoadFilter:function(data){
-					student.schools = data;
-					return $.ad.easyTreeDefaultLoadFilter(data);
-				},
-				schoolFormatter:function(value,row,index){
-					return $.ad.getName(value,student.schools);
+				clazz:false,
+				clazzFormatter:function(value,row,index){ 
+					if(!student.clazz){
+						student.clazz = $('#student_clazz').combobox("getData");
+					}
+					return $.ad.getName(value,student.clazz);
 				},
 				
-				status:null,
+				status:false,
 				statusFormatter:function(value,row,index){
 					if(!student.status){
 						student.status = $('#student_status').combobox("getData");
 					}
 					return $.ad.getName(value,student.status,'value');
 				},
-				
-				admins:null,
-				adminFormatter:function(value){
-					if(!student.admins){
-						student.admins = $('#student_admin').combobox("getData");
-					}
-					return $.ad.getName(value,student.admins);
-				}				
+								
 		};
 	</script>
 	<div id="student_tb" style="padding: 5px; height: auto">
 		<div style="margin-bottom: 5px">
-			<a href="javascript:$.ad.toAdd('student_w','<s:message code='student' />','student_add','${ctx }/student/add');" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.add' />"
-				iconCls="icon-add" plain="true"></a> 
+			<a href="javascript:$.ad.toAdd('student_w','<s:message code='student' />','student_add','${ctx }/student/add');" class="easyui-linkbutton"
+				iconCls="icon-add" plain="true"><s:message code='comm.add' /></a> 
 			<a href="javascript:$.ad.toUpdate('student_grid','student_w','<s:message code='student' />','student_add','${ctx }/student/update',{oldname:'name'})"
-				class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.update' />" iconCls="icon-edit" plain="true"></a>
-			<a href="javascript:$.ad.doDelete('student_grid','${ctx }/student/delete')" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.remove' />" iconCls="icon-remove"
-				plain="true"></a>
+				class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='comm.update' /></a>
+			<a href="javascript:$.ad.doDelete('student_grid','${ctx }/student/delete')" class="easyui-linkbutton" iconCls="icon-remove"
+				plain="true"><s:message code='comm.remove' /></a>
 		</div>
 		<div>
 			<form id="student_query_form">
@@ -67,9 +69,9 @@
 				: <input class="easyui-textbox" style="width: 100px"
 					name="name_like_string">
 					
-		             <s:message code="student.major"/>:
-						<input class="easyui-combobox" name="major_in_string" id="major"
-						style="width: 100px"
+		             <s:message code="p.major"/>:
+						<input class="easyui-combobox" name="learnMajor_in_string" id="studentMajor"
+						style="width: 140px"
 						data-options="
 		                    url:'${ctx }/dict/get?pvalue=major',
 		                    method:'get',
@@ -79,29 +81,20 @@
 	                    	multiple:true
 	                    ">
 	                    
-						<s:message code="student.school"/>:
-						<select name="school_in_string" class="easyui-combotree" style="width: 160px" id="student_school"
-						        data-options="url:'${ctx }/org/tree',
-	                    		multiple:true,
-						        loadFilter:student.schoolLoadFilter">
-						</select>
+						<s:message code="clazz"/>:
+						<select name="clazz_in_string" class="easyui-combobox" style="width: 140px" id="student_clazz"
+						        data-options="url:'${ctx }/clazz/list?sort=startTime&order=desc',
+		                    	method:'get',
+				                valueField:'id',
+				                textField:'name',
+				                multiple:true">
+						</select> 
 						
-						<s:message code="student.admin"/>:
-						<input class="easyui-combobox" name="admin_in_string" id="student_admin"
-						style="width: 100px"
-						data-options="
-		                    url:'${ctx }/user/find?type_eq_string=A',
-		                    method:'get',
-		                    valueField:'id',
-		                    textField:'name',
-		                    panelHeight:'auto',
-	                    	multiple:true
-	                    ">
-	                  <s:message code="student.status"/>:
+	                  <s:message code="p.status"/>:
 						<input class="easyui-combobox" name="status_in_string" id="student_status"
 						style="width: 80px;"
 						data-options="
-		                    url:'${ctx }/dict/get?pvalue=student.status',
+		                    url:'${ctx }/dict/get?pvalue=stu.status',
 		                    method:'get',
 		                    valueField:'value',
 		                    textField:'name',
@@ -124,17 +117,17 @@
 				<th data-options="field:'ck',checkbox:true"></th>
 				<th data-options="field:'name',width:100"><s:message
 						code="p.name" /></th>
-				<th data-options="field:'sex',width:100,sortable:'true',formatter:student.sexFormatter"><s:message
+				<th data-options="field:'sex',width:60,sortable:'true',formatter:student.sexFormatter"><s:message
 						code="p.sex" /></th>
 				<th
 					data-options="field:'clazz',width:100,sortable:'true',formatter:student.clazzFormatter"><s:message
 						code="clazz" /></th>
 				<th
+					data-options="field:'learnMajor',width:100,sortable:'true',formatter:student.majorFormatter"><s:message
+						code="p.major" /></th>
+				<th
 					data-options="field:'phone',width:100"><s:message
 						code="p.phone" /></th>
-				<th
-					data-options="field:'qq',width:100"><s:message
-						code="p.qq" /></th>
 				<th
 					data-options="field:'startTime',width:100"><s:message
 						code="student.startTime" /></th>
@@ -150,69 +143,189 @@
 	
 	<div id="student_w" class="easyui-window"
 		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
-		style="width: 400px; height: 490px; padding: 10px;">
-		<div class="content">
+		style="width: 780px; height: 430px; padding: 10px;">
+		
 				<form id="student_add" method="post" action="${ctx }/student/add">
-					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="name" style="width: 100%"
-							data-options="label:'<s:message code="p.name"/>:',required:true,
-							validType:{length:[1,30]}">
-						<input type="hidden" name="oldname" id="student_oldname" />
-					</div>
-					<div style="margin-bottom: 20px">
-						<input class="easyui-combobox" name="major"
-						style="width: 100%;"
-						data-options="
-		                    url:'${ctx }/dict/get?pvalue=major',
-		                    method:'get',
-		                    valueField:'value',
-		                    textField:'name',
-		                    panelHeight:'auto',
-		                    required:true,
-		                    label:'<s:message code="major"/>:'
-	                    ">
-                    </div>
-					<div style="margin-bottom: 20px">
-						<select name="school" class="easyui-combotree" style="width: 100%"
-						        data-options="url:'${ctx }/org/tree',required:true,
-						        loadFilter:$.ad.easyTreeDefaultLoadFilter,
-						        label:'<s:message code="p.school"/>:'">
-						</select>
-                    </div>
-                    <div style="margin-bottom: 20px">
-						<input class="easyui-combobox" name="admin"
-						style="width: 100%;"
-						data-options="
-		                    url:'${ctx }/user/find?type_eq_string=A',
-		                    method:'get',
-		                    valueField:'id',
-		                    textField:'name',
-		                    panelHeight:'auto',
-		                    required:true,
-		                    label:'<s:message code="student.admin"/>:'
-	                    ">
-                    </div>
-                    <div style="margin-bottom: 20px">
-						<input class="easyui-combobox" name="status"
-						style="width: 100%;"
-						data-options="
-		                    url:'${ctx }/dict/get?pvalue=student.status',
-		                    method:'get',
-		                    valueField:'value',
-		                    textField:'name',
-		                    panelHeight:'auto',
-		                    required:true,
-		                    label:'<s:message code="student.status"/>:'
-	                    ">
-                    </div>
-                    <div style="margin-bottom: 20px">
-						<input class="easyui-datebox" name="startTime" style="width: 100%"
-							data-options="label:'<s:message code="student.startTime"/>:',required:true">
-					</div>
-					<div style="margin-bottom: 20px">
-						<input class="easyui-datebox" name="finishTime" style="width: 100%"
-							data-options="label:'<s:message code="student.finishTime"/>:'">
-					</div>
+					<h5><s:message code="p.base"/>:</h5>
+					<table style="width:100%;border:1px solid #ccc;">
+						<tr>
+							<td><s:message code="p.name"/>:</td>
+							<td>
+								<input class="easyui-textbox" name="name" style="width: 120px"
+								data-options="required:true,
+								validType:{length:[1,30]}">
+							</td>
+							
+							<td><s:message code="p.sex"/>:</td>
+							<td>
+								<input class="easyui-combobox" name="sex" style="width: 120px"
+									data-options="
+				                    url:'${ctx }/dict/get?pvalue=sex',
+				                    method:'get',
+				                    valueField:'value',
+				                    textField:'name',
+				                    panelHeight:'auto',
+				                    required:true
+			                    ">
+							</td>
+							
+							<td><s:message code="p.birthday"/>:</td>
+							<td>
+								<input class="easyui-datebox" name="birthday" style="width: 120px"
+								data-options="required:true">
+							</td>
+						</tr>
+						<tr>						
+							<td><s:message code="p.phone"/>:</td>
+							<td>
+								<input class="easyui-textbox" name="phone" style="width: 120px"
+								data-options="required:true,validType:'maxLength[30]'">
+							</td>
+							
+							<td>QQ:</td>	
+							<td>
+								<input class="easyui-textbox" name="qq" style="width: 120px"
+								data-options="required:true,validType:'maxLength[20]'">
+							</td>
+							
+							<td>Email:</td>
+							<td>
+								<input class="easyui-textbox" name="email" style="width: 120px"
+								data-options="required:true,validType:['email','maxLength[30]']">
+							</td>
+						</tr>
+						<tr>
+							<td><s:message code="p.address"/>:</td>
+							<td colspan="3">
+								<input class="easyui-textbox" name="address" style="width: 300px"
+								data-options="required:true,validType:'maxLength[50]'">
+							</td>
+							
+							<td><s:message code="clazz"/>:</td>
+							<td>
+								<input class="easyui-combobox" name="clazz" style="width: 120px"
+								data-options="url:'${ctx }/clazz/registGet',
+				                    method:'get',
+				                    valueField:'id',
+				                    textField:'name',
+				                    required:true">
+							</td>
+						</tr>
+						<tr>
+							
+							<td><s:message code="p.major"/>:</td>
+							<td>
+								<input class="easyui-combobox" name="learnMajor"
+									style="width: 120px;"
+									data-options="
+					                    url:'${ctx }/dict/get?pvalue=major',
+					                    method:'get',
+					                    valueField:'value',
+					                    textField:'name',
+					                    panelHeight:'auto',
+					                    required:true
+				                    ">
+	                    	</td>
+							
+							<td><s:message code="student.startTime"/>:</td>
+							<td>
+								<input class="easyui-datebox" name="startTime" style="width: 120px"
+								data-options="required:true">
+							</td>
+							
+							<td><s:message code="p.graduateTime"/>:</td>
+							<td>
+								<input class="easyui-datebox" name="finishTime" style="width: 120px">
+							</td>
+						</tr>
+						<tr>
+							
+							<td><s:message code="p.status"/>:</td>
+							<td>
+								<input class="easyui-combobox" name="status"
+									style="width: 120px;"
+									data-options="
+					                    url:'${ctx }/dict/get?pvalue=stu.status',
+					                    method:'get',
+					                    valueField:'value',
+					                    textField:'name',
+					                    panelHeight:'auto',
+					                    required:true
+				                    ">
+	                    	</td>
+							
+							<td><s:message code="p.remark"/>:</td>
+							<td colspan="3">
+								<input class="easyui-textbox" name="remark" style="width: 300px"
+								data-options="validType:'maxLength[200]',multiline:true">
+							</td>
+						</tr>
+					</table>
+					
+					<!-- 学历信息 -->
+					<h5><s:message code="p.eduInfo"/>:</h5>
+					<table style="width:100%;border:1px solid #ccc;">
+						<tr>
+							<td><s:message code="p.education"/>:</td>
+							<td>
+								<input class="easyui-combobox" name="education" style="width: 120px"
+									data-options="
+				                    url:'${ctx }/dict/get?pvalue=education',
+				                    method:'get',
+				                    valueField:'value',
+				                    textField:'name',
+				                    panelHeight:'auto',
+				                    required:true
+			                    ">
+							</td>
+							
+							<td><s:message code="p.school"/>:</td>
+							<td>
+								<input class="easyui-textbox" name="school" style="width: 120px"
+									data-options="required:true,validType:'maxLength[60]'">
+							</td>
+							
+							<td><s:message code="p.major"/>:</td>
+							<td>
+								<input class="easyui-textbox" name="major" style="width: 120px"
+									data-options="required:true,validType:'maxLength[30]'">
+							</td>
+							
+							<td><s:message code="p.graduateTime"/>:</td>
+							<td>
+								<input class="easyui-datebox" name="graduateTime" style="width: 120px"
+								data-options="required:true">
+							</td>
+						</tr>
+					</table>
+					
+					<!-- 家庭信息 -->
+					<h5><s:message code="p.homeInfo"/>:</h5>
+					<table style="width:100%;border:1px solid #ccc;">
+						<tr>
+							<td><s:message code="p.parent"/>:</td>
+							<td>
+								<input class="easyui-textbox" name="parent" style="width: 140px"
+								data-options="required:true,
+								validType:'maxLength[40]'">
+							</td>
+						
+							<td><s:message code="p.phone"/>:</td>				
+							<td>
+								<input class="easyui-textbox" name="homePhone" style="width: 140px"
+								data-options="required:true,
+								validType:'maxLength[40]'">
+							</td>
+							
+							<td><s:message code="p.address"/>:</td>
+							<td>
+								<input class="easyui-textbox" name="home" style="width: 300px"
+								data-options="required:true,
+								validType:'maxLength[80]'">
+							</td>
+						</tr>
+					</table>
+					
                     <input type="hidden" name="id" />
                     <input type="hidden" name="version" />
 				</form>
@@ -224,7 +337,6 @@
 						class="easyui-linkbutton" onclick="$.ad.clearForm('student_add')"
 						style="width: 80px"><s:message code="comm.clear" /></a>
 				</div>
-		</div>
 	</div>
 	</div>
 	</div>

@@ -62,7 +62,6 @@
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
-		                    panelHeight:'auto',
 		                    label:'<s:message code="clazz"/>:'
 	                    ">
                     </div>
@@ -79,7 +78,7 @@
 				<script>
 				
 					function registClass(newValue){
-						if(newValue == 'user.type.S'){
+						if(newValue == 'S'){
 							$('#clazzDiv').show();
 						}
 						else{
@@ -88,7 +87,7 @@
 					}
 				
 			        function submitForm(){
-			        	if($('#regUserType').combobox("getValue") == 'user.type.S'){
+			        	if($('#regUserType').combobox("getValue") == 'S'){
 			        		var value = $('#inputClazz').combobox("getValue");
 			        		if(value==undefined || value==""){
 			        			$.sm.alert(I18N.regist_select_clazz);

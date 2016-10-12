@@ -18,9 +18,14 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('33','已毕�
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('34','辍学','l',34,'stu.status','s',1);
 
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('tea.status','教师状态','tea.status',35,'0','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('36','待审核','w',35,'tea.status','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('37','在职','s',36,'tea.status','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('38','离职','f',37,'tea.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('36','待审核','w',36,'tea.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('37','在职','s',37,'tea.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('38','离职','f',38,'tea.status','s',1);
+
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('education','学历','education',40,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('41','专科','1',41,'education','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('42','本科','2',42,'education','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('43','硕士','3',43,'education','s',1);
 
 
 

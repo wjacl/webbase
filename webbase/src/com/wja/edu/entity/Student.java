@@ -51,6 +51,12 @@ public class Student extends CommEntity
     private String address;
     
     /**
+     * 学习专业
+     */
+    @Column(name = "learn_major", length = 10)
+    private String learnMajor;
+    
+    /**
      * 入学时间
      */
     @DateTimeFormat(pattern = DateUtil.DATE)
@@ -224,6 +230,16 @@ public class Student extends CommEntity
     public void setAddress(String address)
     {
         this.address = address;
+    }
+    
+    public String getLearnMajor()
+    {
+        return learnMajor;
+    }
+    
+    public void setLearnMajor(String learnMajor)
+    {
+        this.learnMajor = learnMajor;
     }
     
     public String getClazz()
