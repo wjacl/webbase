@@ -13,6 +13,10 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('22','待审�
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('23','审核通过','p',23,'20','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('24','待审核','n',24,'20','s',1);
 
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('sex','性别','sex',4,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('25','男','m',1,'sex','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('26','女','w',2,'sex','s',1);
+
 
 INSERT INTO t_sys_role(ID,NAME,TYPE,valid)
 VALUES('admin','超级管理员','s',1);
