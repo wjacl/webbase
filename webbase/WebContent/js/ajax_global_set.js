@@ -195,7 +195,7 @@ $.ad = {
 		var succ;
 		if(success && (typeof success == "function")){
 			succ = success;
-		}
+		} 
 		else{
 			succ = function(data){
 				var data = eval('(' + data + ')');
