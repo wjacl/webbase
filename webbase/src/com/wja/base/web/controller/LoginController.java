@@ -17,6 +17,7 @@ import com.wja.base.common.CommConstants;
 import com.wja.base.system.entity.Privilege;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
+import com.wja.base.util.Log;
 import com.wja.base.util.MD5;
 import com.wja.base.web.AppContext;
 import com.wja.edu.service.StudentService;
@@ -35,6 +36,31 @@ import com.wja.edu.service.TeacherService;
 @Controller
 public class LoginController
 {
+    /**
+     * 在session中记录登录尝试次数的key
+     */
+    private static final String LoginTryCountKey = "loginErrorTryCount";
+    
+    /**
+     * 登录错误最大尝试次数
+     */
+    private static Integer MaxLoginErrorTryTimes = 6;
+    
+    public LoginController()
+    {
+        String times = AppContext.getServletContext().getInitParameter("MaxLoginErrorTryTimes");
+        if (StringUtils.isNotBlank(times))
+        {
+            try
+            {
+                MaxLoginErrorTryTimes = Integer.valueOf(times.trim());
+            }
+            catch (Exception e)
+            {
+                Log.LOGGER.error("web.xml中登录尝试次数参数loginErrorTryTimes有误！", e);
+            }
+        }
+    }
     
     @Autowired
     private UserService userService;
@@ -61,14 +87,57 @@ public class LoginController
         }
         
         User user = this.userService.getUserByUsername(username);
+        // 错误尝试计数key
+        String tryCountKey = LoginTryCountKey + username;
         // 用户名不存在或密码错误
         if (user == null || !MD5.encode(password).equals(user.getPassword()))
         {
-            model.addAttribute("error", AppContext.getMessage("login.error"));
+            if (user != null)
+            {
+                
+                Integer tryCount = (Integer)httpSession.getAttribute(tryCountKey);
+                if (tryCount == null)
+                {
+                    tryCount = 0;
+                }
+                
+                tryCount++;
+                httpSession.setAttribute(tryCountKey, tryCount);
+                
+                if (tryCount >= MaxLoginErrorTryTimes)
+                {
+                    user.setStatus(CommConstants.User.STATUS_LOCK);
+                    this.userService.updateUser(user);
+                    return "frame/login_lock";
+                }
+                else
+                {
+                    int left = MaxLoginErrorTryTimes - tryCount;
+                    if (left <= 3)
+                    {
+                        model.addAttribute("error",
+                            AppContext.getMessage("login.error.times", new Integer[] {left, left}));
+                    }
+                    else
+                    {
+                        model.addAttribute("error", AppContext.getMessage("login.error"));
+                    }
+                }
+            }
+            else
+            {
+                model.addAttribute("error", AppContext.getMessage("login.error"));
+            }
             return "frame/login";
         }
         else
         {
+            // 账号被锁定则转到锁定页
+            if (CommConstants.User.STATUS_LOCK.equals(user.getStatus()))
+            {
+                return "frame/login_lock";
+            }
+            
             // 将用户对象放入会话中认证过滤
             httpSession.setAttribute(CommConstants.SESSION_USER, user);
             
@@ -117,6 +186,9 @@ public class LoginController
             }
             // 将权限数据放入session中
             httpSession.setAttribute(CommConstants.SESSION_USER_PRIV_PATHS, privPaths);
+            
+            // 登录成功，清除登录错误计数
+            httpSession.removeAttribute(tryCountKey);
             
             return "redirect:index";
         }
