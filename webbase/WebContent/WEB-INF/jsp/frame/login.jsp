@@ -16,13 +16,11 @@
 			<h2>
 				<s:message code="login.title" />
 			</h2>
-			<div style="margin: 20px 0;"></div>
+			
+			<p style="color:red">${error }</p>
+			<!-- <div style="margin: 20px 0;"></div> -->
 			<div class="easyui-panel"
 				style="width: 100%; max-width: 400px; padding: 30px 60px;">
-				
-				<div style="margin-bottom: 20px">
-					<p style="color:red">${error }</p>
-				</div>
 				
 				<form id="ff" method="post" action="${ctx }/login">
 					<div style="margin-bottom: 20px">
