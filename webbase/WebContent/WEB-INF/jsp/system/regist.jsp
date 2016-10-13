@@ -11,10 +11,11 @@
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
 
 	<div id="mainwrap">
-		<div id="content" class="content">
+		<div id="content" class="content min500h">
 			<h3>
 				<s:message code="user.regist" />
 			</h3>
+			<p style="color:red">${error }</p>
 			<div style="margin: 20px 0;"></div>
 			<div class="easyui-panel"
 				style="width: 100%; max-width: 400px; padding: 30px 60px;">
@@ -94,17 +95,8 @@
 			        			return;
 			        		}
 			        	}
-				        	$.messager.progress('close');
-				            $('#ff').form('submit',{success: function(data){
-				            	var data = eval('(' + data + ')');
-				            	
-				        		if(data.mess == "unameExits"){
-				        			$.sm.alert(I18N.user_uname_exits);
-				        		}
-				        		else if(data.status == $.sm.ResultStatus_Ok){
-				        			$.sm.show(I18N.user_regist_success);
-				        		}
-				        	}});
+				    
+				            $('#ff').form('submit',{ajax:false});
 			        }
 			        
 			        $(document).ready(function(){

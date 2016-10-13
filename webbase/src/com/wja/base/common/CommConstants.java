@@ -80,6 +80,11 @@ public interface CommConstants
          */
         String STATUS_LOCK = "L";
         
+        /**
+         * 用户状态-待审核
+         */
+        String STATUS_NEED_AUDIT = "W";
+        
     }
     
 }

@@ -8,5 +8,5 @@ import com.wja.edu.entity.Student;
 @Repository
 public interface StudentDao extends CommRepository<Student, String>
 {
-
+    Student findByUserId(String userId);
 }

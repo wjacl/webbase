@@ -8,5 +8,5 @@ import com.wja.edu.entity.Teacher;
 @Repository
 public interface TeacherDao extends CommRepository<Teacher, String>
 {
-
+    Teacher findByUserId(String userId);
 }

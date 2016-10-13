@@ -36,6 +36,11 @@ public class TeacherService
         return this.dao.getOne(id);
     }
     
+    public Teacher getByUserId(String userId)
+    {
+        return this.dao.findByUserId(userId);
+    }
+    
     public void save(Teacher e)
     {
         if (StringUtils.isNotBlank(e.getId()))

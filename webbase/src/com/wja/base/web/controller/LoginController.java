@@ -19,6 +19,8 @@ import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
 import com.wja.base.util.MD5;
 import com.wja.base.web.AppContext;
+import com.wja.edu.service.StudentService;
+import com.wja.edu.service.TeacherService;
 
 /**
  * 
@@ -36,6 +38,12 @@ public class LoginController
     
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private StudentService studentService;
+    
+    @Autowired
+    private TeacherService teacherService;
     
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String toLogin()
@@ -64,6 +72,20 @@ public class LoginController
             // 将用户对象放入会话中认证过滤
             httpSession.setAttribute(CommConstants.SESSION_USER, user);
             
+            if (CommConstants.User.STATUS_NEED_AUDIT.equals(user.getStatus()))
+            {
+                switch (user.getType())
+                {
+                    case CommConstants.User.TYPE_STUDENT:
+                        model.addAttribute("data", this.studentService.getByUserId(user.getId()));
+                        return "edu/student_reg";
+                    case CommConstants.User.TYPE_STAFF:
+                        model.addAttribute("data", this.teacherService.getByUserId(user.getId()));
+                        return "edu/teacher_reg";
+                    case CommConstants.User.TYPE_COMPANY:
+                        return "edu/company_reg";
+                }
+            }
             // 获取用户的权限
             List<Privilege> privs = this.userService.getUserPrivileges(user.getId());
             

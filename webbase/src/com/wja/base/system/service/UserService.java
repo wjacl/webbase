@@ -95,16 +95,16 @@ public class UserService
         this.userDao.save(dbUser);
     }
     
-    public void addUser(User user, String clazz)
+    public Object addUser(User user, String clazz)
     {
         if (user == null)
         {
-            return;
+            return null;
         }
         
         user.setPassword(MD5.encode(user.getPassword()));
         this.userDao.save(user);
-        
+        Object res = user;
         // 学生-增加学生记录
         if (CommConstants.User.TYPE_STUDENT.equals(user.getType()))
         {
@@ -117,6 +117,7 @@ public class UserService
             s.setName(user.getName());
             s.setStatus(Student.STATUS_NEED_AUDIT);
             studentService.save(s);
+            res = s;
         }
         else if (CommConstants.User.TYPE_STAFF.equals(user.getType()))
         {
@@ -126,7 +127,10 @@ public class UserService
             t.setName(user.getName());
             t.setStatus(Teacher.STATUS_NEED_AUDIT);
             teacherService.save(t);
+            res = t;
         }
+        
+        return res;
     }
     
     public List<Privilege> getUserPrivileges(String id)

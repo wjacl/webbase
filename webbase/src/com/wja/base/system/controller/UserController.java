@@ -8,11 +8,13 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wja.base.common.CommConstants;
 import com.wja.base.common.OpResult;
 import com.wja.base.system.dao.RoleDao;
 import com.wja.base.system.entity.Role;
@@ -74,18 +76,28 @@ public class UserController
     }
     
     @RequestMapping(value = "regist", method = RequestMethod.POST)
-    @ResponseBody
-    public Object regist(User user, String clazz)
+    public String regist(User user, String clazz, Model model)
     {
         if (this.userService.getUserByUsername(user.getUsername()) != null)
         {
-            return OpResult.error("unameExits", null);
+            model.addAttribute("error", AppContext.getMessage(""));
+            return "system/regist";
         }
         
-        // user.setStatus(CommConstants.User.STATUS_LOCK);
-        this.userService.addUser(user, clazz);
+        user.setStatus(CommConstants.User.STATUS_NEED_AUDIT);
+        model.addAttribute("data", this.userService.addUser(user, clazz));
         
-        return OpResult.ok();
+        switch (user.getType())
+        {
+            case CommConstants.User.TYPE_STUDENT:
+                return "edu/student_reg";
+            case CommConstants.User.TYPE_STAFF:
+                return "edu/teacher_reg";
+            case CommConstants.User.TYPE_COMPANY:
+                return "edu/company_reg";
+        }
+        
+        return "redirect:login";
     }
     
     @RequestMapping("unameCheck")

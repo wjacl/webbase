@@ -37,6 +37,11 @@ public class StudentService
         return this.studentDao.getOne(id);
     }
     
+    public Student getByUserId(String userId)
+    {
+        return this.studentDao.findByUserId(userId);
+    }
+    
     public void save(Student c)
     {
         if (StringUtils.isNotBlank(c.getId()))
