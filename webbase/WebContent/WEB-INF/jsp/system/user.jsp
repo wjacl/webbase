@@ -184,6 +184,19 @@
 		                    label:'<s:message code="user.type"/>:'
 	                    ">
                     </div>
+					<div style="margin-bottom: 20px">
+						<input class="easyui-combobox" name="status"
+						style="width: 100%;"
+						data-options="
+		                    url:'${ctx }/dict/get?pvalue=user.status',
+		                    method:'get',
+		                    valueField:'value',
+		                    textField:'name',
+		                    panelHeight:'auto',
+		                    required:true,
+		                    label:'<s:message code="user.status"/>:'
+	                    ">
+                    </div>
                     <div style="margin-bottom: 20px">
 						<input class="easyui-combobox" name="roleIds"  id="userRoleComb"
 						style="width: 100%;"

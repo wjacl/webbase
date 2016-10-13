@@ -6,6 +6,7 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('4','合作用
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('user.status','用户状态','user.status',5,'0','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('6','正常','N',6,'user.status','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('7','锁定','L',7,'user.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('5','未审核','W',8,'user.status','s',1);
 
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('20','审核状态','audit',20,'0','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('21','草稿','c',21,'20','s',1);
