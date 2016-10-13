@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wja.base.common.CommConstants;
 import com.wja.base.common.CommSpecification;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
@@ -48,15 +49,35 @@ public class StudentService
         {
             Student dbc = this.studentDao.getOne(c.getId());
             
+            User u = this.userService.getUser(dbc.getUserId());
             if (!c.getName().equals(dbc.getName()))
             {
-                // 该名字了，用户表中的姓名跟着变
-                User u = this.userService.getUser(dbc.getUserId());
+                // 改名字了，用户表中的姓名跟着变
                 if (u != null)
                 {
                     u.setName(c.getName());
                 }
             }
+            
+            // 学生审核通过，用户状态变为正常
+            if (Student.STATUS_IN_LEARNING.equals(c.getStatus()) && Student.STATUS_NEED_AUDIT.equals(dbc.getStatus()))
+            {
+                if (u != null)
+                {
+                    u.setStatus(CommConstants.User.STATUS_NORMAL);
+                }
+            }
+            
+            // 学生毕业、辍学，删除对应的用户
+            if (Student.STATUS_IN_LEARNING.equals(dbc.getStatus()) && !Student.STATUS_IN_LEARNING.equals(c.getStatus())
+                && !Student.STATUS_NEED_AUDIT.equals(c.getStatus()))
+            {
+                if (u != null)
+                {
+                    this.userService.deleteUser(new String[] {u.getId()});
+                }
+            }
+            
             BeanUtil.copyPropertiesIgnoreNull(c, dbc);
             c = dbc;
         }

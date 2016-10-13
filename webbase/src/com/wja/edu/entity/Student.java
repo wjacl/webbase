@@ -21,6 +21,8 @@ public class Student extends CommEntity
 {
     public static final String STATUS_NEED_AUDIT = "w";
     
+    public static final String STATUS_IN_LEARNING = "s";
+    
     /**
      * 学生对应的用户id
      */

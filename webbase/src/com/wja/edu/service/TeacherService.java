@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wja.base.common.CommConstants;
 import com.wja.base.common.CommSpecification;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
@@ -46,15 +47,35 @@ public class TeacherService
         if (StringUtils.isNotBlank(e.getId()))
         {
             Teacher dbc = this.dao.getOne(e.getId());
+            
+            User u = this.userService.getUser(dbc.getUserId());
             if (!e.getName().equals(dbc.getName()))
             {
-                // 该名字了，用户表中的姓名跟着变
-                User u = this.userService.getUser(dbc.getUserId());
+                // 改名字了，用户表中的姓名跟着变
                 if (u != null)
                 {
                     u.setName(e.getName());
                 }
             }
+            
+            // 教师审核通过，用户状态变为正常
+            if (Teacher.STATUS_AT_JOB.equals(e.getStatus()) && Teacher.STATUS_NEED_AUDIT.equals(dbc.getStatus()))
+            {
+                if (u != null)
+                {
+                    u.setStatus(CommConstants.User.STATUS_NORMAL);
+                }
+            }
+            
+            // 教师离职，删除对应的用户
+            if (Teacher.STATUS_AT_JOB.equals(dbc.getStatus()) && Teacher.STATUS_LEAVE.equals(e.getStatus()))
+            {
+                if (u != null)
+                {
+                    this.userService.deleteUser(new String[] {u.getId()});
+                }
+            }
+            
             BeanUtil.copyPropertiesIgnoreNull(e, dbc);
             e = dbc;
         }
