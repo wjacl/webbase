@@ -100,7 +100,7 @@ $.sm = {
 			if(res.status == this.ResultStatus_Ok){
 				var content = "";
 				if(res.mess){
-					content = mess;
+					content = res.mess;
 				}
 				else{
 					content = I18N.operate_ok[res.operate];
@@ -119,15 +119,16 @@ $.sm = {
 				}
 			}
 			else{
-				var content = I18N.operate_faild[res.operate];
+				var title = I18N.operate_faild[res.operate];
+				var content = "";
 				if(res.mess){
-					content += mess;
+					content += res.mess;
 				}
 				else{
 					content += I18N.OPER_SYS_ERROR;
 				}
 				
-				$.messager.alert(content);
+				$.messager.alert(title,content);
 				
 				if(faild){
 					if(typeof faild == "function"){
