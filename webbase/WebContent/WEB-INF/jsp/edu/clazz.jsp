@@ -54,12 +54,12 @@
 	</script>
 	<div id="clazz_tb" style="padding: 5px; height: auto">
 		<div style="margin-bottom: 5px">
-			<a href="javascript:$.ad.toAdd('clazz_w','<s:message code='clazz' />','clazz_add','${ctx }/clazz/add');" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.add' />"
-				iconCls="icon-add" plain="true"></a> 
+			<a href="javascript:$.ad.toAdd('clazz_w','<s:message code='clazz' />','clazz_add','${ctx }/clazz/add');" class="easyui-linkbutton"
+				iconCls="icon-add" plain="true"><s:message code='comm.add' /></a> 
 			<a href="javascript:$.ad.toUpdate('clazz_grid','clazz_w','<s:message code='clazz' />','clazz_add','${ctx }/clazz/update',{oldname:'name'})"
-				class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.update' />" iconCls="icon-edit" plain="true"></a>
-			<a href="javascript:$.ad.doDelete('clazz_grid','${ctx }/clazz/delete')" class="easyui-linkbutton easyui-tooltip" title="<s:message code='comm.remove' />" iconCls="icon-remove"
-				plain="true"></a>
+				class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='comm.update' /></a>
+			<a href="javascript:$.ad.doDelete('clazz_grid','${ctx }/clazz/delete')" class="easyui-linkbutton" iconCls="icon-remove"
+				plain="true"><s:message code='comm.remove' /></a>
 		</div>
 		<div>
 			<form id="clazz_query_form">
