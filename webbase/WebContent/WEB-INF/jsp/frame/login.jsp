@@ -12,7 +12,7 @@
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
 
 	<div id="mainwrap">
-		<div id="content" class="content">
+		<div id="content" class="content min500h">
 			<h2>
 				<s:message code="login.title" />
 			</h2>

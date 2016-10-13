@@ -142,4 +142,6 @@ textarea.html,textarea.js{
 	background:url('images/gears.png') no-repeat;
 }
 
-.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle} 
+.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+
+.min500h{min-height:500px;*+height:100%;_height:500px;}
