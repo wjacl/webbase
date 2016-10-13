@@ -62,6 +62,16 @@ public class UserService
         }
     }
     
+    public void updatePwd(String id, String pwd)
+    {
+        User user = this.userDao.findOne(id);
+        if (user != null)
+        {
+            user.setPassword(MD5.encode(pwd));
+            this.userDao.save(user);
+        }
+    }
+    
     public void updateUser(User user)
     {
         if (user == null || user.getId() == null)

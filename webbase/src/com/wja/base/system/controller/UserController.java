@@ -48,10 +48,12 @@ public class UserController
         return RequestThreadLocal.currUser.get().getPassword().equals(MD5.encode(pwd));
     }
     
-    public Object updatePwd(String oldpwd, String password)
+    @RequestMapping("pwdupdate")
+    @ResponseBody
+    public Object updatePwd(String oldpassword, String password)
     {
         User user = RequestThreadLocal.currUser.get();
-        if (!user.getPassword().equals(MD5.encode(oldpwd)))
+        if (!user.getPassword().equals(MD5.encode(oldpassword)))
         {
             return OpResult.updateError(AppContext.getMessage("user.oldpwd.error"), null);
         }
@@ -61,10 +63,7 @@ public class UserController
             return OpResult.updateError(AppContext.getMessage("user.pwd.notnull"), null);
         }
         
-        User temp = new User();
-        temp.setId(user.getId());
-        temp.setPassword(password);
-        this.userService.updateUser(user);
+        this.userService.updatePwd(user.getId(), password);
         return OpResult.updateOk();
     }
     

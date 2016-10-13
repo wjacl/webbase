@@ -18,11 +18,11 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('25','男','m'
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('26','女','w',2,'sex','s',1);
 
 
-INSERT INTO t_sys_role(ID,NAME,TYPE,valid)
-VALUES('admin','超级管理员','s',1);
+INSERT INTO t_sys_role(ID,NAME,TYPE,valid,version)
+VALUES('admin','超级管理员','s',1,0);
 
-INSERT INTO t_sys_user(Id,username,password,name,TYPE,status,valid)
-VALUES('u001','admin','21232F297A57A5A743894A0E4A801FC3','系统管理员','A','N',1);
+INSERT INTO t_sys_user(Id,username,password,name,TYPE,status,valid,version)
+VALUES('u001','admin','21232F297A57A5A743894A0E4A801FC3','系统管理员','A','N',1,0);
 
 INSERT INTO t_sys_user_role(u_id,r_id)VALUES('u001','admin');
 

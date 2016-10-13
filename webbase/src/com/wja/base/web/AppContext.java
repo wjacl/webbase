@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 /**
@@ -23,6 +24,8 @@ public class AppContext implements ServletContextListener
     private static WebApplicationContext springContext;
     
     private static ServletContext servletContext;
+    
+    private static WebApplicationContext springMvcContext;
     
     @Override
     public void contextDestroyed(ServletContextEvent arg0)
@@ -72,6 +75,24 @@ public class AppContext implements ServletContextListener
     {
         HttpServletRequest req = RequestThreadLocal.request.get();
         Locale locale = (Locale)req.getSession().getAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME);
-        return springContext.getMessage(code, args, locale == null ? req.getLocale() : locale);
+        
+        return getSpringMvcContext().getMessage(code, args, locale == null ? req.getLocale() : locale);
+    }
+    
+    private static WebApplicationContext getSpringMvcContext()
+    {
+        if (springMvcContext == null)
+        {
+            
+            springMvcContext = (WebApplicationContext)servletContext
+                .getAttribute(FrameworkServlet.SERVLET_CONTEXT_PREFIX + "dispatcher");
+        }
+        
+        if (springMvcContext == null)
+        {
+            springMvcContext = springContext;
+        }
+        
+        return springMvcContext;
     }
 }
