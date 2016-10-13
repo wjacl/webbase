@@ -24,13 +24,13 @@ function submitOk(data){
 		<h3><s:message code="student.tip.audit"/></h3>
 	</c:if>
 	<c:if test="${empty data.sex }">
-		<p><s:message code="p.reg.ok"/><</p>
+		<p><s:message code="p.reg.ok"/></p>
 	<h3>
 		<s:message code="p.info.reg" />
 	</h3>
 	
 	<div id="student_w" class="easyui-panel"
-		style="width: 780px; height: 430px; padding: 10px;">
+		style="width: 780px; height: 380px; padding: 10px;">
 		
 				<form id="student_add" method="post" action="${ctx }/student/add">
 					<h5><s:message code="p.base"/>:</h5>
@@ -82,11 +82,6 @@ function submitOk(data){
 							</td>
 						</tr>
 						<tr>
-							<td><s:message code="p.address"/>:</td>
-							<td colspan="3">
-								<input class="easyui-textbox" name="address" style="width: 300px"
-								data-options="required:true,validType:'maxLength[50]'">
-							</td>
 							
 							<td><s:message code="clazz"/>:</td>
 							<td>
@@ -97,9 +92,6 @@ function submitOk(data){
 				                    textField:'name',
 				                    required:true">
 							</td>
-						</tr>
-						<tr>
-							
 							<td><s:message code="p.major"/>:</td>
 							<td>
 								<input class="easyui-combobox" name="learnMajor"  value="${data.learnMajor}"
@@ -116,19 +108,20 @@ function submitOk(data){
 							
 							<td><s:message code="student.startTime"/>:</td>
 							<td>
-								<input class="easyui-datebox" name="startTime" style="width: 120px"
+								<input class="easyui-datebox" name="startTime" style="width: 120px" value="${data.startTime}"
 								data-options="required:true">
 							</td>
 							
-							<td><s:message code="p.graduateTime"/>:</td>
-							<td>
-								<input class="easyui-datebox" name="finishTime" style="width: 120px">
-							</td>
 						</tr>
 						<tr>
+							<td><s:message code="p.address"/>:</td>
+							<td colspan="3">
+								<input class="easyui-textbox" name="address" style="width: 240px"
+								data-options="required:true,validType:'maxLength[50]',multiline:true">
+							</td>
 							<td><s:message code="p.remark"/>:</td>
 							<td colspan="5">
-								<input class="easyui-textbox" name="remark" style="width: 300px"
+								<input class="easyui-textbox" name="remark" style="width: 240px"
 								data-options="validType:'maxLength[200]',multiline:true">
 							</td>
 						</tr>
