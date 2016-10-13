@@ -19,13 +19,18 @@
 			<div style="margin: 20px 0;"></div>
 			<div class="easyui-panel"
 				style="width: 100%; max-width: 400px; padding: 30px 60px;">
+				
+				<div style="margin-bottom: 20px">
+					<p style="color:red">${error }</p>
+				</div>
+				
 				<form id="ff" method="post" action="${ctx }/login">
 					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="username" style="width: 100%"
+						<input class="easyui-textbox" name="username" style="width: 100%" value="${param.username }"
 							data-options="label:'<s:message code="login.username"/>:',required:true">
 					</div>
 					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="password" type="password"
+						<input class="easyui-textbox" name="password" type="password" value="${param.password }"
 							style="width: 100%"
 							data-options="label:'<s:message code="login.pwd"/>:',required:true">
 					</div>

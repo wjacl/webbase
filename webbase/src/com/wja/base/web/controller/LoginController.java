@@ -18,6 +18,7 @@ import com.wja.base.system.entity.Privilege;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
 import com.wja.base.util.MD5;
+import com.wja.base.web.AppContext;
 
 /**
  * 
@@ -47,7 +48,7 @@ public class LoginController
     {
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password))
         {
-            model.addAttribute("error", "请填写用户名和密码！");
+            model.addAttribute("error", AppContext.getMessage("login.error"));
             return "frame/login";
         }
         
@@ -55,7 +56,7 @@ public class LoginController
         // 用户名不存在或密码错误
         if (user == null || !MD5.encode(password).equals(user.getPassword()))
         {
-            model.addAttribute("error", "用户名或密码错误！");
+            model.addAttribute("error", AppContext.getMessage("login.error"));
             return "frame/login";
         }
         else
