@@ -101,6 +101,7 @@
 				<ul>
 					<li><a href="javascrit:void(0)">您好，${session_user.name }！</a></li>
 					<li><a href="logout">退出</a></li>
+					<li><a href="javascript:$('#sys_pwd_update_w').window('open')"><s:message code="user.pwd.update"/></a></li>
 					<!-- 此可加内容 -->
 				</ul>
 			</div>
@@ -157,6 +158,42 @@
 				$(".easyui-tree li:first ul li:first a").click();
 			})
 		</script> 
+		
+		<div id="sys_pwd_update_w" class="easyui-window" title='<s:message code="user.pwd.update" />'
+		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
+		style="width: 380px; height: 320px; padding: 10px;">
+		<div class="content">
+				<form id="sys_pwd_update_form" method="post" action="${ctx }/user/pwdupdate">
+					<div style="margin-bottom: 20px">
+						<input class="easyui-textbox" name="oldpassword" type="password"
+							style="width: 100%"
+							data-options="label:'<s:message code="user.oldpwd"/>:',required:true,
+							validType:{length:[6,20],remote:['${ctx }/user/oldPwdCheck','pwd']},
+							invalidMessage:'<s:message code="user.oldpwd.error"/>'">
+					</div>
+					<div style="margin-bottom: 20px">
+						<input class="easyui-textbox" name="password" type="password"  id="pwd"
+							style="width: 100%"
+							data-options="label:'<s:message code="user.pwd"/>:',required:true,validType:'length[6,20]'">
+					</div>
+					<div style="margin-bottom: 20px">
+						<input class="easyui-textbox" name="password2" type="password"
+							style="width: 100%"
+							data-options="label:'<s:message code="user.pwd.match"/>:',required:true,
+								validType:{equals:['#pwd','<s:message code="user.pwd"/>']}">
+					</div>
+				</form>
+				<div style="text-align: center; padding: 5px 0">
+					<a href="javascript:void(0)" class="easyui-linkbutton"
+						onclick="$.ad.submitForm('sys_pwd_update_form',null,'sys_pwd_update_w')" style="width: 80px">
+						<s:message code="comm.update" /></a> 
+					<a href="javascript:void(0)"
+						class="easyui-linkbutton" onclick="$.ad.clearForm('sys_pwd_update_form')"
+						style="width: 80px"><s:message code="comm.clear" /></a>
+				</div>
+		</div>
+	</div>
+		
 	</div>
 	<div region="west" split="true" title=""
 		style="width: 20%; min-width: 180px; padding: 5px;">

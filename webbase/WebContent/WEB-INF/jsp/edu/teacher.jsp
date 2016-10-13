@@ -38,7 +38,7 @@
 				},
 								
 		};
-	</script>
+	</script> 
 	<div id="teacher_tb" style="padding: 5px; height: auto">
 		<div style="margin-bottom: 5px">
 			<%-- <a href="javascript:$.ad.toAdd('teacher_w','<s:message code='teacher' />','teacher_add','${ctx }/teacher/add');" class="easyui-linkbutton"
