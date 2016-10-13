@@ -165,7 +165,7 @@
 								<input class="easyui-combobox" name="status"
 									style="width: 120px;"
 									data-options="
-					                    url:'${ctx }/dict/get?pvalue=stu.status',
+					                    url:'${ctx }/dict/get?pvalue=tea.status',
 					                    method:'get',
 					                    valueField:'value',
 					                    textField:'name',

@@ -107,7 +107,7 @@ public class Teacher extends CommEntity
      * 状态：标识是否审核通过
      */
     @Column(length = 1)
-    private String status = STATUS_AT_JOB;
+    private String status;
     
     /**
      * 入职时间
