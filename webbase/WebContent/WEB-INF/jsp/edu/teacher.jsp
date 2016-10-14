@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp"%>
+
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
@@ -36,8 +37,56 @@
 					}
 					return $.ad.getName(value,teacher.status,'value');
 				},
+				
+				detailFormatter:function(index,row){
+                    return '<div class="ddv" style="padding:5px 10px;height:60px"></div>';
+                },
+                onExpandRow: function(index,row){
+                    var ddv = $(this).datagrid('getRowDetail',index).find('div.ddv');
+                    
+                    if(row.addDetail){
+                    
+                    }else{
+                    	var des = '<table class="dv-table" border="0">' +
+						'<tr>' +
+							'<th><s:message code="p.eduInfo"/></th>'+
+							'<th class="dv-label"><s:message code="p.education"/>:</th>' +
+							'<td>' + $.ad.getDictName('education',row.education) + '</td>' +
+							
+							'<th class="dv-label"><s:message code="p.school"/>:</th>' +
+							'<td>' + $.ad.nvl(row.school) + '</td>' +
+							
+							'<th class="dv-label"><s:message code="p.major"/>:</th>' +
+							'<td>' + $.ad.nvl(row.major) + '</td>' +
+							
+							'<th class="dv-label"><s:message code="p.graduateTime"/>:</th>' +
+							'<td>' + $.ad.nvl(row.graduateTime) + '</td>' +
+						'</tr>' +
+						
+						'<tr>' +
+							'<th style="width:120px"><s:message code="p.emeContInfo"/></th>'+
+							'<th class="dv-label" style="width:120px"><s:message code="p.emeContact"/>:</th>' +
+							'<td>' + $.ad.nvl(row.emeContact) + '</td>' +
+							
+							'<th class="dv-label" style="width:120px"><s:message code="p.emeContactPhone"/>:</th>' +
+							'<td>' + $.ad.nvl(row.emeContactPhone) + '</td>' +
+							
+							'<th class="dv-label"><s:message code="p.address"/>:</th>' +
+							'<td>' + $.ad.nvl(row.address) + '</td>' +
+						
+						'</tr>' +
+					'</table>';
+			
+                    	ddv.append(des);
+                    	row.addDetail = true;
+                    	$('#dg').datagrid('fixDetailRowHeight',index);
+                    }
+                    $('#dg').datagrid('fixDetailRowHeight',index);
+                }
 								
 		};
+		
+		
 	</script> 
 	<div id="teacher_tb" style="padding: 5px; height: auto">
 		<div style="margin-bottom: 5px">
@@ -73,8 +122,9 @@
 		</div>
 	</div>
 
-	<table class="easyui-datagrid" id="teacher_grid" style="width: 890px;"
+	<table class="easyui-datagrid" id="teacher_grid" style="width: 916px;"
 		data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,
+				view: detailview,detailFormatter:teacher.detailFormatter,onExpandRow:teacher.onExpandRow,
 				url:'${ctx }/teacher/query',method:'post',toolbar:'#teacher_tb'">
 		<thead>
 			<tr>
@@ -255,6 +305,25 @@
 								validType:'maxLength[40]'">
 							</td>
 							<td width="200px">&nbsp;</td>
+						</tr>
+					</table>
+					
+					<!-- 可授课课程 -->
+					<h5><s:message code="p.emeContInfo"/>:</h5>
+					<table style="width:100%;border:1px solid #ccc;">
+						<tr>
+							<td><s:message code="p.emeContact"/>:</td>
+							<td>
+								<input class="easyui-combobox" name="education" style="width: 120px"
+									data-options="
+				                    url:'${ctx }/dict/get?pvalue=education',
+				                    method:'get',
+				                    valueField:'value',
+				                    textField:'name',
+				                    panelHeight:'auto',
+				                    required:true
+			                    ">
+							</td>
 						</tr>
 					</table>
 					

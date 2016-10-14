@@ -1,9 +1,14 @@
 package com.wja.edu.entity;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
@@ -130,6 +135,10 @@ public class Teacher extends CommEntity
      */
     @Column(length = 200)
     private String remark;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "t_edu_teacher_course", joinColumns = @JoinColumn(name = "t_id") , inverseJoinColumns = @JoinColumn(name = "c_id") )
+    private Set<Course> courses;
     
     public Date getEntryTime()
     {
@@ -309,6 +318,16 @@ public class Teacher extends CommEntity
     public void setEmeContactPhone(String emeContactPhone)
     {
         this.emeContactPhone = emeContactPhone;
+    }
+    
+    public Set<Course> getCourses()
+    {
+        return courses;
+    }
+    
+    public void setCourses(Set<Course> courses)
+    {
+        this.courses = courses;
     }
     
 }
