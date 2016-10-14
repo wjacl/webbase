@@ -83,7 +83,7 @@
                     }
                     $('#dg').datagrid('fixDetailRowHeight',index);
                 }
-								
+								 
 		};
 		
 		
