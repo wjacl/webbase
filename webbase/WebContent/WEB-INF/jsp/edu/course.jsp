@@ -27,9 +27,18 @@
 		</div>
 		<div>
 			<form id="course_query_form">
-				<s:message code="p.name" />
+				<s:message code="course.name" />
 				: <input class="easyui-textbox" style="width: 100px" 
 					name="name_like_string">
+				<s:message code="course.type" />
+				: <input class="easyui-combobox" style="width: 100px" id="course_type"
+					name="type_in_string"
+					data-options="url:'${ctx }/dict/get?pvalue=cour.type',method:'get',
+		                    valueField:'value',
+		                    textField:'name',
+		                    panelHeight:'auto',
+	                    	multiple:true">
+				
 				<a
 					href="javascript:$.ad.gridQuery('course_query_form','course_grid')"
 					class="easyui-linkbutton" iconCls="icon-search"><s:message
@@ -38,7 +47,7 @@
 		</div>
 	</div>
 
-	<table class="easyui-datagrid" id="course_grid" style="width: 800px;"
+	<table class="easyui-datagrid" id="course_grid" style="width: 880px;"
 		data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,
 				url:'${ctx }/course/query',method:'post',toolbar:'#course_tb'">
 		<thead>
@@ -52,6 +61,9 @@
 				<th
 					data-options="field:'credit',align:'right',width:60,sortable:'true'"><s:message
 						code="course.credit" /></th>
+				<th
+					data-options="field:'type',width:80,sortable:'true',formatter:course.typeFormatter"><s:message
+						code="course.type" /></th>
 				<th data-options="field:'createTime',align:'center',sortable:'true',width:80,formatter:$.ad.dateFormatter"><s:message
 						code="course.createTime" /></th>
 				<th data-options="field:'descr',width:400"><s:message
@@ -60,10 +72,21 @@
 			</tr>
 		</thead>
 	</table>
+	<script type="text/javascript">
+		var course = {
+			types:false,
+			typeFormatter:function(value,row,index){
+				if(!course.types){
+					course.types = $('#course_type').combobox("getData");
+				}
+				return $.ad.getName(value,course.types,'value');
+			}
+		};
+	</script>
 	
 	<div id="course_w" class="easyui-window"
 		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
-		style="width: 400px; height: 400px; padding: 10px;">
+		style="width: 400px; height: 430px; padding: 10px;">
 		<div class="content">
 				<form id="course_add" method="post" action="${ctx }/course/add">
 					<div style="margin-bottom: 20px">
@@ -82,6 +105,15 @@
 						<input class="easyui-numberbox" name="credit" style="width: 100%"
 							data-options="label:'<s:message code="course.credit"/>:',required:true,
 							max:999">
+					</div>			
+					<div style="margin-bottom: 20px">
+						<input class="easyui-combobox" style="width: 100%" 
+							name="type"
+							data-options="url:'${ctx }/dict/get?pvalue=cour.type',method:'get',
+				                    valueField:'value',
+				                    textField:'name',
+				                    panelHeight:'auto',
+			                    	label:'<s:message code="course.type"/>:'">
 					</div>
 					<div style="margin-bottom: 20px">
 						<input class="easyui-textbox" name="descr" style="width: 100%"

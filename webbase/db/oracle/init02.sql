@@ -27,6 +27,12 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('41','专科',
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('42','本科','2',42,'education','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('43','硕士','3',43,'education','s',1);
 
+/*10-14*/
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('44','博士','4',44,'education','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('courtype','课程分类','cour.type',45,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('46','Java','1',46,'courtype','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('47','大数据','2',47,'courtype','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('48','UI','3',48,'courtype','s',1);
 
 
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)

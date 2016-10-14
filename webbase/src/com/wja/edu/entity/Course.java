@@ -31,6 +31,12 @@ public class Course extends CommEntity
     private Byte credit;
     
     /**
+     * 所属分类
+     */
+    @Column(length = 10)
+    private String type;
+    
+    /**
      * 课程说明
      */
     @Column(length = 300)
@@ -64,6 +70,16 @@ public class Course extends CommEntity
     public void setCredit(Byte credit)
     {
         this.credit = credit;
+    }
+    
+    public String getType()
+    {
+        return type;
+    }
+    
+    public void setType(String type)
+    {
+        this.type = type;
     }
     
     public String getDescr()
