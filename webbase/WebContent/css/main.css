@@ -145,3 +145,18 @@ textarea.html,textarea.js{
 .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
 
 .min500h{min-height:500px;*+height:100%;_height:500px;}
+
+	.dv-table td{
+		border:0;
+		width:140px;
+		padding-left:10px;
+	}
+	.dv-table th{
+		width:80px;
+	}
+	.dv-label{
+		font-weight:bold;
+		color:#15428B;
+		width:80px;
+		text-align:right;
+	}

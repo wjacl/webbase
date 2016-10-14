@@ -356,6 +356,39 @@ $.ad = {
 			}
 		}
 		return "";
+	},
+	
+	/**
+	 * 加载的字典数组，以字典pvalue值为key索引放入一类字典的数组
+	 */
+	dictArray : [],	
+	getDictName:function(pvalue,value){
+		if(!$.ad.dictArray[pvalue]){
+			var url = ctx + "/dict/get?pvalue=" + pvalue;
+			$.ajax({url:url,async:false,dataType:'json',success:function(data){
+				$.ad.dictArray[pvalue] = data;
+			}})
+		}
+		
+		return $.ad.getName(value,$.ad.dictArray[pvalue],'value');
+	},
+	
+	/**
+	 * undefind、null替换
+	 * @param value
+	 * @param target  目标值
+	 * @returns
+	 */
+	nvl: function(value,target){
+		if(!target){
+			target = '';
+		}
+		if(value == undefined || value == null){
+			return target;
+		}
+		else{
+			return value;
+		}
 	}
 }
 
