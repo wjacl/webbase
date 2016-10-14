@@ -344,6 +344,18 @@ $.ad = {
 			}
 		}
 		return "";
+	},
+	
+	dateFormatter:function(value,row,index){
+		if(value){
+			if(value.length > 10){
+				return value.substring(0,10);
+			}
+			else{
+				return value;
+			}
+		}
+		return "";
 	}
 }
 
