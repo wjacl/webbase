@@ -158,6 +158,24 @@ function submitOk(data){
 							<td width="200px">&nbsp;</td>
 						</tr>
 					</table>
+					<!-- 可授课课程 -->
+					<h5><s:message code="teacher.course"/>:</h5>
+					<table style="width:100%;border:1px solid #ccc;">
+						<tr>
+							<td><s:message code="teacher.course"/>:</td>
+							<td>
+								<input class="easyui-combobox" name="courseIds" style="width: 600px" id="teacher_courseIds"
+									data-options="
+				                    url:'${ctx }/course/list?sort=type&order=asc',
+				                    method:'get',
+				                    valueField:'id',
+				                    textField:'name',
+				                    panelHeight:'auto',
+	                    			multiple:true
+			                    ">
+							</td>
+						</tr>
+					</table>
 					
                     <input type="hidden" name="id"  value="${data.id }"/>
                     <input type="hidden" name="version"  value="${data.version }"/>
