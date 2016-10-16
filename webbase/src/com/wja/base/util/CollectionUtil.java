@@ -18,6 +18,11 @@ public class CollectionUtil
         return array == null || array.length == 0;
     }
     
+    public static boolean isNotEmpty(Object[] array)
+    {
+        return array != null && array.length > 0;
+    }
+    
     /**
      * 
      * 判断集合是否为null或长度为0
@@ -29,6 +34,11 @@ public class CollectionUtil
     public static boolean isEmpty(Collection<?> col)
     {
         return col == null || col.isEmpty();
+    }
+    
+    public static boolean isNotEmpty(Collection<?> col)
+    {
+        return col != null && col.size() > 0;
     }
     
     /**
@@ -44,4 +54,8 @@ public class CollectionUtil
         return map == null || map.isEmpty();
     }
     
+    public static boolean isNotEmpty(Map<?, ?> map)
+    {
+        return map != null && !map.isEmpty();
+    }
 }
