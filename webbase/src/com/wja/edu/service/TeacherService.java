@@ -94,6 +94,8 @@ public class TeacherService
             for (Teacher s : list)
             {
                 uids[i++] = s.getUserId();
+                // 删除课程关系
+                s.setCourses(null);
             }
             this.userService.deleteUser(uids);
             this.dao.logicDeleteInBatch(ids);

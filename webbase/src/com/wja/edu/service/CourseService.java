@@ -40,6 +40,11 @@ public class CourseService
         return this.dao.findByName(name);
     }
     
+    public List<Course> find(String[] ids)
+    {
+        return this.dao.findAll(ids);
+    }
+    
     public void save(Course e)
     {
         if (StringUtils.isNotBlank(e.getId()))

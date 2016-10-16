@@ -39,7 +39,7 @@
 				},
 				
 				detailFormatter:function(index,row){
-                    return '<div class="ddv" style="padding:5px 10px;height:60px"></div>';
+                    return '<div class="ddv" style="padding:5px 10px;height:80px"></div>';
                 },
                 onExpandRow: function(index,row){
                     var ddv = $(this).datagrid('getRowDetail',index).find('div.ddv');
@@ -75,6 +75,21 @@
 							'<td>' + $.ad.nvl(row.address) + '</td>' +
 						
 						'</tr>' +
+						
+						'<tr>' +
+							'<th style="width:120px"><s:message code="teacher.course"/></th>'+
+							'<td colspan="8">';
+							if(row.courses && row.courses.length > 0){
+								var cnames = [];
+								for(var i in row.courses){
+									cnames.push(row.courses[i].name)
+								}
+								des += cnames.join(",");
+							}
+							
+							des += '</td>' +
+					
+						'</tr>' +
 					'</table>';
 			
                     	ddv.append(des);
@@ -82,6 +97,23 @@
                     	$('#dg').datagrid('fixDetailRowHeight',index);
                     }
                     $('#dg').datagrid('fixDetailRowHeight',index);
+                },
+                
+                teacherUpdate:function(){
+                	if(!$("#teacher_w").window("options").closed){
+
+        				$("#teacher_courseIds").combobox('reload');
+        				var selRows = $("#teacher_grid").datagrid("getSelections");
+        				var courseIds = [];
+        				var courses = selRows[0].courses;
+        				if(courses && courses.length > 0){
+        					for(var i in courses){
+        						courseIds.push(courses[i].id);
+        					}
+        				}
+        				$("#teacher_courseIds").combobox('setValues', courseIds);
+        			}
+                	
                 }
 								 
 		};
@@ -92,7 +124,7 @@
 		<div style="margin-bottom: 5px">
 			<%-- <a href="javascript:$.ad.toAdd('teacher_w','<s:message code='teacher' />','teacher_add','${ctx }/teacher/add');" class="easyui-linkbutton"
 				iconCls="icon-add" plain="true"><s:message code='comm.add' /></a>  --%>
-			<a href="javascript:$.ad.toUpdate('teacher_grid','teacher_w','<s:message code='teacher' />','teacher_add','${ctx }/teacher/update',{oldname:'name'})"
+			<a href="javascript:$.ad.toUpdate('teacher_grid','teacher_w','<s:message code='teacher' />','teacher_add','${ctx }/teacher/update',{oldname:'name'});teacher.teacherUpdate();"
 				class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='comm.update' /></a>
 			<a href="javascript:$.ad.doDelete('teacher_grid','${ctx }/teacher/delete')" class="easyui-linkbutton" iconCls="icon-remove"
 				plain="true"><s:message code='comm.remove' /></a>
@@ -158,7 +190,7 @@
 	
 	<div id="teacher_w" class="easyui-window"
 		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
-		style="width: 780px; height: 430px; padding: 10px;">
+		style="width: 780px; height: 460px; padding: 10px;">
 		
 				<form id="teacher_add" method="post" action="${ctx }/teacher/add">
 					<h5><s:message code="p.base"/>:</h5>
@@ -309,19 +341,19 @@
 					</table>
 					
 					<!-- 可授课课程 -->
-					<h5><s:message code="p.emeContInfo"/>:</h5>
+					<h5><s:message code="teacher.course"/>:</h5>
 					<table style="width:100%;border:1px solid #ccc;">
 						<tr>
-							<td><s:message code="p.emeContact"/>:</td>
+							<td><s:message code="teacher.course"/>:</td>
 							<td>
-								<input class="easyui-combobox" name="education" style="width: 120px"
+								<input class="easyui-combobox" name="courseIds" style="width: 600px" id="teacher_courseIds"
 									data-options="
-				                    url:'${ctx }/dict/get?pvalue=education',
+				                    url:'${ctx }/course/list?sort=type&order=asc',
 				                    method:'get',
-				                    valueField:'value',
+				                    valueField:'id',
 				                    textField:'name',
 				                    panelHeight:'auto',
-				                    required:true
+	                    			multiple:true
 			                    ">
 							</td>
 						</tr>

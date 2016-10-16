@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
@@ -138,6 +139,7 @@ public class Teacher extends CommEntity
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "t_edu_teacher_course", joinColumns = @JoinColumn(name = "t_id") , inverseJoinColumns = @JoinColumn(name = "c_id") )
+    @OrderBy("type")
     private Set<Course> courses;
     
     public Date getEntryTime()

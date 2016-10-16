@@ -1,5 +1,6 @@
 package com.wja.edu.controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -11,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wja.base.common.OpResult;
+import com.wja.base.util.CollectionUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
+import com.wja.edu.entity.Course;
 import com.wja.edu.entity.Teacher;
+import com.wja.edu.service.CourseService;
 import com.wja.edu.service.TeacherService;
 
 @Controller
@@ -23,6 +27,9 @@ public class TeacherController
     @Autowired
     private TeacherService service;
     
+    @Autowired
+    private CourseService courseService;
+    
     @RequestMapping("manage")
     public String manage()
     {
@@ -31,8 +38,14 @@ public class TeacherController
     
     @RequestMapping({"add", "update"})
     @ResponseBody
-    public OpResult save(Teacher c)
+    public OpResult save(Teacher c, String[] courseIds)
     {
+        if (CollectionUtil.isNotEmpty(courseIds))
+        {
+            List<Course> curses = this.courseService.find(courseIds);
+            c.setCourses(new HashSet<Course>(curses));
+        }
+        
         boolean add = StringUtils.isBlank(c.getId());
         this.service.save(c);
         if (add)
