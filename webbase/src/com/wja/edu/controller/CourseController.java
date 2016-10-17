@@ -29,6 +29,12 @@ public class CourseController
         return "edu/course";
     }
     
+    @RequestMapping("arch")
+    public String archManage()
+    {
+        return "edu/course_arch";
+    }
+    
     @RequestMapping("nameCheck")
     @ResponseBody
     public boolean nameCheck(String name)
