@@ -142,11 +142,11 @@
 							<div style="margin-bottom: 20px">
 								<input class="easyui-textbox" name="value" style="width: 100%"
 									data-options="label:'<s:message code="dict.value"/>:',required:true,
-									validType:{length:[1,20],myRemote:['${ctx }/dict/valueCheck','value','#oldDictValue','pid',$('#dictpid').val()]}">
+									validType:{length:[1,20],myRemote:['${ctx }/dict/valueCheck','value','#oldDictValue','pid','#dictpid']}">
 								<input type="hidden" name="oldDictValue" id="oldDictValue" />
 							</div>
 							<div style="margin-bottom: 20px">
-								<input class="easyui-numberbox" name="ordno" 
+								<input class="easyui-numberbox" name="ordno"  
 									style="width: 100%"
 									data-options="label:'<s:message code="dict.ordno"/>:',required:true">
 							</div>

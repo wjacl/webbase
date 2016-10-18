@@ -513,7 +513,11 @@ $.extend($.fn.validatebox.defaults.rules, {
         		//附加参数，在param数组中依次成对出现（名、值）
         		if(param.length > 3){
         			for(var i = 3; i < param.length;i+=2){
-        				_48[param[i]]=param[i+1];
+        				var v = param[i+1];
+        				if(v.charAt(0) == "#"){
+        					v = $(v).val();
+        				}
+        				_48[param[i]]=v;
         			}
         		}
         		var _49=$.ajax({url:param[0],dataType:"json",data:_48,async:false,cache:false,type:"post"}).responseText;
