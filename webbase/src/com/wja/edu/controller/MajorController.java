@@ -16,45 +16,52 @@ import com.wja.base.common.OpResult;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
 import com.wja.base.web.AppContext;
-import com.wja.edu.entity.Course;
+import com.wja.edu.entity.Major;
 import com.wja.edu.service.CourseService;
+import com.wja.edu.service.MajorService;
 
 @Controller
-@RequestMapping("/course")
-public class CourseController
+@RequestMapping("/major")
+public class MajorController
 {
     @Autowired
-    private CourseService service;
+    private MajorService service;
+    
+    @Autowired
+    private CourseService courseService;
     
     @RequestMapping("manage")
     public String manage(Model model)
     {
         model.addAttribute("treeNodes", JSON.toJSONString(this.service.findAll()));
-        return "edu/course";
-    }
-    
-    @RequestMapping("arch")
-    public String archManage()
-    {
-        return "edu/course_arch";
+        model.addAttribute("courseTreeNodes", JSON.toJSONString(this.courseService.findAll()));
+        return "edu/major";
     }
     
     @RequestMapping("nameCheck")
     @ResponseBody
     public boolean nameCheck(String name, String pid)
     {
-        return this.service.getByNameAndPid(name, pid) == null;
+        return this.service.getByName(name) == null;
+    }
+    
+    @RequestMapping("setCourse")
+    @ResponseBody
+    public OpResult setCourse(String majorId, String[] courseIds)
+    {
+        this.service.updateMajorCourse(majorId, courseIds);
+        return OpResult.ok();
     }
     
     @RequestMapping({"add", "update"})
     @ResponseBody
-    public OpResult save(Course c)
+    public OpResult save(Major c)
     {
         boolean add = StringUtils.isBlank(c.getId());
-        Course ec = this.service.getByNameAndPid(c.getName(), c.getPid());
+        Major ec = this.service.getByName(c.getName());
         if (ec != null && !ec.getId().equals(c.getId()))
         {
-            return OpResult.error(AppContext.getMessage("course.name.exits"), c);
+            return OpResult.error(AppContext.getMessage("Major.name.exits"), c);
         }
         
         c = this.service.save(c);
@@ -70,14 +77,14 @@ public class CourseController
     
     @RequestMapping("query")
     @ResponseBody
-    public Page<Course> pageQuery(@RequestParam Map<String, Object> params, Page<Course> page)
+    public Page<Major> pageQuery(@RequestParam Map<String, Object> params, Page<Major> page)
     {
         return this.service.pageQuery(params, page);
     }
     
     @RequestMapping("list")
     @ResponseBody
-    public List<Course> query(@RequestParam Map<String, Object> params, Sort sort)
+    public List<Major> query(@RequestParam Map<String, Object> params, Sort sort)
     {
         return this.service.query(params, sort);
     }

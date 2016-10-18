@@ -51,7 +51,7 @@ public class CourseService
         return this.dao.findAll(ids);
     }
     
-    public void save(Course e)
+    public Course save(Course e)
     {
         if (StringUtils.isNotBlank(e.getId()))
         {
@@ -60,7 +60,7 @@ public class CourseService
             e = dbc;
         }
         
-        this.dao.save(e);
+        return this.dao.save(e);
     }
     
     public void delete(String id)
