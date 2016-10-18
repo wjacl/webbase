@@ -11,129 +11,216 @@
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
 	
 	<div id="mainwrap">
-		<div id="content" class="content">
+		<div id="content" class="content min500h">
 	<h3>
 		<s:message code="course.title" />
 	</h3>
-	
-	<div id="course_tb" style="padding: 5px; height: auto">
-		<div style="margin-bottom: 5px">
-			<a href="javascript:$.ad.toAdd('course_w','<s:message code='course' />','course_add','${ctx }/course/add');" class="easyui-linkbutton"
-				iconCls="icon-add" plain="true"><s:message code='comm.add' /></a>
-			<a href="javascript:$.ad.toUpdate('course_grid','course_w','<s:message code='course' />','course_add','${ctx }/course/update',{oldname:'name'})"
-				class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='comm.update' /></a>
-			<a href="javascript:$.ad.doDelete('course_grid','${ctx }/course/delete')" class="easyui-linkbutton" iconCls="icon-remove"
-				plain="true"><s:message code='comm.remove' /></a>
+	<div class="easyui-layout" style="width:620px;height:430px;">
+		<div data-options="region:'west'" style="padding: 5px;width:300px;max-height:430px;">
+				<ul id="courseTree" class="ztree"></ul>			
 		</div>
-		<div>
-			<form id="course_query_form">
-				<s:message code="course.name" />
-				: <input class="easyui-textbox" style="width: 100px" 
-					name="name_like_string">
-				<s:message code="course.type" />
-				: <input class="easyui-combobox" style="width: 100px" id="course_type"
-					name="type_in_string"
-					data-options="url:'${ctx }/dict/get?pvalue=cour.type',method:'get',
-		                    valueField:'value',
-		                    textField:'name',
-		                    panelHeight:'auto',
-	                    	multiple:true">
-				
-				<a
-					href="javascript:$.ad.gridQuery('course_query_form','course_grid')"
-					class="easyui-linkbutton" iconCls="icon-search"><s:message
-						code="comm.query" /></a>
-			</form>
-		</div>
-	</div>
-
-	<table class="easyui-datagrid" id="course_grid" style="width: 880px;"
-		data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,
-				url:'${ctx }/course/query',method:'post',toolbar:'#course_tb'">
-		<thead>
-			<tr> 
-				<th data-options="field:'ck',checkbox:true"></th>
-				<th data-options="field:'name',width:140"><s:message
-						code="course.name" /></th>
-				<th
-					data-options="field:'hour',align:'right',width:60,sortable:'true'"><s:message
-						code="course.hour" /></th>
-				<th
-					data-options="field:'credit',align:'right',width:60,sortable:'true'"><s:message
-						code="course.credit" /></th>
-				<th
-					data-options="field:'type',width:80,sortable:'true',formatter:course.typeFormatter"><s:message
-						code="course.type" /></th>
-				<th data-options="field:'createTime',align:'center',sortable:'true',width:80,formatter:$.ad.dateFormatter"><s:message
-						code="course.createTime" /></th>
-				<th data-options="field:'descr',width:400"><s:message
-						code="course.descr" /></th>
-				
-			</tr>
-		</thead>
-	</table>
-	<script type="text/javascript">
-		var course = {
-			types:false,
-			typeFormatter:function(value,row,index){
-				if(!course.types){
-					course.types = $('#course_type').combobox("getData");
-				}
-				return $.ad.getName(value,course.types,'value');
-			}
-		};
-	</script>
-	
-	<div id="course_w" class="easyui-window"
-		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
-		style="width: 400px; height: 430px; padding: 10px;">
-		<div class="content">
-				<form id="course_add" method="post" action="${ctx }/course/add">
+		<div data-options="region:'center',border:false" style="width:300px;max-height:430px;"> 
+			<div class="content">
+				<form id="course_add" method="post" action="${ctx }/course/add">							
 					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="name" style="width: 100%"
+						<input class="easyui-textbox" name="typeName" style="width: 240px"
+							data-options="label:'<s:message code="course.type"/>:',readonly:true">
+					</div>
+					<div style="margin-bottom: 20px">
+						<input class="easyui-textbox" name="name" style="width: 240px"
 							data-options="label:'<s:message code="course.name"/>:',required:true,
-							validType:{length:[1,30],myRemote:['${ctx }/course/nameCheck','name','#course_oldname']},
+							validType:{length:[1,30],myRemote:['${ctx }/course/nameCheck','name','#course_oldname','pid','#course_pid']},
 							invalidMessage:'<s:message code="course.name.exits"/>'">
 						<input type="hidden" name="oldname" id="course_oldname" />
 					</div>
 					<div style="margin-bottom: 20px">
-						<input class="easyui-numberbox" name="hour" style="width: 100%"
+						<input class="easyui-numberbox" name="hour" style="width: 240px"
 							data-options="label:'<s:message code="course.hour"/>:',required:true,
 							max:999">
 					</div>
 					<div style="margin-bottom: 20px">
-						<input class="easyui-numberbox" name="credit" style="width: 100%"
+						<input class="easyui-numberbox" name="credit" style="width: 240px"
 							data-options="label:'<s:message code="course.credit"/>:',required:true,
 							max:999">
 					</div>			
 					<div style="margin-bottom: 20px">
-						<input class="easyui-combobox" style="width: 100%" 
-							name="type"
-							data-options="url:'${ctx }/dict/get?pvalue=cour.type',method:'get',
-				                    valueField:'value',
-				                    textField:'name',
-				                    panelHeight:'auto',
-			                    	label:'<s:message code="course.type"/>:'">
-					</div>
-					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="descr" style="width: 100%"
+						<input class="easyui-textbox" name="descr" style="width: 240px"
 							data-options="label:'<s:message code="course.descr"/>:',
 							validType:{length:[0,300]},multiline:true,height:60">
 					</div>
-					
+					<input type="hidden" name="ordno" />
                     <input type="hidden" name="id" />
+                    <input type="hidden" name="pid"  id="course_pid"/>
+                    <input type="hidden" name="type" />
                     <input type="hidden" name="version" />
 				</form>
-				<div style="text-align: center; padding: 5px 0">
+				<div style="text-align: center; padding: 5px 0;width:240px" id="course_buttons">
 					<a href="javascript:void(0)" class="easyui-linkbutton"
-						onclick="$.ad.submitForm('course_add','course_grid','course_w')" style="width: 80px">
+						onclick="courseSubmitForm('course_add')" style="width: 80px">
 						<s:message code="comm.submit" /></a> 
 					<a href="javascript:void(0)"
 						class="easyui-linkbutton" onclick="$.ad.clearForm('course_add')"
 						style="width: 80px"><s:message code="comm.clear" /></a>
 				</div>
+			</div>
 		</div>
 	</div>
+				<script type="text/javascript">
+				var course = {
+						rootId:0,
+						type_t:'t',
+						type_c:'c',
+						currNode : null,
+						onClick :function(event, treeId, treeNode, clickFlag){
+							course.currNode = treeNode;
+							
+							if(treeNode.type == course.type_t ){
+								$("#course_buttons").hide();
+								if(treeNode.id != course.rootId){
+									$.fn.zTree.getZTreeObj(treeId).editName(treeNode);
+								}
+							}
+							else{
+								treeNode.oldname = treeNode.name;
+								treeNode.typeName = treeNode.getParentNode().name;
+								$("#course_add").form("load",treeNode);
+								$("#course_buttons").show();
+							}
+						},
+						
+						beforeRename:function(treeId, treeNode, newName, isCancel){
+							var ztree = $.fn.zTree.getZTreeObj(treeId);
+							if(newName.length == 0){
+								ztree.cancelEditName();
+								$.sm.alert('<s:message code="course.name.notnull"/>');
+								return false;
+							}
+							
+							if(treeNode.name == newName){
+								return true;
+							}
+							
+							var res = false;
+							treeNode.name = newName;
+							$.ajax({ url: ztree.saveUrl,dataType:'json',data:treeNode,async:false, 
+								success: function(data){
+									$.sm.handleResult(data);
+									if(data.status == $.sm.ResultStatus_Ok){
+										if(!treeNode.id){
+											treeNode.id = data.data.id;
+										}
+										res = true;
+									}
+							      }});
+							
+							return res;
+							
+						},
+						
+						addHoverDom : function(treeId, treeNode) {
+							if(treeNode.type != course.type_t){
+								return false;
+							}
+							
+							var zTree = $.fn.zTree.getZTreeObj(treeId);
+							var sObj = $("#" + treeNode.tId + "_span");
+							if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+							var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+								+ "' title='" + I18N.add + "' onfocus='this.blur();'></span>";
+							sObj.after(addStr);
+							var btn = $("#addBtn_"+treeNode.tId);
+							if (btn) btn.bind("click", function(){
+								course.currNode = treeNode;
+								var ordno = 1;
+								if(treeNode.children && treeNode.children.length > 0){
+									ordno = treeNode.children.length + 1;
+								}
+								
+								if(treeNode.id == course.rootId){
+									zTree.addNodes(treeNode, {pid:treeNode.id, name:I18N.ztree_node_new,type:course.type_t,ordno:ordno});
+									$("#course_buttons").hide();
+								}
+								else{
+									var da = {pid:treeNode.id,type:course.type_c,ordno:ordno,typeName:treeNode.name};
+									$("#course_add").form("clear");
+									$("#course_add").form("load",da);
+									$("#course_buttons").show();
+								}
+								return false;
+							});
+						}
+						
+				};
+				course.treeSetting = {
+					view: {
+						addHoverDom: course.addHoverDom,
+						removeHoverDom: ztreef.removeHoverDom,
+						selectedMulti: false
+					},
+					edit: {
+						enable: true,
+						removeTitle:I18N.remove,
+						renameTitle:I18N.update,
+						showRenameBtn: false,
+						showRemoveBtn:function(treeId,treeNode){						
+							if(treeNode.id == course.rootId){
+								return false;
+							}
+							return true;
+						}
+					},
+					data: {
+						simpleData: {
+							enable: true,
+							pIdKey:"pid"						
+						}
+					},
+					callback: {
+						beforeRemove: ztreef.beforeRemove,
+						beforeRename: course.beforeRename,
+						onClick:course.onClick
+					}
+				};
+				
+				course.treezNodes =${treeNodes};
+				for(var i in course.treezNodes){
+					if(course.treezNodes[i].type == course.type_t){
+						course.treezNodes[i].isParent = true;
+					}
+				}
+				course.treezNodes.push({id:course.rootId,name:'<s:message code="course.type"/>',
+					pid:null,type:'t',open:true,isParent:true});
+	
+				var coursezTree = $.fn.zTree.init($("#courseTree"), course.treeSetting,course.treezNodes);
+				coursezTree.saveUrl = "${ctx}/course/add";
+				coursezTree.deleteUrl = "${ctx}/course/delete";
+				
+				function courseSubmitForm(formId){
+					$('#' + formId).form('submit',{success:function(data){
+						var data = eval('(' + data + ')');
+						$.sm.handleResult(data,function(node){
+							
+							var newNode = node;
+							newNode.oldname = newNode.name;
+							$("#course_add").form("load",newNode);
+							
+							if(newNode.pid == course.currNode.id){
+								coursezTree.addNodes(course.currNode,newNode);
+								course.currNode = coursezTree.getNodeByParam("id",newNode.id);
+								
+							}
+							else{
+								course.currNode.name = newNode.name;
+								course.currNode.hour = newNode.hour;
+								course.currNode.credit = newNode.credit;
+								course.currNode.remark = course.currNode.remark;
+								coursezTree.updateNode(course.currNode);
+							}
+						});
+					}});
+				}
+					
+			</script>	
 	</div>
 	</div>
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>

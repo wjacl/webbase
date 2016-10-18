@@ -8,5 +8,5 @@ import com.wja.edu.entity.Course;
 @Repository
 public interface CourseDao extends CommRepository<Course, String>
 {
-    Course findByName(String name);
+    Course findByNameAndPid(String name, String pid);
 }

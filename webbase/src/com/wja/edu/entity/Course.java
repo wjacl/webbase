@@ -31,16 +31,41 @@ public class Course extends CommEntity
     private Byte credit;
     
     /**
-     * 所属分类
+     * 数据类型：t:分类,c:课程
      */
-    @Column(length = 10)
+    @Column(length = 1)
     private String type;
+    
+    @Column(length = 32)
+    private String pid;
     
     /**
      * 课程说明
      */
     @Column(length = 300)
     private String descr;
+    
+    private Integer ordno;
+    
+    public String getPid()
+    {
+        return pid;
+    }
+    
+    public void setPid(String pid)
+    {
+        this.pid = pid;
+    }
+    
+    public Integer getOrdno()
+    {
+        return ordno;
+    }
+    
+    public void setOrdno(Integer ordno)
+    {
+        this.ordno = ordno;
+    }
     
     public String getName()
     {

@@ -31,13 +31,19 @@ public class CourseService
         return this.dao.getOne(id);
     }
     
-    public Course getByName(String name)
+    public List<Course> findAll()
     {
-        if (StringUtils.isBlank(name))
+        Sort sort = new Sort("pid,ordno", "asc,asc");
+        return this.dao.findAll(sort.getSpringSort());
+    }
+    
+    public Course getByNameAndPid(String name, String pid)
+    {
+        if (StringUtils.isBlank(name) || StringUtils.isBlank(pid))
         {
             return null;
         }
-        return this.dao.findByName(name);
+        return this.dao.findByNameAndPid(name, pid);
     }
     
     public List<Course> find(String[] ids)
