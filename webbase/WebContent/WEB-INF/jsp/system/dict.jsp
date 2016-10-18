@@ -65,7 +65,6 @@
 			      }});
 				
 				function dictAddHoverDom(treeId, treeNode) {
-					
 					var zTree = $.fn.zTree.getZTreeObj(treeId);
 					var sObj = $("#" + treeNode.tId + "_span");
 					if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
