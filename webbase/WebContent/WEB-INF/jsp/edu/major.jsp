@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp"%>
-</head>
+</head> 
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
 	
