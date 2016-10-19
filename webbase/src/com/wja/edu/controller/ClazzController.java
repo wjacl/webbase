@@ -1,5 +1,6 @@
 package com.wja.edu.controller;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,10 +8,12 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.wja.base.common.OpResult;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
@@ -28,6 +31,20 @@ public class ClazzController
     public String manage()
     {
         return "edu/clazz";
+    }
+    
+    @RequestMapping("view")
+    public String view(Model model)
+    {
+        model.addAttribute("times", System.currentTimeMillis());
+        
+        Map<String, Object> params = new HashMap<>();
+        Calendar cal = Calendar.getInstance();
+        cal.set(cal.get(Calendar.YEAR), 0, 1, 0, 0, 0);
+        params.put("startTime_after_date", cal.getTime());
+        Sort sort = new Sort("startTime", "desc");
+        model.addAttribute("treeNodes", JSON.toJSONString(this.clazzService.query(params, sort)));
+        return "edu/clazz_view";
     }
     
     @RequestMapping("registGet")

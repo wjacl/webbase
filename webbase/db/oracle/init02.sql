@@ -55,3 +55,7 @@ INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-cour');
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('edu-major','专业管理','/major/manage','edu','1',1,2060);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-major');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-class-view','班级管理','/clazz/view','edu','1',1,2025);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-class-view');
