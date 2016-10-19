@@ -470,6 +470,18 @@ var ztreef = {
 		
 		removeHoverDom:function orgRemoveHoverDom(treeId, treeNode) {
 			$("#addBtn_"+treeNode.tId).unbind().remove();
+		},
+		
+		beforeDrag : function(treeId, treeNodes) {
+			for (var i=0,l=treeNodes.length; i<l; i++) {
+				if (treeNodes[i].drag === false) {
+					return false;
+				}
+			}
+			return true;
+		},
+		beforeDrop : function(treeId, treeNodes, targetNode, moveType) {
+			return targetNode ? targetNode.drop !== false : true;
 		}
 }
 
