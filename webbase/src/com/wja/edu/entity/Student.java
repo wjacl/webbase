@@ -55,7 +55,7 @@ public class Student extends CommEntity
     /**
      * 学习专业
      */
-    @Column(name = "learn_major", length = 10)
+    @Column(name = "learn_major", length = 32)
     private String learnMajor;
     
     /**
