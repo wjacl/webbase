@@ -33,7 +33,7 @@
 					if(!student.majors){
 						student.majors = $('#studentMajor').combobox("getData");
 					}
-					return $.ad.getName(value,student.majors,'value');
+					return $.ad.getName(value,student.majors,'id');
 				},
 				
 				clazz:false,
@@ -73,9 +73,9 @@
 						<input class="easyui-combobox" name="learnMajor_in_string" id="studentMajor"
 						style="width: 140px"
 						data-options="
-		                    url:'${ctx }/dict/get?pvalue=major',
+		                    url:'${ctx }/major/list?sort=ordno&order=asc',
 		                    method:'get',
-		                    valueField:'value',
+		                    valueField:'id',
 		                    textField:'name',
 		                    panelHeight:'auto',
 	                    	multiple:true
@@ -218,9 +218,9 @@
 								<input class="easyui-combobox" name="learnMajor"
 									style="width: 120px;"
 									data-options="
-					                    url:'${ctx }/dict/get?pvalue=major',
+					                    url:'${ctx }/major/list?sort=ordno&order=asc',
 					                    method:'get',
-					                    valueField:'value',
+					                    valueField:'id',
 					                    textField:'name',
 					                    panelHeight:'auto',
 					                    required:true

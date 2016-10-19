@@ -97,9 +97,9 @@ function submitOk(data){
 								<input class="easyui-combobox" name="learnMajor"  value="${data.learnMajor}"
 									style="width: 120px;"
 									data-options="
-					                    url:'${ctx }/dict/get?pvalue=major',
+					                    url:'${ctx }/major/list?sort=ordno&order=asc',
 					                    method:'get',
-					                    valueField:'value',
+					                    valueField:'id',
 					                    textField:'name',
 					                    panelHeight:'auto',
 					                    required:true
