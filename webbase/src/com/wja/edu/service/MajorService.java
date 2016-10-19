@@ -41,6 +41,11 @@ public class MajorService
         return this.dao.getOne(id);
     }
     
+    public List<MajorCourse> getMajorCourse(String majorId)
+    {
+        return StringUtils.isBlank(majorId) ? null : this.mcDao.findByMajorIdOrderByOrdnoAsc(majorId);
+    }
+    
     public void updateMajorCourse(String majorId, String[] courseIds)
     {
         if (StringUtils.isBlank(majorId))
@@ -113,6 +118,7 @@ public class MajorService
         if (StringUtils.isNotBlank(id))
         {
             this.dao.logicDelete(id);
+            this.mcDao.deleteMajorCourse(id);
         }
     }
     
@@ -121,7 +127,12 @@ public class MajorService
         if (!CollectionUtil.isEmpty(ids))
         {
             this.dao.logicDeleteInBatch(ids);
+            for (String id : ids)
+            {
+                this.mcDao.deleteMajorCourse(id);
+            }
         }
+        
     }
     
     public List<Major> query(Map<String, Object> params, Sort sort)

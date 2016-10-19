@@ -15,30 +15,30 @@
 	<h3>
 		<s:message code="major.title" />
 	</h3>
-	<div class="easyui-layout" style="width:620px;height:430px;">
+	<div class="easyui-layout" style="width:720px;height:430px;">
 		<div data-options="region:'west'" style="padding: 5px;width:300px;max-height:430px;">
 				<ul id="majorTree" class="ztree"></ul>			
 		</div>
-		<div data-options="region:'center',border:false" style="width:300px;max-height:430px;"> 
+		<div data-options="region:'center',border:false" style="width:400px;max-height:430px;"> 
 			<div class="content">
 				<form id="major_add" method="post" action="${ctx }/major/add">		
 					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="name" style="width: 240px"
+						<input class="easyui-textbox" name="name" style="width: 300px"
 							data-options="label:'<s:message code="major.name"/>:',required:true,
 							validType:{length:[1,30],myRemote:['${ctx }/major/nameCheck','name','#major_oldname']},
 							invalidMessage:'<s:message code="major.name.exits"/>'">
 						<input type="hidden" name="oldname" id="major_oldname" />
 					</div>			
 					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="descr" style="width: 240px"
+						<input class="easyui-textbox" name="descr" style="width: 300px"
 							data-options="label:'<s:message code="major.descr"/>:',
-							validType:{length:[0,300]},multiline:true,height:60">
+							validType:{length:[0,300]},multiline:true,height:90">
 					</div>
 					<input type="hidden" name="ordno" />
                     <input type="hidden" name="id" />
                     <input type="hidden" name="version" />
 				</form>
-				<div style="text-align: center; padding: 5px 0;width:240px" id="major_buttons">
+				<div style="text-align: center; padding: 5px 0;width:240px;display:none" id="major_buttons">
 					<a href="javascript:void(0)" class="easyui-linkbutton"
 						onclick="majorSubmitForm('major_add')" style="width: 80px">
 						<s:message code="comm.submit" /></a> 
@@ -49,19 +49,21 @@
 			</div>
 		</div>
 	</div>
-				<script type="text/javascript">
+			<script type="text/javascript">
 				var major = {
 						rootId:0,
 						type_t:'t',
 						type_c:'c',
 						currNode : null,
 						onClick :function(event, treeId, treeNode, clickFlag){
-							major.currNode = treeNode;
-							
+							major.currNode = treeNode;						
 							if(treeNode.pid == major.rootId ){							
 								treeNode.oldname = treeNode.name;
 								$("#major_add").form("load",treeNode);
 								$("#major_buttons").show();
+							}
+							else{
+								$("#major_buttons").hide();
 							}
 						},
 						
@@ -87,7 +89,7 @@
 										}
 									}
 									
-									for(var i in nodes.length){
+									for(var i in nodes){
 										var has = false;
 										for(var j in clds){
 											if(clds[j].id == nodes[i].id){
@@ -106,44 +108,72 @@
 									}
 								}
 							}
-							
+
 							//最后存库
-							var courseIds = [];
-							for(var i in major.currNode.children){
-								courseIds.push(major.currNode.children[i].id);
+							if(major.resaveMajorCourse(major.currNode)){
+								$("#major_course_w").window("close");
 							}
-							$.ajax({url:'${ctx}/major/setCourse',async:false,dataType:'json',
-								data:{majorId:major.currNode.id,courseIds:courseIds},
-								success:function(data){
-									$.sm.handleResult(data,function(data){
-										$("#major_course_w").window("close");
-									})
-								}})
 						},
 						
-						beforeRename:function(treeId, treeNode, newName, isCancel){
-							var ztree = $.fn.zTree.getZTreeObj(treeId);
-							
-							
-							if(treeNode.name == newName){
-								return true;
-							}
-							
-							var res = false;
-							treeNode.name = newName;
-							$.ajax({ url: ztree.saveUrl,dataType:'json',data:treeNode,async:false, 
-								success: function(data){
-									$.sm.handleResult(data);
-									if(data.status == $.sm.ResultStatus_Ok){
-										if(!treeNode.id){
-											treeNode.id = data.data.id;
+						loadMajorCourse:function (treeNode,notexpand){
+							if(treeNode.pid == major.rootId && !treeNode.loaded){
+								$.ajax({url:'${ctx}/major/getMajorCourse',
+									data:{majorId:treeNode.id},async:false,dataType:'json',
+									success:function(data){
+										treeNode.loaded = true;
+										if(data && data.length > 0){
+											var nodes = [];
+											for(var i in data){
+												nodes.push({id:data[i].course.id,name:data[i].course.name,pid:treeNode.id});
+											}
+											majorzTree.addNodes(treeNode, nodes,notexpand);
 										}
-										res = true;
+									}});
+							}
+						},
+						
+						beforeExpand:function(treeId, treeNode){
+							major.loadMajorCourse(treeNode,true);
+							return true;
+						},
+						
+						beforeRemove:function(treeId, treeNode){
+							$.sm.confirmDelete(function(){
+								if(treeNode.pid == major.rootId){
+									$.ajax({url:'${ctx}/major/delete',data:{ids:[treeNode.id]},
+										dataType:'json',async:false,
+										success: function(data){
+											$.sm.handleResult(data);
+											majorzTree.removeNode(treeNode);
+									      }});
+								}else{
+									if(major.resaveMajorCourse(treeNode.getParentNode(),treeNode.id)){
+										majorzTree.removeNode(treeNode);
 									}
-							      }});
+								}
+							});
 							
+							return false;
+						},
+						
+						resaveMajorCourse:function(majorNode,exceptCourseId){
+							//保存
+							var courseIds = [];
+							for(var i in majorNode.children){
+								if(exceptCourseId && majorNode.children[i].id == exceptCourseId){
+									continue;
+								}
+								courseIds.push(majorNode.children[i].id);
+							}
+							var res = false;
+							$.ajax({url:'${ctx}/major/setCourse',async:false,dataType:'json',
+								data:{majorId:majorNode.id,courseIds:courseIds},
+								success:function(data){
+									$.sm.handleResult(data,function(data){
+										res = true;
+									})
+								}});
 							return res;
-							
 						},
 						
 						addHoverDom : function(treeId, treeNode) {
@@ -173,6 +203,9 @@
 								}
 								else{
 									//添加课程
+									if(!treeNode.loaded){
+										major.loadMajorCourse(treeNode,false);
+									}
 									$("#major_course_w").window("open");
 									//清空选中
 									majorCoursezTree.checkAllNodes(false);
@@ -180,13 +213,28 @@
 									if(treeNode.children){
 										for(var i in treeNode.children){
 											var nd = majorCoursezTree.getNodesByParam("id",treeNode.children[i].id);
-											majorCoursezTree.checkNode(nd,true);
+											majorCoursezTree.checkNode(nd[0],true);
 										}
 									}
 									
 								}
 								return false;
 							});
+						},
+						
+						beforeDrop : function(treeId, treeNodes, targetNode, moveType) {
+							if(targetNode){
+								if(targetNode.pid != treeNodes[0].pid){
+									return false;
+								}
+							}
+							return true;
+						},
+						
+						onDrop : function(event, treeId, treeNodes, targetNode, moveType) {
+						    if(targetNode){
+						    	major.resaveMajorCourse(targetNode.getParentNode());
+						    }
 						}
 						
 				};
@@ -206,6 +254,11 @@
 								return false;
 							}
 							return true;
+						},
+						drag: {
+							prev: true,
+							next: true,
+							inner: false
 						}
 					},
 					data: {
@@ -215,9 +268,12 @@
 						}
 					},
 					callback: {
-						beforeRemove: ztreef.beforeRemove,
-						beforeRename: major.beforeRename,
-						onClick:major.onClick
+						beforeRemove: major.beforeRemove,
+						beforeExpand:major.beforeExpand,
+						onClick:major.onClick,
+						beforeDrag: ztreef.beforeDrag,
+						beforeDrop: major.beforeDrop,
+						onDrop:major.onDrop
 					}
 				};
 				
@@ -225,14 +281,13 @@
 				for(var i in major.treezNodes){
 					major.treezNodes[i].pid = major.rootId;
 					major.treezNodes[i].isParent = true;
+					major.treezNodes[i].drag = false;
 				}
 				major.treezNodes.push({id:major.rootId,name:'<s:message code="major"/>',
-					pid:null,open:true,isParent:true});
+					pid:null,open:true,isParent:true,drag:false,drop:false});
 	
 				var majorzTree = $.fn.zTree.init($("#majorTree"), major.treeSetting,major.treezNodes);
-				majorzTree.saveUrl = "${ctx}/major/add";
-				majorzTree.deleteUrl = "${ctx}/major/delete";
-				
+
 				function majorSubmitForm(formId){
 					$('#' + formId).form('submit',{success:function(data){
 						var data = eval('(' + data + ')');
@@ -245,6 +300,7 @@
 							if(major.currNode.id == major.rootId){
 								newNode.pid = major.rootId;
 								newNode.isParent = true;
+								newNode.drag = false;
 								majorzTree.addNodes(major.currNode,newNode);
 								major.currNode = majorzTree.getNodeByParam("id",newNode.id);								
 							}

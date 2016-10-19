@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.wja.base.common.OpResult;
-import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
 import com.wja.base.web.AppContext;
 import com.wja.edu.entity.Major;
@@ -45,6 +44,13 @@ public class MajorController
         return this.service.getByName(name) == null;
     }
     
+    @RequestMapping("getMajorCourse")
+    @ResponseBody
+    public Object getMajorCourse(String majorId)
+    {
+        return this.service.getMajorCourse(majorId);
+    }
+    
     @RequestMapping("setCourse")
     @ResponseBody
     public OpResult setCourse(String majorId, String[] courseIds)
@@ -73,13 +79,6 @@ public class MajorController
         {
             return OpResult.updateOk(c);
         }
-    }
-    
-    @RequestMapping("query")
-    @ResponseBody
-    public Page<Major> pageQuery(@RequestParam Map<String, Object> params, Page<Major> page)
-    {
-        return this.service.pageQuery(params, page);
     }
     
     @RequestMapping("list")
