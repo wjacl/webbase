@@ -7,6 +7,11 @@
 	<link rel="stylesheet" type="text/css" href="${ctx }/css/main.css">
     <link rel="stylesheet" type="text/css" href="${ctx }/js/jquery-easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="${ctx }/js/ztree/css/zTreeStyle/zTreeStyle.css">
+    <script type="text/javascript">
+	<!--
+	var ctx = '${ctx}';
+	//-->
+	</script>
     <script type="text/javascript" src="${ctx }/js/jquery-easyui/jquery.min.js"></script>
     <script type="text/javascript" src="${ctx }/js/jquery-easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="${ctx }/js/jquery-easyui/datagrid-detailview.js"></script>
@@ -14,9 +19,6 @@
     <script type="text/javascript" src="${ctx }/js/ztree/js/jquery.ztree.all.min.js"></script>
     <script type="text/javascript" src="${ctx }/js/i18n/messages-${user_lang}.js"></script>
     <script type="text/javascript" src="${ctx }/js/ajax_global_set.js"></script>
-    <script type="text/javascript">
-	<!--
-	var ctx = '${ctx}';
-	//-->
-</script>
+    <script type="text/javascript" src="${ctx }/js/loading.js"></script>
+
     
