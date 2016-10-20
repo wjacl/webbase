@@ -13,8 +13,10 @@ import com.wja.base.util.BeanUtil;
 import com.wja.base.util.CollectionUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
+import com.wja.edu.dao.ClazzCourseDao;
 import com.wja.edu.dao.ClazzDao;
 import com.wja.edu.entity.Clazz;
+import com.wja.edu.entity.ClazzCourse;
 
 @Service
 public class ClazzService
@@ -22,9 +24,22 @@ public class ClazzService
     @Autowired
     private ClazzDao clazzDao;
     
+    @Autowired
+    private ClazzCourseDao clazzCourseDao;
+    
     public Clazz get(String id)
     {
         return this.clazzDao.getOne(id);
+    }
+    
+    public List<ClazzCourse> getClazzCourse(String clazzId)
+    {
+        if (StringUtils.isBlank(clazzId))
+        {
+            return null;
+        }
+        
+        return this.clazzCourseDao.findByClazzIdOrderByOrdnoAsc(clazzId);
     }
     
     public void save(Clazz c)

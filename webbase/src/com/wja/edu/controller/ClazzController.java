@@ -18,6 +18,7 @@ import com.wja.base.common.OpResult;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
 import com.wja.edu.entity.Clazz;
+import com.wja.edu.entity.ClazzCourse;
 import com.wja.edu.service.ClazzService;
 
 @Controller
@@ -45,6 +46,13 @@ public class ClazzController
         Sort sort = new Sort("startTime", "desc");
         model.addAttribute("treeNodes", JSON.toJSONString(this.clazzService.query(params, sort)));
         return "edu/clazz_view";
+    }
+    
+    @RequestMapping("courses")
+    @ResponseBody
+    public List<ClazzCourse> getClazzCourse(String clazzId)
+    {
+        return this.clazzService.getClazzCourse(clazzId);
     }
     
     @RequestMapping("registGet")
