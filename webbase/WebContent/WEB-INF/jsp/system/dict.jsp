@@ -83,6 +83,7 @@
 						}
 						var da = {pid:treeNode.id,pname:treeNode.name,ordno:ordno};					
 						$("#dict_add").form("load",da);
+						$("#dictValue").textbox("readonly",false);
 						return false;
 					});
 				}
@@ -95,6 +96,7 @@
 					treeNode.oldDictName = treeNode.name;
 					treeNode.oldDictValue = treeNode.value;
 					$('#' + formId).form('load',treeNode);	
+					$("#dictValue").textbox("readonly",true);
 					$("#" + wid).window({title:I18N.update + '<s:message code="dict"/>'});
 					$("#" + wid).window("open");
 					return false;
@@ -140,9 +142,9 @@
 								<input type="hidden" name="oldDictName" id="oldDictName"/>
 							</div>
 							<div style="margin-bottom: 20px">
-								<input class="easyui-textbox" name="value" style="width: 100%"
+								<input class="easyui-textbox" name="value" style="width: 100%" id="dictValue"
 									data-options="label:'<s:message code="dict.value"/>:',required:true,
-									validType:{length:[1,20],myRemote:['${ctx }/dict/valueCheck','value','#oldDictValue','pid','#dictpid']}">
+									validType:{length:[1,10],myRemote:['${ctx }/dict/valueCheck','value','#oldDictValue','pid','#dictpid']}">
 								<input type="hidden" name="oldDictValue" id="oldDictValue" />
 							</div>
 							<div style="margin-bottom: 20px">
