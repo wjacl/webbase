@@ -24,17 +24,17 @@
 		} else {
 			$('#tt').tabs('add', {
 				title : mname,
-				href : murl,
+				//href : murl,
 				closable : true,
-				bodyCls : 'content-doc' ,
-				//content:'<iframe scrolling="auto" frameborder="0"  src="'+murl+'?inframe=yes" style="width:100%;height:100%;"></iframe>'
-				extractor : function(data) {
+				//bodyCls : 'content-doc' ,
+				content:'<iframe scrolling="auto" frameborder="0"  src="'+murl+'?inframe=yes" style="width:100%;height:100%;"></iframe>'
+				/* extractor : function(data) {
 					data = $.fn.panel.defaults.extractor(data);
 					var tmp = $('<div></div>').html(data);
 					data = tmp.find('#content').html();
 					tmp.remove();
 					return data;
-				}   
+				}    */
 			});
 		}
 	}
