@@ -20,6 +20,7 @@ import com.wja.base.system.dao.RoleDao;
 import com.wja.base.system.entity.Role;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
+import com.wja.base.util.BeanUtil;
 import com.wja.base.util.CollectionUtil;
 import com.wja.base.util.MD5;
 import com.wja.base.util.Page;
@@ -152,7 +153,9 @@ public class UserController
     @ResponseBody
     public Object query(@RequestParam Map<String, Object> params, Page<User> page)
     {
-        return this.userService.query(params, page);
+        this.userService.query(params, page);
+        BeanUtil.setCollFieldValues(page.getRows());
+        return page;
     }
     
     @RequestMapping("find")
