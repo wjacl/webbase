@@ -9,9 +9,7 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
-	
-	<div id="mainwrap">
-		<div id="content" class="content">
+
 	<h3>
 		<s:message code="student.title" />
 	</h3>
@@ -337,8 +335,6 @@
 						class="easyui-linkbutton" onclick="$.ad.clearForm('student_add')"
 						style="width: 80px"><s:message code="comm.clear" /></a>
 				</div>
-	</div>
-	</div>
 	</div>
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>
 </body>

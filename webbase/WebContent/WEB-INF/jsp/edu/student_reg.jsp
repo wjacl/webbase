@@ -17,9 +17,6 @@ function submitOk(data){
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
 	
-	<div id="mainwrap">
-		<div id="content" class="content min500h">
-	
 	<c:if test="${not empty data.sex }"> 
 		<h3><s:message code="student.tip.audit"/></h3>
 	</c:if>
@@ -204,8 +201,6 @@ function submitOk(data){
 				</div>
 	</div>	
 	</c:if>
-	</div>
-	</div>
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>
 </body>
 </html>

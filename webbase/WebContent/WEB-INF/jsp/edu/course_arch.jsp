@@ -9,9 +9,6 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
-
-	<div id="mainwrap">
-		<div id="content" class="content">
 			<div class="easyui-layout" data-options="fit:true" >
         		 <div data-options="region:'west',border:false,collapsible:false" style="width:50%">
         		 	<h3>
@@ -92,8 +89,6 @@
 		});
 		//-->
 	</SCRIPT>
-		</div>
-	</div>
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>
 </body>
 </html>
