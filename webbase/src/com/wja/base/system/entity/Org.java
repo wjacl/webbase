@@ -23,6 +23,17 @@ public class Org extends CommEntity
     @Column(length = 32)
     private String pid;
     
+    /**
+     * 机构类别
+     */
+    @Column(length = 10)
+    private String type;
+    
+    /**
+     * 序号
+     */
+    private Short ordno;
+    
     public String getName()
     {
         return name;
@@ -41,6 +52,26 @@ public class Org extends CommEntity
     public void setPid(String pid)
     {
         this.pid = pid;
+    }
+    
+    public String getType()
+    {
+        return type;
+    }
+    
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+    
+    public Short getOrdno()
+    {
+        return ordno;
+    }
+    
+    public void setOrdno(Short ordno)
+    {
+        this.ordno = ordno;
     }
     
 }
