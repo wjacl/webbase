@@ -8,11 +8,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Where;
 
 import com.wja.base.common.CommConstants;
 import com.wja.base.common.CommEntity;
+import com.wja.base.util.SetValue;
 
 /**
  * 
@@ -28,6 +30,9 @@ import com.wja.base.common.CommEntity;
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class User extends CommEntity
 {
+    @Transient
+    @SetValue(clazz = User.class, id = "createUser", field = "name")
+    private String createUserName;
     
     @Column(length = 20, nullable = false)
     private String username;
@@ -118,6 +123,16 @@ public class User extends CommEntity
     public void setStatus(String status)
     {
         this.status = status;
+    }
+    
+    public String getCreateUserName()
+    {
+        return createUserName;
+    }
+    
+    public void setCreateUserName(String createUserName)
+    {
+        this.createUserName = createUserName;
     }
     
 }
