@@ -1,7 +1,8 @@
 var clazzView = {
 	rootId : 0,
-	type_t : 't',
+	type_o : 'o',
 	type_c : 'c',
+	type_y : 'y',
 	currNode : null,
 	onClick : function(event, treeId, treeNode, clickFlag) {
 		clazzView.currNode = treeNode;
@@ -289,37 +290,81 @@ $(function(){
 	var year = d.getFullYear();
 
 	clazzView.treezNodes = [];
-	clazzView.treezNodes.push({
-		id : clazzView.rootId,
-		name : rootName,
-		pid : null,
-		open : true,
-		isParent : true
-	});
-	clazzView.treezNodes.push({
-		id : year,
-		name : year + yu,
-		pid : clazzView.rootId,
-		open : true,
-		isParent : true
-	});
-
-	for ( var i in currYearNodes) {
-		currYearNodes[i].pid = year;
-		currYearNodes[i].nodeType = clazzView.type_c;
-		
-		clazzView.treezNodes.push(currYearNodes[i]);
-	}
-
-	for (var i = 1; i < 6; i++) {
+	var firstYearNode;
+	
+	if(!schoolNodes || schoolNodes.length == 0){
 		clazzView.treezNodes.push({
-			id : (year - i),
-			name : (year - i) + yu,
-			pid : clazzView.rootId,
+			id : clazzView.rootId,
+			name : rootName,
+			pid : null,
 			open : true,
 			isParent : true
 		});
+		firstYearNode = {
+				id : year,
+				name : year + yu,
+				pid : clazzView.rootId,
+				open : true,
+				isParent : true,
+				nodeType:clazzView.type_y
+			};
+
+		clazzView.treezNodes.push(firstYearNode);
+		for (var i = 1; i < 6; i++) {
+			clazzView.treezNodes.push({
+				id : (year - i),
+				name : (year - i) + yu,
+				pid : clazzView.rootId,
+				open : true,
+				isParent : true,
+				nodeType:clazzView.type_y
+			});
+		}
 	}
+	else{
+		for ( var i in schoolNodes) {
+			schoolNodes[i].open = true;
+			schoolNodes[i].nodeType = clazzView.type_o;
+			
+			clazzView.treezNodes.push(schoolNodes[i]);
+			
+			var n = {
+				id : (year),
+				name : (year) + yu,
+				pid : schoolNodes[i].id,
+				open : true,
+				isParent : true
+			};
+			clazzView.treezNodes.push(n);
+			
+			if(i == 0){
+				firstYearNode = n;
+			}
+			
+			for (var j = 1; j < 6; j++) {
+				clazzView.treezNodes.push({
+					id : (year - j),
+					name : (year - j) + yu,
+					pid : schoolNodes[i].id,
+					open : true,
+					isParent : true
+				});				
+			}
+		}	
+	}
+
+	var data = {"startTime_after_date":firstYearNode.id + "-01-01"};
+	if(firstYearNode.pid != clazzView.rootId){
+		data.school = firstYearNode.pid;
+	}
+	
+	$.ajax({url: ctx + "/clazz/query",data:data,dataType:'json',async:false,
+		success:function(data){
+			firstYearNode.loaded = true;
+			if(data && data.length > 0){
+				
+			}
+		}});
 
 	clazzViewzTree = $.fn.zTree.init($("#clazzViewTree"),
 			clazzView.treeSetting, clazzView.treezNodes);
