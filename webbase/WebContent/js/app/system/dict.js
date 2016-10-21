@@ -1,4 +1,4 @@
-var org = {
+var dict = {
 	currNode : null,
 	addHoverDom : function(treeId, treeNode) {
 		var zTree = $.fn.zTree.getZTreeObj(treeId);
@@ -11,30 +11,34 @@ var org = {
 		var btn = $("#addBtn_" + treeNode.tId);
 		if (btn)
 			btn.bind("click", function() {
-				org.currNode = treeNode;
+				dict.currNode = treeNode;
 				var ordno = 0;
 				if (treeNode.children) {
 					ordno = treeNode.children.length;
 				}
 				var da = {
-					ordno : ordno,
 					pid : treeNode.id,
-					pname : treeNode.name
+					pname : treeNode.name,
+					ordno : ordno,
+					type:'b'
 				};
-				$("#org_add").form("clear");
-				$("#org_add").form("load", da);
-				$("#org_buttons").show();
+				$("#dict_add").form("clear");
+				$("#dict_add").form("load", da);
+				$("#dictValue").textbox("readonly", false);
+				$("#dict_buttons").show();
 				return false;
 			});
 	},
 	onClick : function(event, treeId, treeNode, clickFlag) {
 		if (treeNode.pid != null) {
-			org.currNode = treeNode;
-			treeNode.oldname = treeNode.name;
-			$("#org_add").form("load", treeNode);
-			$("#org_buttons").show();
+			dict.currNode = treeNode;
+			treeNode.oldDictName = treeNode.name;
+			treeNode.oldDictValue = treeNode.value;
+			$("#dict_add").form("load", treeNode);
+			$("#dictValue").textbox("readonly", true);
+			$("#dict_buttons").show();
 		} else {
-			$("#org_buttons").hide();
+			$("#dict_buttons").hide();
 		}
 	},
 	beforeDrop : function(treeId, treeNodes, targetNode, moveType) {
@@ -48,16 +52,17 @@ var org = {
 
 	onDrop : function(event, treeId, treeNodes, targetNode, moveType) {
 		if (targetNode) {
-			var orgIds = [];
+			var dictIds = [];
 			var childs = targetNode.getParentNode().children;
 			for ( var i in childs) {
-				orgIds.push(childs[i].id)
+				dictIds.push(childs[i].id)
 			}
 			$.ajax({
-				url : ctx + '/org/setOrder',
+				url : ctx + '/dict/setOrder',
+				method:'POST',
 				async : false,
 				data : {
-					orgIds : orgIds
+					dictIds : dictIds
 				},
 				dataType : 'json',
 				success : function(data) {
@@ -75,19 +80,20 @@ var org = {
 						$.sm.handleResult(data, function(node) {
 
 							var newNode = node;
-							newNode.oldname = newNode.name;
-							$("#org_add").form("load", newNode);
+							newNode.oldDictName = newNode.name;
+							newNode.oldDictValue = newNode.value;
+							$("#dict_add").form("load", newNode);
 
-							if (org.currNode.id == newNode.pid) {
+							if (dict.currNode.id == newNode.pid) {
 
-								orgzTree.addNodes(org.currNode, newNode);
-								orgzTree.currNode = orgzTree.getNodeByParam(
+								dictzTree.addNodes(dict.currNode, newNode);
+								dict.currNode = dictzTree.getNodeByParam(
 										"id", newNode.id);
+								$("#dictValue").textbox("readonly", true);
 							} else {
-								org.currNode.name = newNode.name;
-								org.currNode.type = newNode.type;
-								org.currNode.version = newNode.version;
-								orgzTree.updateNode(org.currNode);
+								dict.currNode.name = newNode.name;
+								dict.currNode.version = newNode.version;
+								dictzTree.updateNode(dict.currNode);
 							}
 						});
 					}
@@ -95,18 +101,19 @@ var org = {
 	}
 };
 
-var orgTreeSetting = {
+var dictTreeSetting = {
 	view : {
-		addHoverDom : org.addHoverDom,
+		addHoverDom : dict.addHoverDom,
 		removeHoverDom : ztreef.removeHoverDom,
 		selectedMulti : false
 	},
 	edit : {
 		enable : true,
 		removeTitle : I18N.remove,
+		renameTitle : I18N.update,
 		showRenameBtn : false,
 		showRemoveBtn : function(treeId, treeNode) {
-			if (treeNode.pid == null) {
+			if (treeNode.type == 's') {
 				return false;
 			}
 			return true;
@@ -123,32 +130,31 @@ var orgTreeSetting = {
 	},
 	callback : {
 		beforeRemove : ztreef.beforeRemove,
-		onClick : org.onClick,
-		beforeDrop : org.beforeDrop,
-		onDrop : org.onDrop
+		onClick : dict.onClick,
+		beforeDrop : dict.beforeDrop,
+		onDrop : dict.onDrop
 	}
 };
 
-var orgTreezNodes = [ {
+var dictreezNodes = [ {
 	id : 0,
 	pid : null,
-	name : I18N.org
+	name : I18N.dict
 } ];
+var dictzTree;
 
-var orgzTree;
-
-$(function(){
-	
+$(function() {
 	$.ajax({
-		url : ctx + "/org/tree",
+		url : ctx + "/dict/tree",
 		async : false,
 		dataType : 'json',
 		success : function(data) {
 			if (data && data.length > 0) {
-				orgTreezNodes = data;
+				dictreezNodes = data;
 			}
 		}
 	});
-	orgzTree = $.fn.zTree.init($("#orgTree"), orgTreeSetting, orgTreezNodes);
-	orgzTree.deleteUrl = ctx + "/org/delete";
+
+	dictzTree = $.fn.zTree.init($("#dictTree"), dictTreeSetting, dictreezNodes);
+	dictzTree.deleteUrl = ctx + "/dict/remove";
 });

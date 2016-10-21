@@ -10,6 +10,7 @@ import com.wja.base.common.CommSpecification;
 import com.wja.base.common.service.CommService;
 import com.wja.base.system.dao.DictDao;
 import com.wja.base.system.entity.Dict;
+import com.wja.base.util.CollectionUtil;
 import com.wja.base.util.Sort;
 
 @Service
@@ -18,9 +19,28 @@ public class DictService extends CommService<Dict>
     @Autowired
     private DictDao dictDao;
     
-    public List<Dict> getRoots()
+    /**
+     * 
+     * 对同一个父亲下的子进行排序
+     * 
+     * @param dictIds
+     * @see [类、类#方法、类#成员]
+     */
+    public void setOrder(String[] dictIds)
     {
-        return this.dictDao.getRoots();
+        if (CollectionUtil.isNotEmpty(dictIds))
+        {
+            Dict dict = null;
+            for (int i = 0; i < dictIds.length; i++)
+            {
+                dict = this.dictDao.getOne(dictIds[i]);
+                if (dict != null)
+                {
+                    dict.setOrdno(i);
+                    this.dictDao.save(dict);
+                }
+            }
+        }
     }
     
     @Override
