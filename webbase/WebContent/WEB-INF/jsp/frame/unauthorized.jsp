@@ -9,8 +9,6 @@
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp" %>
 	
-	<div id="mainwrap">
-			<div id="content" class="content">
     <h2>您好，您目前无权进行此操作！</h2>
     <p>如确有需要，请联系系统管理员。</p>
     

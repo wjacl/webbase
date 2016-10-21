@@ -33,8 +33,16 @@ public class DictController
     @ResponseBody
     public List<Dict> getRoots(String id)
     {
-        Sort sort = Sort.asc("ordno");
+        Sort sort = new Sort("pid,ordno", "asc,asc");
         return this.ds.getAll(sort);
+    }
+    
+    @RequestMapping("setOrder")
+    @ResponseBody
+    public Object setOrder(String[] dictIds)
+    {
+        this.ds.setOrder(dictIds);
+        return OpResult.ok();
     }
     
     @RequestMapping("nameCheck")

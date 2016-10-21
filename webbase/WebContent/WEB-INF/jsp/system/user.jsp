@@ -9,9 +9,6 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
-	
-	<div id="mainwrap">
-		<div id="content" class="content">
 	<h3>
 		<s:message code="user.title" />
 	</h3>
@@ -222,8 +219,6 @@
 						style="width: 80px"><s:message code="comm.clear" /></a>
 				</div>
 		</div>
-	</div>
-	</div>
 	</div>
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>
 </body>

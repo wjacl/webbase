@@ -9,9 +9,6 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
-
-	<div id="mainwrap">
-		<div id="content" class="content min500h">
 			<h3>
 				<s:message code="user.regist" />
 			</h3>
@@ -105,8 +102,6 @@
 			       
     			</script>
 			</div>
-		</div>
-	</div>
 
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>
 </body>
