@@ -8,5 +8,5 @@ import com.wja.base.system.entity.Org;
 @Repository
 public interface OrgDao extends CommRepository<Org, String>
 {
-
+    Org findByPidAndName(String pid, String name);
 }

@@ -2,6 +2,7 @@ package com.wja.base.system.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,21 @@ public class OrgController
         return "system/org";
     }
     
+    @RequestMapping("nameCheck")
+    @ResponseBody
+    public boolean nameCheck(String pid, String name)
+    {
+        return this.os.getByPidAndName(pid, name) == null;
+    }
+    
+    @RequestMapping("setOrder")
+    @ResponseBody
+    public Object setOrder(String[] orgIds)
+    {
+        this.os.setOrder(orgIds);
+        return OpResult.ok();
+    }
+    
     @RequestMapping("tree")
     @ResponseBody
     public List<Org> getTree()
@@ -35,15 +51,15 @@ public class OrgController
     @ResponseBody
     public Object save(Org org)
     {
-        boolean add = org.getId() == null;
-        this.os.save(org);
+        boolean add = StringUtils.isBlank(org.getId());
+        org = this.os.save(org);
         if (add)
         {
-            return OpResult.addOk(org.getId());
+            return OpResult.addOk(org);
         }
         else
         {
-            return OpResult.updateOk();
+            return OpResult.updateOk(org);
         }
     }
     
