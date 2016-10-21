@@ -1,6 +1,5 @@
 package com.wja.edu.controller;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.wja.base.common.OpResult;
+import com.wja.base.system.entity.Org;
+import com.wja.base.system.service.OrgService;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
 import com.wja.edu.entity.Clazz;
@@ -28,6 +29,9 @@ public class ClazzController
     @Autowired
     private ClazzService clazzService;
     
+    @Autowired
+    private OrgService orgService;
+    
     @RequestMapping("manage")
     public String manage()
     {
@@ -40,11 +44,9 @@ public class ClazzController
         model.addAttribute("times", System.currentTimeMillis());
         
         Map<String, Object> params = new HashMap<>();
-        Calendar cal = Calendar.getInstance();
-        cal.set(cal.get(Calendar.YEAR), 0, 1, 0, 0, 0);
-        params.put("startTime_after_date", cal.getTime());
-        Sort sort = new Sort("startTime", "desc");
-        model.addAttribute("treeNodes", JSON.toJSONString(this.clazzService.query(params, sort)));
+        params.put("type", Org.TYPE_SCHOOL);
+        Sort sort = new Sort("pid,ordno", "asc,asc");
+        model.addAttribute("treeNodes", JSON.toJSONString(this.orgService.findAll(params, sort)));
         return "edu/clazz_view";
     }
     

@@ -10,7 +10,7 @@
 <script type="text/javascript">
 	var times = ${times};
 	var yu = '<s:message code="clazzView.year.unit"/>';
-	var currYearNodes = ${treeNodes}; 
+	var schoolNodes = ${treeNodes}; 
 	var rootName = '<s:message code="clazzView.year"/>';
 </script>
 </head>
