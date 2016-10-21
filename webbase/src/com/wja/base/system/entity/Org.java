@@ -14,6 +14,26 @@ import com.wja.base.common.CommEntity;
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class Org extends CommEntity
 {
+    /**
+     * 机构类别-公司
+     */
+    public static final String TYPE_COMPANY = "1";
+    
+    /**
+     * 机构类别-子公司
+     */
+    public static final String TYPE_SUB_COMPANY = "2";
+    
+    /**
+     * 机构类别-学校
+     */
+    public static final String TYPE_SCHOOL = "3";
+    
+    /**
+     * 机构类别-部门
+     */
+    public static final String TYPE_DEPARTMENT = "4";
+    
     @Column(length = 32, nullable = false)
     private String name;
     
