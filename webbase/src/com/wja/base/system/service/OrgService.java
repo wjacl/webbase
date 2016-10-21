@@ -1,11 +1,13 @@
 package com.wja.base.system.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wja.base.common.CommSpecification;
 import com.wja.base.system.dao.OrgDao;
 import com.wja.base.system.entity.Org;
 import com.wja.base.util.BeanUtil;
@@ -63,6 +65,11 @@ public class OrgService
     {
         Sort sort = new Sort("pid,ordno", "asc,asc");
         return this.dao.findAll(sort.getSpringSort());
+    }
+    
+    public List<Org> findAll(Map<String, Object> params, Sort sort)
+    {
+        return this.dao.findAll(new CommSpecification<Org>(params), sort == null ? null : sort.getSpringSort());
     }
     
     public void delete(String[] ids)
