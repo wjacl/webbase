@@ -1,16 +1,19 @@
 package com.wja.base.system.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wja.base.common.OpResult;
 import com.wja.base.system.entity.Org;
 import com.wja.base.system.service.OrgService;
+import com.wja.base.util.Sort;
 
 @Controller
 @RequestMapping("/org")
@@ -45,6 +48,13 @@ public class OrgController
     public List<Org> getTree()
     {
         return this.os.findAll();
+    }
+    
+    @RequestMapping("query")
+    @ResponseBody
+    public List<Org> query(@RequestParam Map<String, Object> params, Sort sort)
+    {
+        return this.os.findAll(params, sort);
     }
     
     @RequestMapping("save")
