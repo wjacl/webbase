@@ -18,6 +18,12 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('sex','性别'
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('25','男','m',1,'sex','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('26','女','w',2,'sex','s',1);
 
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('org.type','机构类别','org.type',5,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('ot1','公司','1',1,'org.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('ot2','分公司','2',2,'org.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('ot3','学校','3',3,'org.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('ot4','部门','4',4,'org.type','s',1);
+
 
 INSERT INTO t_sys_role(ID,NAME,TYPE,valid,version)
 VALUES('admin','超级管理员','s',1,0);
