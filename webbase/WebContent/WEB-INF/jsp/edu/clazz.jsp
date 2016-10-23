@@ -88,7 +88,7 @@
 						<input class="easyui-combobox" name="admin_in_string" id="clazz_admin"
 						style="width: 100px"
 						data-options="
-		                    url:'${ctx }/user/find?type_eq_string=A',
+		                    url:'${ctx }/teacher/list?status=s',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',
@@ -179,7 +179,7 @@
 						<input class="easyui-combobox" name="admin"
 						style="width: 100%;"
 						data-options="
-		                    url:'${ctx }/user/find?type_eq_string=A',
+		                    url:'${ctx }/teacher/list?status=s',
 		                    method:'get',
 		                    valueField:'id',
 		                    textField:'name',

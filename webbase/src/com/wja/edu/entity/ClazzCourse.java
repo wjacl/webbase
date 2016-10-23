@@ -45,6 +45,12 @@ public class ClazzCourse extends CommEntity
     private Date finishTime;
     
     /**
+     * 授课老师
+     */
+    @Column(length = 32)
+    private String teacher;
+    
+    /**
      * 课程完成状态
      */
     @Column(length = 32)
@@ -108,6 +114,16 @@ public class ClazzCourse extends CommEntity
     public void setStatus(String status)
     {
         this.status = status;
+    }
+    
+    public String getTeacher()
+    {
+        return teacher;
+    }
+    
+    public void setTeacher(String teacher)
+    {
+        this.teacher = teacher;
     }
     
 }

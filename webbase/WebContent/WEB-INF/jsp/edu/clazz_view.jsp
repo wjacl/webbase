@@ -7,11 +7,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp"%>
 <script type="text/javascript" src="${ctx }/js/app/edu/clazz_view.js"></script>
+<script type="text/javascript" src="${ctx }/js/jquery-easyui/datagrid-cellediting.js"></script>
 <script type="text/javascript">
 	var times = ${times};
 	var yu = '<s:message code="clazzView.year.unit"/>';
 	var schoolNodes = ${treeNodes}; 
 	var rootName = '<s:message code="clazzView.year"/>';
+	var courseTreeNodes = ${courseTreeNodes};
 </script>
 </head>
 <body>
@@ -115,7 +117,8 @@
 					
 						<table class="easyui-datagrid" id="student_grid" title='<s:message code="clazzView.studentInfo" />'
 							data-options="rownumbers:true,singleSelect:false,multiSort:true,selectOnCheck:true,width:760,
-									height:300,toolbar:'#student_tb1',collapsible:true,collapsed:true">
+									height:300,toolbar:'#student_tb1',collapsible:true,collapsed:true
+					      ">
 							<thead>
 								<tr>
 									<th data-options="field:'ck',checkbox:true"></th>
@@ -144,13 +147,90 @@
 						
 					<div style="height: 10px"></div>
 					
-					<div class="easyui-panel" data-options="collapsible:true,width:760,collapsed:true"
-						title='<s:message code="clazzView.courseInfo" />'>
-						dddddddffff</div>
-
+					<!-- 班级课程计划 -->
+					<div id="student_tb2">
+						<a href="javascript:clazzView.course.toAddCourse();" class="easyui-linkbutton"
+							iconCls="icon-add" plain="true"><s:message code='comm.add' /></a> 
+						<a href="javascript:$.ad.doDelete('clazz_course','${ctx }/student/delete')" class="easyui-linkbutton" iconCls="icon-remove"
+							plain="true"><s:message code='comm.remove' /></a>
+						<a href="javascript:clazzView.course.saveClazzCourse()"
+							class="easyui-linkbutton" iconCls="icon-save" plain="true"><s:message code='comm.save' /></a>						
+					</div>
+				
+					<table class="easyui-datagrid" id="clazz_course" title='<s:message code="clazzView.courseInfo" />'
+						data-options="rownumbers:true,singleSelect:false,selectOnCheck:true,width:760,
+								height:300,toolbar:'#student_tb2',collapsible:true,collapsed:true,
+									onEndEdit:function (index, row){
+							            var ed = $(this).datagrid('getEditor', {
+							                index: index,
+							                field: 'teacher'
+							            });
+							            if(ed){
+							            	row.teacherName = $(ed.target).combobox('getText');
+							            }
+							        }">
+						<thead>
+							<tr>
+								<th data-options="field:'ck',checkbox:true"></th>
+								<th data-options="field:'courseName',width:100"><s:message
+										code="course.name" /></th>
+								<th data-options="field:'hour',width:60"><s:message
+										code="course.hour" /></th>
+								<th data-options="field:'credit',width:60"><s:message
+										code="course.credit" /></th>
+								<th
+									data-options="field:'teacher',width:100,formatter:function(value,row){
+											return row.teacherName;
+									},
+									editor:{
+			                            type:'combobox',
+			                            options:{
+			                                url:'${ctx }/teacher/list?status=s',
+						                    method:'get',
+						                    valueField:'id',
+						                    textField:'name'
+			                              }
+		                            }"><s:message
+										code="clazz.course.teacher" /></th>
+								<th
+									data-options="field:'status',width:100,formatter:function(value){
+										return $.ad.getDictName('c.c.sta',value);
+									},
+									editor:{
+			                            type:'combobox',
+			                            options:{
+			                                valueField:'value',
+			                                textField:'name',
+			                                method:'get',
+			                                url:'${ctx }/dict/get?pvalue=c.c.sta',
+			                                required:true
+			                                }
+		                            }"><s:message
+										code="clazz.course.status" /></th>
+								<th
+									data-options="field:'startTime',width:100,editor:'datebox'"><s:message
+										code="clazz.course.startTime" /></th>
+								<th
+									data-options="field:'finishTime',width:100,editor:'datebox'"><s:message
+										code="clazz.course.finishTime" /></th>
+							</tr>
+						</thead>
+					</table>
 				</div>
 			</div>
-			
+	<div id="course_w" class="easyui-window" title='<s:message code="major.course.select" />'
+		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
+		style="width: 400px; height: 490px; padding: 10px;">
+		
+			<div class="easyui-panel" style="padding: 5px;width:360px;height:390px;">
+			<ul id="courseTree" class="ztree"></ul>
+			</div>	
+			<div style="text-align: center; padding: 5px 0">
+					<a href="javascript:void(0)" class="easyui-linkbutton"
+						onclick="clazzView.courseSelectOk()" style="width: 80px">
+						<s:message code="comm.ok" /></a> 
+			</div>
+	</div>
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>
 </body>
 </html>

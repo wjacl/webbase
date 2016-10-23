@@ -21,6 +21,7 @@ import com.wja.base.util.Sort;
 import com.wja.edu.entity.Clazz;
 import com.wja.edu.entity.ClazzCourse;
 import com.wja.edu.service.ClazzService;
+import com.wja.edu.service.CourseService;
 
 @Controller
 @RequestMapping("/clazz")
@@ -31,6 +32,9 @@ public class ClazzController
     
     @Autowired
     private OrgService orgService;
+    
+    @Autowired
+    private CourseService courseService;
     
     @RequestMapping("manage")
     public String manage()
@@ -47,6 +51,7 @@ public class ClazzController
         params.put("type", Org.TYPE_SCHOOL);
         Sort sort = new Sort("pid,ordno", "asc,asc");
         model.addAttribute("treeNodes", JSON.toJSONString(this.orgService.findAll(params, sort)));
+        model.addAttribute("courseTreeNodes", JSON.toJSONString(this.courseService.findAll()));
         return "edu/clazz_view";
     }
     
@@ -55,6 +60,14 @@ public class ClazzController
     public List<ClazzCourse> getClazzCourse(String clazzId)
     {
         return this.clazzService.getClazzCourse(clazzId);
+    }
+    
+    @RequestMapping("saveCourses")
+    @ResponseBody
+    public Object saveClazzCourse(String clazzId, String course)
+    {
+        // TODO
+        return OpResult.updateOk();
     }
     
     @RequestMapping("registGet")
