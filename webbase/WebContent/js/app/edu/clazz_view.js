@@ -240,7 +240,7 @@ var clazzView = {
 	},
 
 	addHoverDom : function(treeId, treeNode) {
-		if (treeNode.id != clazzView.rootId && treeNode.pid != clazzView.rootId) {
+		if (!abc || treeNode.nodeType != clazzView.type_y) {
 			return false;
 		}
 
@@ -300,7 +300,14 @@ clazzView.treeSetting = {
 		removeTitle : I18N.remove,
 		renameTitle : I18N.update,
 		showRenameBtn : false,
-		showRemoveBtn : false,
+		showRemoveBtn : function(treeId,treeNode){
+			if(edf){
+				if(treeNode.nodeType == clazzView.type_c){
+					return true;
+				}
+			}
+			return false;
+		},
 		drag : {
 			isMove:false,
 			isCopy:false
@@ -335,7 +342,73 @@ var student = {
 		statusFormatter:function(value,row,index){
 			return $.ad.getDictName("stu.status",value);
 		},
-						
+		detailFormatter:function(index,row){
+            return '<div class="ddv" style="padding:5px 10px;height:100px"></div>';
+        },
+        onExpandRow: function(index,row){
+            var ddv = $(this).datagrid('getRowDetail',index).find('div.ddv');
+            
+            if(row.addDetail){
+            
+            }else{
+            	var des = '<table class="dv-table" border="0">' +
+				'<tr>' +
+					'<th>' + I18N.person.baseInfo + '</th>'+
+					'<th class="dv-label">' + I18N.person.birthday + ':</th>' +
+					'<td>' + $.ad.nvl(row.birthday) + '</td>' +
+					
+					'<th class="dv-label">QQ:</th>' +
+					'<td>' + $.ad.nvl(row.qq) + '</td>' +
+					
+					'<th class="dv-label">Email:</th>' +
+					'<td>' + $.ad.nvl(row.email) + '</td>' +
+					
+					'<th></th>' +
+					'<td></td>' +
+				'</tr>' +
+				'<tr>' +
+					'<th></th>' +
+					'<th class="dv-label">' + I18N.person.address + ':</th>' +
+					'<td colspan="3">' + $.ad.nvl(row.address) + '</td>' +
+					
+					'<th class="dv-label">' + I18N.person.remark + ':</th>' +
+					'<td colspan="3">' + $.ad.nvl(row.remark) + '</td>' +
+				'</tr>' +
+				'<tr>' +
+					'<th>' + I18N.person.eduInfo + '</th>'+
+					'<th class="dv-label">' + I18N.person.education + ':</th>' +
+					'<td>' + $.ad.getDictName('education',row.education) + '</td>' +
+					
+					'<th class="dv-label">' + I18N.person.school + ':</th>' +
+					'<td>' + $.ad.nvl(row.school) + '</td>' +
+					
+					'<th class="dv-label">' + I18N.person.major + ':</th>' +
+					'<td>' + $.ad.nvl(row.major) + '</td>' +
+					
+					'<th class="dv-label" style="width:120px">' + I18N.person.graduateTime + ':</th>' +
+					'<td>' + $.ad.nvl(row.graduateTime) + '</td>' +
+				'</tr>' +
+				
+				'<tr>' +
+					'<th style="width:120px">' + I18N.person.homeInfo + '</th>'+
+					'<th class="dv-label" style="width:120px">' + I18N.person.parent + ':</th>' +
+					'<td>' + $.ad.nvl(row.parent) + '</td>' +
+					
+					'<th class="dv-label" style="width:120px">' + I18N.person.phone + ':</th>' +
+					'<td>' + $.ad.nvl(row.homePhone) + '</td>' +
+					
+					'<th class="dv-label" style="width:120px">' + I18N.person.home + ':</th>' +
+					'<td colspan="3">' + $.ad.nvl(row.home) + '</td>' +
+				
+				'</tr>' +
+			'</table>';
+	
+            	ddv.append(des);
+            	row.addDetail = true;
+            	$('#dg').datagrid('fixDetailRowHeight',index);
+            }
+            $('#dg').datagrid('fixDetailRowHeight',index);
+        },				
 };
 
 var courseTree = {
@@ -412,7 +485,8 @@ $(function(){
 				id : (year),
 				name : (year) + yu,
 				pid : schoolNodes[i].id,
-				isParent : true
+				isParent : true,
+				nodeType:clazzView.type_y
 			};
 			clazzView.treezNodes.push(n);
 			
@@ -425,7 +499,8 @@ $(function(){
 					id : (year - j),
 					name : (year - j) + yu,
 					pid : schoolNodes[i].id,
-					isParent : true
+					isParent : true,
+					nodeType:clazzView.type_y
 				});				
 			}
 		}	

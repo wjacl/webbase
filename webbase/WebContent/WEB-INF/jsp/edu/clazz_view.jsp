@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="app" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp"%>
-<script type="text/javascript" src="${ctx }/js/app/edu/clazz_view.js"></script>
 <script type="text/javascript" src="${ctx }/js/jquery-easyui/datagrid-cellediting.js"></script>
 <script type="text/javascript">
 	var times = ${times};
@@ -14,7 +14,21 @@
 	var schoolNodes = ${treeNodes}; 
 	var rootName = '<s:message code="clazzView.year"/>';
 	var courseTreeNodes = ${courseTreeNodes};
+	var abc = false;
+	var edf = false;
 </script>
+
+<app:author path="/clazz/add">
+<script type="text/javascript">
+	abc = true;
+</script>
+</app:author>
+<app:author path="/clazz/delete">
+<script type="text/javascript">
+	edf = true;
+</script>
+<script type="text/javascript" src="${ctx }/js/app/edu/clazz_view.js"></script>
+</app:author>
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
@@ -100,27 +114,38 @@
 										type="hidden" name="version" /></th>
 									<td></td>
 									<th></th>
-									<td></td>
+									<td>
+										<app:author path="/clazz/update">
+										<a href="javascript:clazzView.saveClazz()"
+											class="easyui-linkbutton" iconCls="icon-save"><s:message code='comm.save' />
+										</a>
+										</app:author>
+									</td>
 								</tr>
 							</table>
 						</form>
 					</div>
-					<div style="height: 10px"></div>
+					<div style="height: 9px"></div>
 					
 					<div class="easyui-panel" data-options="collapsible:true,width:760,collapsed:true,
 								onBeforeExpand:function(){$('#cour_panel').panel('collapse');return true;}" id="stu_panel"
 						title='<s:message code="clazzView.studentInfo" />'>
 					
 						<div id="student_tb1">
+							<app:author path="/student/update">
 								<a href="javascript:$.ad.toUpdate('student_grid','student_w','<s:message code='student' />','student_add','${ctx }/student/update',{oldname:'name'})"
 									class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='comm.update' /></a>
+							</app:author>
+							<app:author path="/student/delete">
 								<a href="javascript:$.ad.doDelete('student_grid','${ctx }/student/delete')" class="easyui-linkbutton" iconCls="icon-remove"
-									plain="true"><s:message code='comm.remove' /></a>						
+									plain="true"><s:message code='comm.remove' /></a>
+							</app:author>						
 						</div>
 					
 						<table class="easyui-datagrid" id="student_grid" 
 							data-options="rownumbers:true,singleSelect:false,multiSort:true,selectOnCheck:true,width:758,
-									height:298,toolbar:'#student_tb1',border:0
+								height:298,toolbar:'#student_tb1',border:0,
+								view: detailview,detailFormatter:student.detailFormatter,onExpandRow:student.onExpandRow
 					      ">
 							<thead>
 								<tr>
@@ -148,23 +173,27 @@
 							</thead>
 						</table>	
 					</div>	
-					<div style="height: 10px"></div>
+					<div style="height: 9px"></div>
 					
 					<div class="easyui-panel" data-options="collapsible:true,width:760,collapsed:true,
 								onBeforeExpand:function(){$('#stu_panel').panel('collapse',true);return true;}" id="cour_panel"
 						 title='<s:message code="clazzView.courseInfo" />'>
 					<!-- 班级课程计划 -->
 					<div id="student_tb2">
-						<a href="javascript:clazzView.course.toAddCourse();" class="easyui-linkbutton"
-							iconCls="icon-add" plain="true"><s:message code='comm.add' /></a> 
-						<a href="javascript:clazzView.course.doDelete()" class="easyui-linkbutton" iconCls="icon-remove"
-							plain="true"><s:message code='comm.remove' /></a>
-						<a href="javascript:clazzView.course.up()"
-							class="easyui-linkbutton" iconCls="icon-up" plain="true"><s:message code='comm.up' /></a>	
-						<a href="javascript:clazzView.course.down()"
-							class="easyui-linkbutton" iconCls="icon-down" plain="true"><s:message code='comm.down' /></a>				
-						<a href="javascript:clazzView.course.saveClazzCourse()"
-							class="easyui-linkbutton" iconCls="icon-save" plain="true"><s:message code='comm.save' /></a>	
+						<app:author path="/clazz/saveCourses">
+							<app:author path="/clazz/addCourses">
+							<a href="javascript:clazzView.course.toAddCourse();" class="easyui-linkbutton"
+								iconCls="icon-add" plain="true"><s:message code='comm.add' /></a> 
+							</app:author>
+							<a href="javascript:clazzView.course.doDelete()" class="easyui-linkbutton" iconCls="icon-remove"
+								plain="true"><s:message code='comm.remove' /></a>
+							<a href="javascript:clazzView.course.up()"
+								class="easyui-linkbutton" iconCls="icon-up" plain="true"><s:message code='comm.up' /></a>	
+							<a href="javascript:clazzView.course.down()"
+								class="easyui-linkbutton" iconCls="icon-down" plain="true"><s:message code='comm.down' /></a>				
+							<a href="javascript:clazzView.course.saveClazzCourse()"
+								class="easyui-linkbutton" iconCls="icon-save" plain="true"><s:message code='comm.save' /></a>	
+						</app:author>
 					</div>
 				
 					<table class="easyui-datagrid" id="clazz_course"
