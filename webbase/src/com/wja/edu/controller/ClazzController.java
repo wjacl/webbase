@@ -99,14 +99,14 @@ public class ClazzController
     public OpResult save(Clazz c)
     {
         boolean add = StringUtils.isBlank(c.getId());
-        this.clazzService.save(c);
+        c = this.clazzService.save(c);
         if (add)
         {
-            return OpResult.addOk(c.getId());
+            return OpResult.addOk(c);
         }
         else
         {
-            return OpResult.updateOk();
+            return OpResult.updateOk(c);
         }
     }
     

@@ -58,7 +58,7 @@ public class ClazzService
         }
     }
     
-    public void save(Clazz c)
+    public Clazz save(Clazz c)
     {
         if (StringUtils.isNotBlank(c.getId()))
         {
@@ -67,7 +67,7 @@ public class ClazzService
             c = dbc;
         }
         
-        this.clazzDao.save(c);
+        return this.clazzDao.save(c);
     }
     
     public void delete(String[] ids)

@@ -27,8 +27,8 @@
 <script type="text/javascript">
 	edf = true;
 </script>
-<script type="text/javascript" src="${ctx }/js/app/edu/clazz_view.js"></script>
 </app:author>
+<script type="text/javascript" src="${ctx }/js/app/edu/clazz_view.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>

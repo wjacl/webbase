@@ -33,14 +33,128 @@ var clazzView = {
 			}
 			$("#student_grid").datagrid("load",{clazz:treeNode.id});
 			
-			$("#clazz_course").datagrid("loadData",[]);
 			if(!$("#clazz_course").datagrid("options").url){
 				$("#clazz_course").datagrid("options").url = ctx + '/clazz/courses';
 			}
 			$("#clazz_course").datagrid("load",{clazzId:treeNode.id});
-		} else {
-			
+		} 
+	},
+
+	beforeExpand : function(treeId, treeNode) {
+		if(!treeNode.loaded){
+			clazzView.loadClazz(treeNode, clazzViewzTree,true);
 		}
+		return true;
+	},
+
+	beforeRemove : function(treeId, treeNode) {
+		$.sm.confirmDelete(function() {
+			
+				$.ajax({
+					url : ctx + '/clazz/delete',
+					data : {
+						ids: [ treeNode.id ]
+					},
+					dataType : 'json',
+					async : false,
+					success : function(data) {
+						$.sm.handleResult(data);
+						clazzViewzTree.removeNode(treeNode);
+					}
+				});
+			
+		});
+
+		return false;
+	},
+
+	addHoverDom : function(treeId, treeNode) {
+		if (!abc || treeNode.nodeType != clazzView.type_y) {
+			return false;
+		}
+
+		var zTree = $.fn.zTree.getZTreeObj(treeId);
+		var sObj = $("#" + treeNode.tId + "_span");
+		if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0)
+			return;
+		var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+				+ "' title='" + I18N.add + "' onfocus='this.blur();'></span>";
+		sObj.after(addStr);
+		var btn = $("#addBtn_" + treeNode.tId);
+		if (btn)
+			btn.bind("click", function() {
+				clazzView.currNode = null;
+
+				var da = {
+					school:treeNode.pid
+				};
+				$('#clazz').form({url:ctx + '/clazz/add'});
+				$("#clazz").form("clear");
+				$("#clazz").form("load", da);
+				$("#clazz_course").datagrid("loadData",[]);
+				$("#student_grid").datagrid("loadData",[]);
+				
+				return false;
+			});
+	},
+	saveClazz : function(){
+		$("#clazz").form("submit",{success:function(data){
+			var data = eval('(' + data + ')');
+			$.sm.handleResult(data,function(data){
+				
+				var sy = data.startTime.substring(0,4);
+				
+				if(clazzView.currNode == null){//新增
+					var pnode = null;
+					var pnodes = clazzViewzTree.getNodesByParam('id',data.school);
+					if(pnodes.length == 0){
+						pnodes = clazzViewzTree.getNodesByParam('id',sy);
+						if(pnodes.length > 0){
+							pnode = pnodes[0];
+						}
+					}
+					else{
+						pnode = pnodes[0];
+						var ypnode = clazzViewzTree.getNodesByParam('id',sy,pnode);
+						if(ypnode.length > 0){
+							pnode = ypnode[0];
+						}
+					}
+					data.nodeType = clazzView.type_c;
+					data.pid = pnode ? pnode.id : null;
+					clazzViewzTree.addNodes(pnode,0,data);
+					clazzView.currNode = clazzViewzTree.getNodesByParam('id',data.id,pnode)[0];
+					$('#clazz').form({url:ctx + '/clazz/update'});
+				}else{
+					//修改
+					if(data.school != clazzView.currNode.school){
+						
+						var pnode = null;
+						var pnodes = clazzViewzTree.getNodesByParam('id',data.school);
+						if(pnodes.length == 0){
+							pnodes = clazzViewzTree.getNodesByParam('id',sy);
+							if(pnodes.length > 0){
+								pnode = pnodes[0];
+							}
+						}
+						else{
+							pnode = pnodes[0];
+							var ypnode = clazzViewzTree.getNodesByParam('id',sy,pnode);
+							if(ypnode.length > 0){
+								pnode = ypnode[0];
+							}
+						}
+						
+						clazzViewzTree.moveNode(pnode,clazzView.currNode,'inner');
+						
+					}
+					for(var i in data){
+						clazzView.currNode[i] = data[i];
+						clazzViewzTree.updateNode(clazzView.currNode);
+					}
+				}
+			});
+		}});
 	},
 	
 	course : {
@@ -204,89 +318,6 @@ var clazzView = {
 		}
 
 		$("#course_w").window("close");
-	},
-
-	beforeExpand : function(treeId, treeNode) {
-		if(!treeNode.loaded){
-			clazzView.loadClazz(treeNode, clazzViewzTree,true);
-		}
-		return true;
-	},
-
-	beforeRemove : function(treeId, treeNode) {
-		$.sm.confirmDelete(function() {
-			if (treeNode.pid == clazzView.rootId) {
-				$.ajax({
-					url : '${ctx}/clazzView/delete',
-					data : {
-						ids : [ treeNode.id ]
-					},
-					dataType : 'json',
-					async : false,
-					success : function(data) {
-						$.sm.handleResult(data);
-						clazzViewzTree.removeNode(treeNode);
-					}
-				});
-			} else {
-				if (clazzView.resaveclazzViewCourse(treeNode.getParentNode(),
-						treeNode.id)) {
-					clazzViewzTree.removeNode(treeNode);
-				}
-			}
-		});
-
-		return false;
-	},
-
-	addHoverDom : function(treeId, treeNode) {
-		if (!abc || treeNode.nodeType != clazzView.type_y) {
-			return false;
-		}
-
-		var zTree = $.fn.zTree.getZTreeObj(treeId);
-		var sObj = $("#" + treeNode.tId + "_span");
-		if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0)
-			return;
-		var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-				+ "' title='" + I18N.add + "' onfocus='this.blur();'></span>";
-		sObj.after(addStr);
-		var btn = $("#addBtn_" + treeNode.tId);
-		if (btn)
-			btn.bind("click", function() {
-				clazzView.currNode = treeNode;
-
-				if (treeNode.id == clazzView.rootId) {
-					var ordno = 1;
-					if (treeNode.children && treeNode.children.length > 0) {
-						ordno = treeNode.children.length + 1;
-					}
-					var da = {
-						ordno : ordno
-					};
-					$("#clazzView_add").form("clear");
-					$("#clazzView_add").form("load", da);
-					$("#clazzView_buttons").show();
-				} else {
-					//添加课程
-					if (!treeNode.loaded) {
-						clazzView.loadclazzViewCourse(treeNode, false);
-					}
-					$("#clazzView_course_w").window("open");
-					//清空选中
-					clazzViewCoursezTree.checkAllNodes(false);
-					//选中已选择的
-					if (treeNode.children) {
-						for ( var i in treeNode.children) {
-							var nd = clazzViewCoursezTree.getNodesByParam("id",
-									treeNode.children[i].id);
-							clazzViewCoursezTree.checkNode(nd[0], true);
-						}
-					}
-
-				}
-				return false;
-			});
 	}
 };
 clazzView.treeSetting = {
@@ -296,7 +327,7 @@ clazzView.treeSetting = {
 		selectedMulti : false
 	}, 
 	edit : {
-		enable : false,
+		enable : true,
 		removeTitle : I18N.remove,
 		renameTitle : I18N.update,
 		showRenameBtn : false,
@@ -320,7 +351,7 @@ clazzView.treeSetting = {
 		}
 	},
 	callback : {
-		//beforeRemove : clazzView.beforeRemove,
+		beforeRemove : clazzView.beforeRemove,
 		beforeExpand : clazzView.beforeExpand,
 		onClick : clazzView.onClick
 	}
@@ -443,6 +474,7 @@ $(function(){
 	var d = new Date();
 	d.setTime(times);
 	var year = d.getFullYear();
+	var month = d.getMonth();
 
 	clazzView.treezNodes = [];
 	var firstYearNode;
@@ -455,15 +487,34 @@ $(function(){
 			open : true,
 			isParent : true
 		});
-		firstYearNode = {
-				id : year,
-				name : year + yu,
-				pid : clazzView.rootId,
-				isParent : true,
-				nodeType:clazzView.type_y
-			};
+		if(month > 9){
+			firstYearNode = {
+					id : year+1,
+					name : (year + 1) + yu,
+					pid : clazzView.rootId,
+					isParent : true,
+					nodeType:clazzView.type_y
+				};
+			clazzView.treezNodes.push(firstYearNode);
+			clazzView.treezNodes.push({
+					id : year,
+					name : year + yu,
+					pid : clazzView.rootId,
+					isParent : true,
+					nodeType:clazzView.type_y
+				});
+		}
+		else {
+			firstYearNode = {
+					id : year,
+					name : year + yu,
+					pid : clazzView.rootId,
+					isParent : true,
+					nodeType:clazzView.type_y
+				};
 
-		clazzView.treezNodes.push(firstYearNode);
+			clazzView.treezNodes.push(firstYearNode);
+		}
 		for (var i = 1; i < 6; i++) {
 			clazzView.treezNodes.push({
 				id : (year - i),
@@ -481,14 +532,34 @@ $(function(){
 			
 			clazzView.treezNodes.push(schoolNodes[i]);
 			
-			var n = {
-				id : (year),
-				name : (year) + yu,
-				pid : schoolNodes[i].id,
-				isParent : true,
-				nodeType:clazzView.type_y
-			};
-			clazzView.treezNodes.push(n);
+			var n;
+			if(month > 9){
+				n = {
+					id : (year + 1),
+					name : (year + 1) + yu,
+					pid : schoolNodes[i].id,
+					isParent : true,
+					nodeType:clazzView.type_y
+				};
+				clazzView.treezNodes.push(n);
+				clazzView.treezNodes.push({
+					id : (year),
+					name : (year) + yu,
+					pid : schoolNodes[i].id,
+					isParent : true,
+					nodeType:clazzView.type_y
+				});
+			}
+			else{
+				n = {
+						id : (year),
+						name : (year) + yu,
+						pid : schoolNodes[i].id,
+						isParent : true,
+						nodeType:clazzView.type_y
+					};
+				clazzView.treezNodes.push(n);
+			}
 			
 			if(i == 0){
 				firstYearNode = n;
