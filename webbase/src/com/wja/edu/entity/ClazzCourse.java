@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,6 +16,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.wja.base.common.CommConstants;
 import com.wja.base.common.CommEntity;
 import com.wja.base.util.DateUtil;
+import com.wja.base.util.SetValue;
 
 @Entity
 @Table(name = "t_edu_class_course")
@@ -49,6 +51,10 @@ public class ClazzCourse extends CommEntity
      */
     @Column(length = 32)
     private String teacher;
+    
+    @Transient
+    @SetValue(id = "teacher", clazz = Teacher.class, field = "name")
+    private String teacherName;
     
     /**
      * 课程完成状态
@@ -124,6 +130,16 @@ public class ClazzCourse extends CommEntity
     public void setTeacher(String teacher)
     {
         this.teacher = teacher;
+    }
+    
+    public String getTeacherName()
+    {
+        return teacherName;
+    }
+    
+    public void setTeacherName(String teacherName)
+    {
+        this.teacherName = teacherName;
     }
     
 }

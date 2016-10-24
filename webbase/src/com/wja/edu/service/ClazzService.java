@@ -27,6 +27,9 @@ public class ClazzService
     @Autowired
     private ClazzCourseDao clazzCourseDao;
     
+    @Autowired
+    private CourseService courseService;
+    
     public Clazz get(String id)
     {
         return this.clazzDao.getOne(id);
@@ -40,6 +43,19 @@ public class ClazzService
         }
         
         return this.clazzCourseDao.findByClazzIdOrderByOrdnoAsc(clazzId);
+    }
+    
+    public void saveClazzCourse(String clazzId, List<ClazzCourse> courses)
+    {
+        this.clazzCourseDao.deleteClazzCourse(clazzId);
+        if (CollectionUtil.isNotEmpty(courses))
+        {
+            for (ClazzCourse cc : courses)
+            {
+                cc.setCourse(this.courseService.get(cc.getCourse().getId()));
+            }
+            this.clazzCourseDao.save(courses);
+        }
     }
     
     public void save(Clazz c)

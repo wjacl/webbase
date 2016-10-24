@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.wja.base.common.OpResult;
 import com.wja.base.system.entity.Org;
 import com.wja.base.system.service.OrgService;
+import com.wja.base.util.BeanUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
 import com.wja.edu.entity.Clazz;
@@ -59,14 +60,21 @@ public class ClazzController
     @ResponseBody
     public List<ClazzCourse> getClazzCourse(String clazzId)
     {
-        return this.clazzService.getClazzCourse(clazzId);
+        List<ClazzCourse> list = this.clazzService.getClazzCourse(clazzId);
+        BeanUtil.setCollFieldValues(list);
+        return list;
     }
     
     @RequestMapping("saveCourses")
     @ResponseBody
     public Object saveClazzCourse(String clazzId, String course)
     {
-        // TODO
+        List<ClazzCourse> courses = null;
+        if (StringUtils.isNotBlank(course))
+        {
+            courses = JSON.parseArray(course, ClazzCourse.class);
+        }
+        this.clazzService.saveClazzCourse(clazzId, courses);
         return OpResult.updateOk();
     }
     

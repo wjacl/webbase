@@ -28,10 +28,15 @@ var clazzView = {
 			clazzView.currNode = treeNode;
 			treeNode.oldname = treeNode.name;
 			$("#clazz").form("load", treeNode);
-			$("#student_grid").datagrid({url:ctx + '/student/list'});
+			if(!$("#student_grid").datagrid("options").url){
+				$("#student_grid").datagrid("options").url = ctx + '/student/list';
+			}
 			$("#student_grid").datagrid("load",{clazz:treeNode.id});
+			
 			$("#clazz_course").datagrid("loadData",[]);
-			$("#clazz_course").datagrid({url:ctx + '/clazz/courses'});
+			if(!$("#clazz_course").datagrid("options").url){
+				$("#clazz_course").datagrid("options").url = ctx + '/clazz/courses';
+			}
 			$("#clazz_course").datagrid("load",{clazzId:treeNode.id});
 		} else {
 			
@@ -39,18 +44,51 @@ var clazzView = {
 	},
 	
 	course : {
-		loadFilter:function(data){
-			if(data && data.length > 0){
-				for(var i in data){
-					data[i].courseId = data[i].course.id;
-					data[i].courseName = data[i].course.name;
-					data[i].hour = data[i].course.hour;
-					data[i].credit = data[i].course.credit;
+		up:function(){
+			var rows = $("#clazz_course").datagrid("getChecked");
+			for(var i in rows){
+				var index = $("#clazz_course").datagrid("getRowIndex",rows[i]);
+				if(index != 0){
+					var prerow = {};
+					$.extend(prerow,$("#clazz_course").datagrid("getRows")[index - 1]);
+					$("#clazz_course").datagrid("updateRow",{index:index - 1,row:rows[i]});
+					$("#clazz_course").datagrid("checkRow",index - 1);
+					$("#clazz_course").datagrid("updateRow",{index:index,row:prerow});
+					$("#clazz_course").datagrid("uncheckRow",index);
 				}
 			}
 		},
-		
+		down:function(){
+			var rows = $("#clazz_course").datagrid("getChecked");
+			var maxIndex = $("#clazz_course").datagrid("getRows").length - 1; 
+			for(var i = rows.length -1 ; i >= 0; i--){
+				var index = $("#clazz_course").datagrid("getRowIndex",rows[i]);
+				if(index < maxIndex){
+					var prerow = {};
+					$.extend(prerow,$("#clazz_course").datagrid("getRows")[index + 1]);
+					$("#clazz_course").datagrid("updateRow",{index:index + 1,row:rows[i]});
+					$("#clazz_course").datagrid("checkRow",index + 1);
+					$("#clazz_course").datagrid("updateRow",{index:index,row:prerow});
+					$("#clazz_course").datagrid("uncheckRow",index);
+				}
+			}
+		},	
+		doDelete:function(){
+			var rows = $("#clazz_course").datagrid("getChecked");
+			if(rows.length > 0){
+				$.sm.confirmDelete(function(){
+					for(var i = rows.length -1 ; i >= 0; i--){
+						var index = $("#clazz_course").datagrid("getRowIndex",rows[i]);
+						$("#clazz_course").datagrid("deleteRow",index);
+					}
+				});
+			}
+		},
 		toAddCourse : function(){
+			if(!clazzView.currNode){
+				$.sm.alert(I18N.regist_select_clazz);
+				return;
+			}
 			$("#course_w").window("open");
 			//清空选中
 			courseTree.ztree.checkAllNodes(false);
@@ -58,24 +96,42 @@ var clazzView = {
 			var tabDatas = $("#clazz_course").datagrid("getRows");
 			if(tabDatas && tabDatas.length >0){
 				for(var i in tabDatas){
-					var nd = courseTree.ztree.getNodesByParam("id",tabDatas[i].courseId);
+					var nd = courseTree.ztree.getNodesByParam("id",tabDatas[i].course.id);
 					courseTree.ztree.checkNode(nd[0],true);
 				}
 			}
 		},
+		endEditing : function (){
+			var editIndex;
+			var cell = $("#clazz_course").datagrid("cell");
+			if(cell){
+				editIndex = cell.index;
+			}
+            if (editIndex == undefined){return true}
+            if ($('#clazz_course').datagrid('validateRow', editIndex)){
+                $('#clazz_course').datagrid('endEdit', editIndex);
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        },
 		saveClazzCourse:function(){		
-			if($.endCellEdit("#clazz_course")){
+			if(clazzView.course.endEditing()){
 				var tabDatas = $("#clazz_course").datagrid("getRows");
 				var data = [];
 				if(tabDatas.length > 0){
-					data.push({clazzId:tabDatas[i].id,
-							course:{id:tabDatas[i].courseId},
+					for(var i in tabDatas){
+						data.push({clazzId:tabDatas[i].clazzId,
+							course:{id:tabDatas[i].course.id},
 							teacher:tabDatas[i].teacher,
 							startTime:tabDatas[i].startTime,
 							finishTime:tabDatas[i].finishTime,
-							status:tabDatas[i].status})
+							status:tabDatas[i].status,
+							ordno:i});
+					}
 				}
-				$.post(ctx + "/clazz/saveCourse",{clazzId:clazzView.currNode.id,
+				$.post(ctx + "/clazz/saveCourses",{clazzId:clazzView.currNode.id,
 												course:JSON.stringify(data)},
 					function(data){
 						$.sm.handleResult(data);
@@ -98,7 +154,7 @@ var clazzView = {
 				for (var i = clds.length - 1; i >= 0; i--) {
 					var has = false;
 					for ( var j in nodes) {
-						if (clds[i].courseId == nodes[j].id) {
+						if (clds[i].course.id == nodes[j].id) {
 							has = true;
 							break;
 						}
@@ -111,7 +167,7 @@ var clazzView = {
 				for ( var i in nodes) {
 					var has = false;
 					for ( var j in clds) {
-						if (clds[j].courseId == nodes[i].id) {
+						if (clds[j].course.id == nodes[i].id) {
 							has = true;
 							break;
 						}
@@ -120,11 +176,11 @@ var clazzView = {
 						$("#clazz_course").datagrid("appendRow",{
 							id : '',
 							clazzId : clazzView.currNode.id,
-							courseName:nodes[i].name,
-							courseId:nodes[i].id,
-							hour:nodes[i].hour,
-							credit:nodes[i].credit,
-							status:'',
+							course:{name:nodes[i].name,
+								id:nodes[i].id,
+								hour:nodes[i].hour,
+								credit:nodes[i].credit},
+							status:'1',
 							startTime:'',
 							finishTime:''
 						});
@@ -135,11 +191,11 @@ var clazzView = {
 					$("#clazz_course").datagrid("appendRow",{
 						id : '',
 						clazzId : clazzView.currNode.id,
-						courseName:nodes[i].name,
-						courseId:nodes[i].id,
-						hour:nodes[i].hour,
-						credit:nodes[i].credit,
-						status:'',
+						course:{name:nodes[i].name,
+							id:nodes[i].id,
+							hour:nodes[i].hour,
+							credit:nodes[i].credit},
+						status:'1',
 						startTime:'',
 						finishTime:''
 					});
@@ -148,33 +204,6 @@ var clazzView = {
 		}
 
 		$("#course_w").window("close");
-	},
-
-	loadclazzViewCourse : function(treeNode, notexpand) {
-		if (treeNode.pid == clazzView.rootId && !treeNode.loaded) {
-			$.ajax({
-				url : '${ctx}/clazzView/getclazzViewCourse',
-				data : {
-					clazzViewId : treeNode.id
-				},
-				async : false,
-				dataType : 'json',
-				success : function(data) {
-					treeNode.loaded = true;
-					if (data && data.length > 0) {
-						var nodes = [];
-						for ( var i in data) {
-							nodes.push({
-								id : data[i].course.id,
-								name : data[i].course.name,
-								pid : treeNode.id
-							});
-						}
-						clazzViewzTree.addNodes(treeNode, nodes, notexpand);
-					}
-				}
-			});
-		}
 	},
 
 	beforeExpand : function(treeId, treeNode) {
@@ -208,34 +237,6 @@ var clazzView = {
 		});
 
 		return false;
-	},
-
-	resaveclazzViewCourse : function(clazzViewNode, exceptCourseId) {
-		//保存
-		var courseIds = [];
-		for ( var i in clazzViewNode.children) {
-			if (exceptCourseId
-					&& clazzViewNode.children[i].id == exceptCourseId) {
-				continue;
-			}
-			courseIds.push(clazzViewNode.children[i].id);
-		}
-		var res = false;
-		$.ajax({
-			url : '${ctx}/clazzView/setCourse',
-			async : false,
-			dataType : 'json',
-			data : {
-				clazzViewId : clazzViewNode.id,
-				courseIds : courseIds
-			},
-			success : function(data) {
-				$.sm.handleResult(data, function(data) {
-					res = true;
-				})
-			}
-		});
-		return res;
 	},
 
 	addHoverDom : function(treeId, treeNode) {
@@ -293,18 +294,13 @@ clazzView.treeSetting = {
 		addHoverDom : clazzView.addHoverDom,
 		removeHoverDom : ztreef.removeHoverDom,
 		selectedMulti : false
-	},
+	}, 
 	edit : {
-		enable : true,
+		enable : false,
 		removeTitle : I18N.remove,
 		renameTitle : I18N.update,
 		showRenameBtn : false,
-		showRemoveBtn : function(treeId, treeNode) {
-			if (treeNode.id == clazzView.rootId) {
-				return false;
-			}
-			return true;
-		},
+		showRemoveBtn : false,
 		drag : {
 			isMove:false,
 			isCopy:false
@@ -317,7 +313,7 @@ clazzView.treeSetting = {
 		}
 	},
 	callback : {
-		beforeRemove : clazzView.beforeRemove,
+		//beforeRemove : clazzView.beforeRemove,
 		beforeExpand : clazzView.beforeExpand,
 		onClick : clazzView.onClick
 	}
@@ -342,31 +338,31 @@ var student = {
 						
 };
 
-	var courseTree = {
-			ztree : null,
-			treeSetting:{
-				data: {
-					simpleData: {
-						enable: true,
-						pIdKey: "pid"
-					}
-				},
-				check: {
-					enable: true
+var courseTree = {
+		ztree : null,
+		treeSetting:{
+			data: {
+				simpleData: {
+					enable: true,
+					pIdKey: "pid"
 				}
 			},
-			initTree:function(){
-				courseTree.treezNodes = courseTreeNodes;
-				for(var i in courseTree.treezNodes){
-					if(courseTree.treezNodes[i].type == 't'){
-						courseTree.treezNodes[i].isParent = true;
-						courseTree.treezNodes[i].nocheck = true;
-						courseTree.treezNodes[i].open = true;
-					}
-				}
-				courseTree.ztree = $.fn.zTree.init($("#courseTree"), courseTree.treeSetting,courseTree.treezNodes);
+			check: {
+				enable: true
 			}
-	};
+		},
+		initTree:function(){
+			courseTree.treezNodes = courseTreeNodes;
+			for(var i in courseTree.treezNodes){
+				if(courseTree.treezNodes[i].type == 't'){
+					courseTree.treezNodes[i].isParent = true;
+					courseTree.treezNodes[i].nocheck = true;
+					courseTree.treezNodes[i].open = true;
+				}
+			}
+			courseTree.ztree = $.fn.zTree.init($("#courseTree"), courseTree.treeSetting,courseTree.treezNodes);
+		}
+};
 
 var clazzViewzTree;
 
