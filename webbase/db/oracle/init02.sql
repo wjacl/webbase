@@ -63,3 +63,35 @@ INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-major');
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('edu-class-view','班级管理','/clazz/view','edu','1',1,2025);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-class-view');
+
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-clazz-add','新增班级','/clazz/add','edu-class-view','0',1,2026);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-clazz-add');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-clazz-update','修改班级','/clazz/update','edu-class-view','0',1,2027);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-clazz-update');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-clazz-del','删除班级','/clazz/delete','edu-class-view','0',1,2028);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-clazz-del');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-cs-update','修改学生','/student/update','edu-class-view','0',1,2029);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-cs-update');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-cs-del','删除学生','/student/delete','edu-class-view','0',1,2030);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-cs-del');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-cc-save','课程计划修改','/clazz/saveCourses','edu-class-view','0',1,2031);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-cc-save');
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-cc-del','删除课程','/clazz/deleteCourses','edu-class-view','0',1,2032);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-cc-del');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-cc-add','添加课程','/clazz/addCourses','edu-class-view','0',1,2033);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-cc-add');
