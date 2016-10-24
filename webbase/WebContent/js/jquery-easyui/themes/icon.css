@@ -1,3 +1,9 @@
+.icon-up{
+	background:url('icons/arrow_up.png') no-repeat center center;
+}
+.icon-down{
+	background:url('icons/arrow_down.png') no-repeat center center;
+}
 .icon-blank{
 	background:url('icons/blank.gif') no-repeat center center;
 }
