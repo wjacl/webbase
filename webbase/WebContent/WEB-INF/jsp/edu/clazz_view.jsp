@@ -249,6 +249,12 @@
 		                            }"><s:message
 										code="clazz.course.teacher" /></th>
 								<th
+									data-options="field:'startTime',width:100,editor:'datebox'"><s:message
+										code="clazz.course.startTime" /></th>
+								<th
+									data-options="field:'finishTime',width:100,editor:'datebox'"><s:message
+										code="clazz.course.finishTime" /></th>
+								<th
 									data-options="field:'status',width:100,formatter:function(value){
 										return $.ad.getDictName('c.c.sta',value);
 									},
@@ -263,12 +269,6 @@
 			                                }
 		                            }"><s:message
 										code="clazz.course.status" /></th>
-								<th
-									data-options="field:'startTime',width:100,editor:'datebox'"><s:message
-										code="clazz.course.startTime" /></th>
-								<th
-									data-options="field:'finishTime',width:100,editor:'datebox'"><s:message
-										code="clazz.course.finishTime" /></th>
 							</tr>
 						</thead>
 					</table>

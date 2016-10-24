@@ -53,7 +53,7 @@ var clazzView = {
 				$.ajax({
 					url : ctx + '/clazz/delete',
 					data : {
-						ids: [ treeNode.id ]
+						id: [ treeNode.id ]
 					},
 					dataType : 'json',
 					async : false,
@@ -101,7 +101,8 @@ var clazzView = {
 		$("#clazz").form("submit",{success:function(data){
 			var data = eval('(' + data + ')');
 			$.sm.handleResult(data,function(data){
-				
+				data.oldname = data.name;
+				$("#clazz").form("load", data);
 				var sy = data.startTime.substring(0,4);
 				
 				if(clazzView.currNode == null){//新增
