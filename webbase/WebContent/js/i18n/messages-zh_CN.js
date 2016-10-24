@@ -48,5 +48,21 @@ var I18N = {
 	validator_exits:"已存在！",
 	validator_select:"请选择！",
 	
-	regist_select_clazz:'请选择班级！'
+	regist_select_clazz:'请选择班级！',
+	
+	person:{
+		baseInfo:'基本信息',
+		birthday:'生日',
+		address:'住址',
+		remark:'备注',
+		eduInfo:'学历信息',
+		education:'学历',
+		school:'毕业院校',
+		major:'专业',
+		graduateTime:'毕业时间',
+		homeInfo:'家庭信息',
+		parent:'父母姓名',
+		phone:'联系电话',
+		home:'家庭住址',
+	}
 }
