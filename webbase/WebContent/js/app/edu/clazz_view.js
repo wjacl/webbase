@@ -126,6 +126,10 @@ var clazzView = {
 					clazzViewzTree.addNodes(pnode,0,data);
 					clazzView.currNode = clazzViewzTree.getNodesByParam('id',data.id,pnode)[0];
 					$('#clazz').form({url:ctx + '/clazz/update'});
+					if(!$("#clazz_course").datagrid("options").url){
+						$("#clazz_course").datagrid("options").url = ctx + '/clazz/courses';
+					}
+					$("#clazz_course").datagrid("load",{clazzId:data.id});
 				}else{
 					//修改
 					if(data.school != clazzView.currNode.school){

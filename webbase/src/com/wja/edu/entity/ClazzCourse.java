@@ -23,6 +23,8 @@ import com.wja.base.util.SetValue;
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class ClazzCourse extends CommEntity
 {
+    public static final String STATUS_NOT_START = "1";
+    
     @Column(name = "class_id", length = 32)
     private String clazzId;
     
@@ -60,7 +62,7 @@ public class ClazzCourse extends CommEntity
      * 课程完成状态
      */
     @Column(length = 32)
-    private String status;
+    private String status = STATUS_NOT_START;
     
     public Course getCourse()
     {

@@ -2,7 +2,6 @@ package com.wja.edu.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.wja.base.common.CommSpecification;
 import com.wja.base.util.BeanUtil;
 import com.wja.base.util.CollectionUtil;
+import com.wja.base.util.DateUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
 import com.wja.edu.dao.ClazzCourseDao;
@@ -78,33 +78,63 @@ public class ClazzService
         Clazz sc = this.clazzDao.save(c);
         if (StringUtils.isBlank(c.getId()))
         {// 新增，根据专业初始化班级课程
-            List<MajorCourse> mcs = this.majorService.getMajorCourse(c.getMajor());
-            if (CollectionUtil.isNotEmpty(mcs))
-            {
-                List<ClazzCourse> ccs = new ArrayList<>();
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(c.getStartTime());
-                int dayLessions = 6;
-                short ordno = 0;
-                int leftHour = 0;
-                for (MajorCourse mc : mcs)
-                {
-                    Course cour = mc.getCourse();
-                    ClazzCourse cc = new ClazzCourse();
-                    cc.setClazzId(sc.getId());
-                    cc.setCourse(cour);
-                    cc.setOrdno(ordno++);
-                    Date finishTime = cal.getTime();
-                    cc.setStartTime(finishTime);
-                    for (int i = 0; i < (cour.getHour() + dayLessions - 1) / dayLessions; i++)
-                    {
-                        cal.add(Calendar.DATE, 1);
-                        // TODO
-                    }
-                }
-            }
+            this.initClazzCourse(sc);
         }
         return sc;
+    }
+    
+    /**
+     * 
+     * 根据班级的专业初始化班级的课程计划<br>
+     * 
+     * @param sc
+     * @see [类、类#方法、类#成员]
+     */
+    private void initClazzCourse(Clazz sc)
+    {
+        List<MajorCourse> mcs = this.majorService.getMajorCourse(sc.getMajor());
+        if (CollectionUtil.isNotEmpty(mcs))
+        {
+            List<ClazzCourse> ccs = new ArrayList<>();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(sc.getStartTime());
+            int dayLessions = 6;
+            short ordno = 0;
+            // 开始日剩余可用课时
+            int leftHour = dayLessions;
+            for (MajorCourse mc : mcs)
+            {
+                Course cour = mc.getCourse();
+                ClazzCourse cc = new ClazzCourse();
+                cc.setClazzId(sc.getId());
+                cc.setCourse(cour);
+                cc.setOrdno(ordno++);
+                cc.setStatus(ClazzCourse.STATUS_NOT_START);
+                
+                DateUtil.toNextWorkDay(cal);
+                cc.setStartTime(cal.getTime());
+                int hour = cour.getHour() - leftHour;
+                for (int i = 1; i <= (hour + dayLessions - 1) / dayLessions; i++)
+                {
+                    cal.add(Calendar.DATE, 1);
+                    DateUtil.toNextWorkDay(cal);
+                }
+                cc.setFinishTime(cal.getTime());
+                ccs.add(cc);
+                
+                // 下一课程的开始日，还剩多少个小时可用
+                leftHour = dayLessions - hour % dayLessions;
+                leftHour = leftHour == dayLessions ? 0 : leftHour;
+                // 如果剩余的小时数小于半天的课时数则，下一课程的开始日期变为下一日
+                if (leftHour < dayLessions / 2)
+                {
+                    cal.add(Calendar.DATE, 1);
+                    leftHour = dayLessions;
+                }
+            }
+            
+            this.clazzCourseDao.save(ccs);
+        }
     }
     
     public void delete(String[] ids)
