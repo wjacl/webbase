@@ -473,12 +473,12 @@
 		editIndex: -1,
 		destroyMsg:{
 			norecord:{
-				title:'Warning',
-				msg:'No record is selected.'
+				title:I18N.ALERT_TITLE,
+				msg:I18N.alert_select
 			},
-			confirm:{
-				title:'Confirm',
-				msg:'Are you sure you want to delete?'
+			confirm:{ 
+				title:I18N.CONFIRM_TITLE,
+                msg:I18N.CONFIRM_DELETE_MESS
 			}
 		},
 		poster: function(url, data, success, error){
