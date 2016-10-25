@@ -95,3 +95,6 @@ INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-cc-del');
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('edu-cc-add','添加课程','/clazz/addCourses','edu-class-view','0',1,2033);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-cc-add');
+
+INSERT INTO t_sys_param(ID,name,VALUE,remark)
+VALUES('day.lessons','每日上课课时数','6','每日上课课时数，整数>0');
