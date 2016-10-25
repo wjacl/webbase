@@ -16,6 +16,7 @@ import com.wja.base.util.CollectionUtil;
 import com.wja.base.util.DateUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
+import com.wja.base.web.AppContext;
 import com.wja.edu.dao.ClazzCourseDao;
 import com.wja.edu.dao.ClazzDao;
 import com.wja.edu.entity.Clazz;
@@ -99,7 +100,12 @@ public class ClazzService
             Calendar cal = Calendar.getInstance();
             cal.setTime(sc.getStartTime());
             DateUtil.toNextWorkDay(cal);
-            int dayLessions = 6;
+            // 获取每日课时数系统参数
+            int dayLessions = AppContext.getIntSysParam("day.lessons");
+            if (dayLessions == Integer.MAX_VALUE)
+            {
+                dayLessions = 6;
+            }
             short ordno = 0;
             // 开始日剩余可用课时
             int leftHour = dayLessions;
