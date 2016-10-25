@@ -107,5 +107,5 @@ VALUES('sys-param-save','修改','/param/save','sys','0',1,9852);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','sys-param-save');
 
 INSERT INTO t_sys_param(ID,name,VALUE,remark)
-VALUES('login.try.max.times','登录最大尝试次数','6','登录最大尝试次数，当超过时，将被锁定。0表示不限制');
+VALUES('login.try.max.times','登录最大尝试次数','6','登录最大尝试次数，当超过时，将被锁定。');
 

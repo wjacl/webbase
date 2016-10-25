@@ -17,7 +17,6 @@ import com.wja.base.common.CommConstants;
 import com.wja.base.system.entity.Privilege;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.UserService;
-import com.wja.base.util.Log;
 import com.wja.base.util.MD5;
 import com.wja.base.web.AppContext;
 import com.wja.edu.service.StudentService;
@@ -42,25 +41,9 @@ public class LoginController
     private static final String LoginTryCountKey = "loginErrorTryCount";
     
     /**
-     * 登录错误最大尝试次数
+     * 登录错误最大尝试次数默认值
      */
-    private static Integer MaxLoginErrorTryTimes = 6;
-    
-    public LoginController()
-    {
-        String times = AppContext.getServletContext().getInitParameter("MaxLoginErrorTryTimes");
-        if (StringUtils.isNotBlank(times))
-        {
-            try
-            {
-                MaxLoginErrorTryTimes = Integer.valueOf(times.trim());
-            }
-            catch (Exception e)
-            {
-                Log.LOGGER.error("web.xml中登录尝试次数参数loginErrorTryTimes有误！", e);
-            }
-        }
-    }
+    private static Integer defalutMaxLoginErrorTryTimes = 6;
     
     @Autowired
     private UserService userService;
@@ -103,6 +86,12 @@ public class LoginController
                 
                 tryCount++;
                 httpSession.setAttribute(tryCountKey, tryCount);
+                
+                int MaxLoginErrorTryTimes = AppContext.getIntSysParam("login.try.max.times");
+                if (MaxLoginErrorTryTimes == Integer.MAX_VALUE)
+                {
+                    MaxLoginErrorTryTimes = defalutMaxLoginErrorTryTimes;
+                }
                 
                 if (tryCount >= MaxLoginErrorTryTimes)
                 {

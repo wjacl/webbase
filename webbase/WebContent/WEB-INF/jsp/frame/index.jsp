@@ -228,43 +228,6 @@
 				</ul></li>
 				
 			</c:if>
-			<li iconCls="icon-base"><span>Base</span>
-			<ul>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('表单','html/form.html')">表单</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('jsp表单','jsp/form.jsp')">jsp表单</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('jsp表单','/webbase/user/add')">新增用户</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('登录','/webbase/login')">登录</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('draggable')">draggable</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('droppable')">droppable</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('resizable')">resizable</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('pagination')">pagination</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('searchbox')">searchbox</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('progressbar')">progressbar</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('tooltip')">tooltip</a></li>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('mobile')">mobile</a></li>
-				</ul></li>
-			
-			<li iconCls="icon-menu"><span>Menu and Button</span>
-			<ul>
-					<li iconCls="icon-gears"><a href="#" onclick="open1('menu')">menu</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('linkbutton')">linkbutton</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('menubutton')">menubutton</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('splitbutton')">splitbutton</a></li>
-					<li iconCls="icon-gears"><a href="#"
-						onclick="open1('switchbutton')">switchbutton</a></li>
-				</ul></li>
-			
 		</ul>
 	</div>
 	<div region="center">
