@@ -7,10 +7,14 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+
+import com.wja.base.system.entity.Param;
+import com.wja.base.system.service.ParamService;
 
 /**
  * 应用上下文获取工具类
@@ -94,5 +98,45 @@ public class AppContext implements ServletContextListener
         }
         
         return springMvcContext;
+    }
+    
+    private static ParamService ps = null;
+    
+    /**
+     * 
+     * 获取系统参数
+     * 
+     * @param name 参数名，对应参数表中id
+     * @return
+     * @see [类、类#方法、类#成员]
+     */
+    public static String getSysParam(String name)
+    {
+        if (ps == null)
+        {
+            ps = springContext.getBean(ParamService.class);
+        }
+        Param p = ps.get(name);
+        return p == null ? null : p.getValue();
+    }
+    
+    /**
+     * 
+     * 获取整形系统参数
+     * 
+     * @param name 参数名，对应参数表中id
+     * @return 没有配置则返回 Integer.MAX_VALUE
+     * @see [类、类#方法、类#成员]
+     */
+    public static int getIntSysParam(String name)
+    {
+        int v = Integer.MAX_VALUE;
+        String value = getSysParam(name);
+        if (StringUtils.isNotBlank(value))
+        {
+            v = Integer.parseInt(value.trim());
+        }
+        
+        return v;
     }
 }
