@@ -5,6 +5,9 @@ var clazzView = {
 	type_y : 'y',
 	currNode : null,
 	loadClazz:function(treeNode,tree,close){
+		if(treeNode.nodeType != clazzView.type_y){
+			return;
+		}
 		var data = {"startTime_after_date":treeNode.id + "-01-01","startTime_before_date":treeNode.id + "-12-31",sort:'startTime',order:'desc'};
 		if(treeNode.pid != clazzView.rootId){
 			data.school = treeNode.pid;
@@ -532,7 +535,7 @@ $(function(){
 	}
 	else{
 		for ( var i in schoolNodes) {
-			schoolNodes[i].open = true;
+			schoolNodes[i].open = (i == 0);
 			schoolNodes[i].nodeType = clazzView.type_o;
 			
 			clazzView.treezNodes.push(schoolNodes[i]);

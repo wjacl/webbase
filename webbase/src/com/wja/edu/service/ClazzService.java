@@ -98,6 +98,7 @@ public class ClazzService
             List<ClazzCourse> ccs = new ArrayList<>();
             Calendar cal = Calendar.getInstance();
             cal.setTime(sc.getStartTime());
+            DateUtil.toNextWorkDay(cal);
             int dayLessions = 6;
             short ordno = 0;
             // 开始日剩余可用课时
@@ -110,26 +111,35 @@ public class ClazzService
                 cc.setCourse(cour);
                 cc.setOrdno(ordno++);
                 cc.setStatus(ClazzCourse.STATUS_NOT_START);
+                ccs.add(cc);
                 
-                DateUtil.toNextWorkDay(cal);
-                cc.setStartTime(cal.getTime());
-                int hour = cour.getHour() - leftHour;
-                for (int i = 1; i <= (hour + dayLessions - 1) / dayLessions; i++)
+                // 如果剩余的小时数小于半天的课时数且课程的课时数大于剩余小时数则，下一课程的开始日期变为下一工作日
+                if (leftHour < dayLessions / 2 && cour.getHour() > leftHour)
                 {
                     cal.add(Calendar.DATE, 1);
                     DateUtil.toNextWorkDay(cal);
-                }
-                cc.setFinishTime(cal.getTime());
-                ccs.add(cc);
-                
-                // 下一课程的开始日，还剩多少个小时可用
-                leftHour = dayLessions - hour % dayLessions;
-                leftHour = leftHour == dayLessions ? 0 : leftHour;
-                // 如果剩余的小时数小于半天的课时数则，下一课程的开始日期变为下一日
-                if (leftHour < dayLessions / 2)
-                {
-                    cal.add(Calendar.DATE, 1);
                     leftHour = dayLessions;
+                }
+                cc.setStartTime(cal.getTime());
+                
+                if (cour.getHour() <= leftHour)
+                {
+                    cc.setFinishTime(cal.getTime());
+                    leftHour = leftHour - cour.getHour();
+                }
+                else
+                {
+                    int hour = cour.getHour() - leftHour;
+                    for (int i = 1; i <= (hour + dayLessions - 1) / dayLessions; i++)
+                    {
+                        cal.add(Calendar.DATE, 1);
+                        DateUtil.toNextWorkDay(cal);
+                    }
+                    cc.setFinishTime(cal.getTime());
+                    
+                    // 下一课程的开始日，还剩多少个小时可用
+                    leftHour = dayLessions - hour % dayLessions;
+                    leftHour = leftHour == dayLessions ? 0 : leftHour;
                 }
             }
             
