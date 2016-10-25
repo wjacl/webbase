@@ -20,5 +20,6 @@
     <script type="text/javascript" src="${ctx }/js/i18n/messages-${user_lang}.js"></script>
     <script type="text/javascript" src="${ctx }/js/ajax_global_set.js"></script>
     <script type="text/javascript" src="${ctx }/js/loading.js"></script>
+	<script type="text/javascript" src="${ctx }/js/jquery-easyui/jquery.edatagrid.js"></script>
 
     
