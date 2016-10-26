@@ -382,7 +382,7 @@ var student = {
 			return $.ad.getDictName("stu.status",value);
 		},
 		detailFormatter:function(index,row){
-            return '<div class="ddv" style="padding:5px 10px;height:100px"></div>';
+            return '<div class="ddv" style="padding:5px 10px 5px 0px;height:125px"></div>';
         },
         onExpandRow: function(index,row){
             var ddv = $(this).datagrid('getRowDetail',index).find('div.ddv');
@@ -393,7 +393,7 @@ var student = {
             	var des = '<table class="dv-table" border="0">' +
 				'<tr>' +
 					'<th>' + I18N.person.baseInfo + '</th>'+
-					'<th class="dv-label">' + I18N.person.birthday + ':</th>' +
+					'<th class="dv-label" style="width:140px">' + I18N.person.birthday + ':</th>' +
 					'<td>' + $.ad.nvl(row.birthday) + '</td>' +
 					
 					'<th class="dv-label">QQ:</th>' +
@@ -408,10 +408,9 @@ var student = {
 				'<tr>' +
 					'<th></th>' +
 					'<th class="dv-label">' + I18N.person.address + ':</th>' +
-					'<td colspan="3">' + $.ad.nvl(row.address) + '</td>' +
-					
-					'<th class="dv-label">' + I18N.person.remark + ':</th>' +
-					'<td colspan="3">' + $.ad.nvl(row.remark) + '</td>' +
+					'<td colspan="3">' + $.ad.nvl(row.address) + '</td>' +			
+					'<th class="dv-label" colspan="2">' + I18N.person.secondContact + ':</th>' +
+					'<td colspan="2">' + $.ad.nvl(row.secondContact) + '</td>' +					
 				'</tr>' +
 				'<tr>' +
 					'<th>' + I18N.person.eduInfo + '</th>'+
@@ -439,6 +438,10 @@ var student = {
 					'<th class="dv-label" style="width:120px">' + I18N.person.home + ':</th>' +
 					'<td colspan="3">' + $.ad.nvl(row.home) + '</td>' +
 				
+				'</tr>' +
+				'<tr>' +
+					'<th>' + I18N.person.remark + '</th>' +
+					'<td colspan="8">' + $.ad.nvl(row.remark) + '</td>' +
 				'</tr>' +
 			'</table>';
 	

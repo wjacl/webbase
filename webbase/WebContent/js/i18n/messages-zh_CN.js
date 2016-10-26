@@ -54,6 +54,7 @@ var I18N = {
 		baseInfo:'基本信息',
 		birthday:'生日',
 		address:'住址',
+		secondContact:'第二联系人及电话',
 		remark:'备注',
 		eduInfo:'学历信息',
 		education:'学历',

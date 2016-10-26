@@ -127,7 +127,7 @@
 					</div>
 					<div style="height: 9px"></div>
 					
-					<div class="easyui-panel" data-options="collapsible:true,width:760,collapsed:true,
+					<div class="easyui-panel" data-options="collapsible:true,width:760,
 								onBeforeExpand:function(){$('#cour_panel').panel('collapse');return true;}" id="stu_panel"
 						title='<s:message code="clazzView.studentInfo" />'>
 					
