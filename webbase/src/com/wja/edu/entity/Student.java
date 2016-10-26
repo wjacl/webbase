@@ -53,6 +53,12 @@ public class Student extends CommEntity
     private String address;
     
     /**
+     * 第二联系人及电话
+     */
+    @Column(name = "second_contact", length = 50)
+    private String secondContact;
+    
+    /**
      * 学习专业
      */
     @Column(name = "learn_major", length = 32)
@@ -232,6 +238,16 @@ public class Student extends CommEntity
     public void setAddress(String address)
     {
         this.address = address;
+    }
+    
+    public String getSecondContact()
+    {
+        return secondContact;
+    }
+    
+    public void setSecondContact(String secondContact)
+    {
+        this.secondContact = secondContact;
     }
     
     public String getLearnMajor()
