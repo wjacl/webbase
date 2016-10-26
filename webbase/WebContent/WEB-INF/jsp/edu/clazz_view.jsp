@@ -11,10 +11,11 @@
 <script type="text/javascript">
 	var times = ${times};
 	var yu = '<s:message code="clazzView.year.unit"/>';
-	var schoolNodes = ${treeNodes}; 
+	var schoolNodes = ${treeNodes != null ? treeNodes : false}; 
 	var rootName = '<s:message code="clazzView.year"/>';
 	var courseTreeNodes = ${courseTreeNodes};
 	var treeYears = ${treeYears};
+	var my = '${my != null ? my : ""}';
 	var abc = false;
 	var edf = false;
 </script>

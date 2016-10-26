@@ -12,6 +12,9 @@ var clazzView = {
 		if(treeNode.pid != clazzView.rootId){
 			data.school = treeNode.pid;
 		}
+		if(my){
+			data.admin = my;
+		}
 		
 		$.ajax({url: ctx + "/clazz/list",data:data,dataType:'json',async:false,
 			success:function(data){

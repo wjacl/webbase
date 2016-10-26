@@ -101,3 +101,29 @@ VALUES('day.lessons','每日上课课时数','6','每日上课课时数，整数
 
 INSERT INTO t_sys_param(ID,name,VALUE,remark)
 VALUES('clazz.tree.years','班级树上显式的年份个数','3','班级树上显式的年份个数');
+
+INSERT INTO t_sys_role(ID,NAME,TYPE,valid,version)
+VALUES('bzr','班主任','u',1,0);
+
+INSERT INTO t_sys_role(ID,NAME,TYPE,valid,version)
+VALUES('jw','教务','u',1,0);
+
+INSERT INTO t_sys_role(ID,NAME,TYPE,valid,version)
+VALUES('teacher','教师','u',1,0);
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-myclazz','我的班级','/clazz/my','edu','1',1,2010);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-myclazz');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-myclazz-update','修改班级','/clazz/update','edu-myclazz','0',1,2027);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-myclazz-update');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-mycs-update','修改学生','/student/update','edu-myclazz','0',1,2029);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-mycs-update');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('edu-mycs-del','删除学生','/student/delete','edu-myclazz','0',1,2030);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-mycs-del');
+

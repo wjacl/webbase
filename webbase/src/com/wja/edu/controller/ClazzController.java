@@ -20,10 +20,13 @@ import com.wja.base.util.BeanUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
 import com.wja.base.web.AppContext;
+import com.wja.base.web.RequestThreadLocal;
 import com.wja.edu.entity.Clazz;
 import com.wja.edu.entity.ClazzCourse;
+import com.wja.edu.entity.Teacher;
 import com.wja.edu.service.ClazzService;
 import com.wja.edu.service.CourseService;
+import com.wja.edu.service.TeacherService;
 
 @Controller
 @RequestMapping("/clazz")
@@ -38,10 +41,29 @@ public class ClazzController
     @Autowired
     private CourseService courseService;
     
+    @Autowired
+    private TeacherService teacherService;
+    
     @RequestMapping("manage")
     public String manage()
     {
         return "edu/clazz";
+    }
+    
+    @RequestMapping("my")
+    public String myClazz(Model model)
+    {
+        model.addAttribute("times", System.currentTimeMillis());
+        model.addAttribute("courseTreeNodes", JSON.toJSONString(this.courseService.findAll()));
+        model.addAttribute("treeYears", AppContext.getIntSysParam("clazz.tree.years"));
+        
+        String userId = RequestThreadLocal.currUser.get().getId();
+        Teacher t = this.teacherService.getByUserId(userId);
+        if (t != null)
+        {
+            model.addAttribute("my", t.getId());
+        }
+        return "edu/clazz_view";
     }
     
     @RequestMapping("view")
