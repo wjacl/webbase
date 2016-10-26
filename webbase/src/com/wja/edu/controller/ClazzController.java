@@ -19,6 +19,7 @@ import com.wja.base.system.service.OrgService;
 import com.wja.base.util.BeanUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
+import com.wja.base.web.AppContext;
 import com.wja.edu.entity.Clazz;
 import com.wja.edu.entity.ClazzCourse;
 import com.wja.edu.service.ClazzService;
@@ -53,6 +54,7 @@ public class ClazzController
         Sort sort = new Sort("pid,ordno", "asc,asc");
         model.addAttribute("treeNodes", JSON.toJSONString(this.orgService.findAll(params, sort)));
         model.addAttribute("courseTreeNodes", JSON.toJSONString(this.courseService.findAll()));
+        model.addAttribute("treeYears", AppContext.getIntSysParam("clazz.tree.years"));
         return "edu/clazz_view";
     }
     

@@ -526,7 +526,7 @@ $(function(){
 
 			clazzView.treezNodes.push(firstYearNode);
 		}
-		for (var i = 1; i < 6; i++) {
+		for (var i = 1; i < treeYears; i++) {
 			clazzView.treezNodes.push({
 				id : (year - i),
 				name : (year - i) + yu,
@@ -576,7 +576,7 @@ $(function(){
 				firstYearNode = n;
 			}
 			
-			for (var j = 1; j < 6; j++) {
+			for (var j = 1; j < treeYears; j++) {
 				clazzView.treezNodes.push({
 					id : (year - j),
 					name : (year - j) + yu,

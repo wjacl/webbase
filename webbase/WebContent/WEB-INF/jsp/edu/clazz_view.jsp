@@ -14,6 +14,7 @@
 	var schoolNodes = ${treeNodes}; 
 	var rootName = '<s:message code="clazzView.year"/>';
 	var courseTreeNodes = ${courseTreeNodes};
+	var treeYears = ${treeYears};
 	var abc = false;
 	var edf = false;
 </script>

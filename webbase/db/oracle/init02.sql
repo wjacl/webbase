@@ -98,3 +98,6 @@ INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-cc-add');
 
 INSERT INTO t_sys_param(ID,name,VALUE,remark)
 VALUES('day.lessons','每日上课课时数','6','每日上课课时数，整数>0');
+
+INSERT INTO t_sys_param(ID,name,VALUE,remark)
+VALUES('clazz.tree.years','班级树上显式的年份个数','3','班级树上显式的年份个数');
