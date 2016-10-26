@@ -100,16 +100,7 @@ INSERT INTO t_sys_param(ID,name,VALUE,remark)
 VALUES('day.lessons','每日上课课时数','6','每日上课课时数，整数>0');
 
 INSERT INTO t_sys_param(ID,name,VALUE,remark)
-VALUES('clazz.tree.years','班级树上显式的年份个数','3','班级树上显式的年份个数');
-
-INSERT INTO t_sys_role(ID,NAME,TYPE,valid,version)
-VALUES('bzr','班主任','u',1,0);
-
-INSERT INTO t_sys_role(ID,NAME,TYPE,valid,version)
-VALUES('jw','教务','u',1,0);
-
-INSERT INTO t_sys_role(ID,NAME,TYPE,valid,version)
-VALUES('teacher','教师','u',1,0);
+VALUES('clazz.tree.years','班级树上展示的年份个数','3','班级树上展示的年份个数');
 
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('edu-myclazz','我的班级','/clazz/my','edu','1',1,2010);
