@@ -29,15 +29,15 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('43','硕士',
 
 /*10-14*/
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('44','博士','4',44,'education','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('courtype','课程分类','cour.type',45,'0','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('46','Java','1',46,'courtype','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('47','大数据','2',47,'courtype','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('48','UI','3',48,'courtype','s',1);
 
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('c.c.sta','课程计划状态','c.c.sta',49,'0','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('50','未开始','1',1,'c.c.sta','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('51','授课中','2',2,'c.c.sta','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('52','已完成','3',3,'c.c.sta','s',1);
+
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('course.type','课程数据类别','course.type',53,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('54','分类','t',1,'course.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('55','课程','c',2,'course.type','s',1);
 
 INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('edu','教务管理',NULL,NULL,'2',1,2000);

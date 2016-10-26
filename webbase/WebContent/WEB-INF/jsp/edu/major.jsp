@@ -17,7 +17,7 @@
 		<div data-options="region:'west'" style="padding: 5px;width:300px;max-height:430px;">
 				<ul id="majorTree" class="ztree"></ul>			
 		</div>
-		<div data-options="region:'center',border:false" style="width:400px;max-height:430px;"> 
+		<div data-options="region:'center',border:false" style="width:400px;max-height:430px;padding-left:20px"> 
 			<div class="content">
 				<form id="major_add" method="post" action="${ctx }/major/add">		
 					<div style="margin-bottom: 20px">

@@ -17,13 +17,13 @@
 		<div data-options="region:'west'" style="padding: 5px;width:300px;max-height:430px;">
 				<ul id="courseTree" class="ztree"></ul>			
 		</div>
-		<div data-options="region:'center',border:false" style="width:300px;max-height:430px;"> 
+		<div data-options="region:'center',border:false" style="width:300px;max-height:430px;padding-left:30px"> 
 			<div class="content">
 				<form id="course_add" method="post" action="${ctx }/course/add">							
 					<div style="margin-bottom: 20px">
 						<input class="easyui-textbox" name="typeName" style="width: 240px"
-							data-options="label:'<s:message code="course.type"/>:',readonly:true">
-					</div>
+							data-options="label:'<s:message code="course.belong"/>:',readonly:true">
+					</div>		
 					<div style="margin-bottom: 20px">
 						<input class="easyui-textbox" name="name" style="width: 240px"
 							data-options="label:'<s:message code="course.name"/>:',required:true,
@@ -32,12 +32,26 @@
 						<input type="hidden" name="oldname" id="course_oldname" />
 					</div>
 					<div style="margin-bottom: 20px">
-						<input class="easyui-numberbox" name="hour" style="width: 240px"
+						<input class="easyui-combobox" name="type" id="courseType"
+							style="width: 240px"
+							data-options="
+			                    url:'${ctx }/dict/get?pvalue=course.type',
+			                    method:'get',
+			                    valueField:'value',
+			                    textField:'name',
+			                    panelHeight:'auto',
+		                    	required:true,
+		                    	onChange:course.onChange,
+		                    	label:'<s:message code="course.dtype"/>:'
+		                    ">
+	                </div>
+					<div style="margin-bottom: 20px" id="hourDiv">
+						<input class="easyui-numberbox" name="hour" style="width: 240px" id="hour"
 							data-options="label:'<s:message code="course.hour"/>:',required:true,
 							max:999">
 					</div>
-					<div style="margin-bottom: 20px">
-						<input class="easyui-numberbox" name="credit" style="width: 240px"
+					<div style="margin-bottom: 20px" id="creditDiv">
+						<input class="easyui-numberbox" name="credit" style="width: 240px" id="credit"
 							data-options="label:'<s:message code="course.credit"/>:',required:true,
 							max:999">
 					</div>			
@@ -49,10 +63,9 @@
 					<input type="hidden" name="ordno" />
                     <input type="hidden" name="id" />
                     <input type="hidden" name="pid"  id="course_pid"/>
-                    <input type="hidden" name="type" />
                     <input type="hidden" name="version" />
 				</form>
-				<div style="text-align: center; padding: 5px 0;width:240px" id="course_buttons">
+				<div style="text-align: center; padding: 5px 0;width:240px;display:none" id="course_buttons">
 					<a href="javascript:void(0)" class="easyui-linkbutton"
 						onclick="courseSubmitForm('course_add')" style="width: 80px">
 						<s:message code="comm.submit" /></a> 
@@ -69,50 +82,38 @@
 						type_t:'t',
 						type_c:'c',
 						currNode : null,
+						onChange : function(newValue,oldValue){
+							if(newValue == course.type_t){
+								$("#hourDiv").hide();
+								$("#creditDiv").hide();
+								$("#hour").textbox("setValue",0);
+								$("#credit").textbox("setValue",0);
+							}
+							else{
+								$("#hourDiv").show();
+								$("#creditDiv").show();
+							}
+						},
 						onClick :function(event, treeId, treeNode, clickFlag){
 							course.currNode = treeNode;
 							
-							if(treeNode.type == course.type_t ){
+							if(treeNode.id == course.rootId){
 								$("#course_buttons").hide();
-								if(treeNode.id != course.rootId){
-									$.fn.zTree.getZTreeObj(treeId).editName(treeNode);
-								}
 							}
-							else{
+							else {
 								treeNode.oldname = treeNode.name;
 								treeNode.typeName = treeNode.getParentNode().name;
 								$("#course_add").form("load",treeNode);
+								$("#courseType").combobox("readonly",true);
+								if(treeNode.type == course.type_t){
+									$("#hourDiv").hide();
+									$("#creditDiv").hide();
+								}else{
+									$("#hourDiv").show();
+									$("#creditDiv").show();
+								}
 								$("#course_buttons").show();
 							}
-						},
-						
-						beforeRename:function(treeId, treeNode, newName, isCancel){
-							var ztree = $.fn.zTree.getZTreeObj(treeId);
-							if(newName.length == 0){
-								ztree.cancelEditName();
-								$.sm.alert('<s:message code="course.name.notnull"/>');
-								return false;
-							}
-							
-							if(treeNode.name == newName){
-								return true;
-							}
-							
-							var res = false;
-							treeNode.name = newName;
-							$.ajax({ url: ztree.saveUrl,dataType:'json',data:treeNode,async:false, 
-								success: function(data){
-									$.sm.handleResult(data);
-									if(data.status == $.sm.ResultStatus_Ok){
-										if(!treeNode.id){
-											treeNode.id = data.data.id;
-										}
-										res = true;
-									}
-							      }});
-							
-							return res;
-							
 						},
 						
 						addHoverDom : function(treeId, treeNode) {
@@ -133,17 +134,24 @@
 								if(treeNode.children && treeNode.children.length > 0){
 									ordno = treeNode.children.length + 1;
 								}
-								
+
+								$("#courseType").combobox("readonly",false);
+								var dtype = course.type_c;
 								if(treeNode.id == course.rootId){
-									zTree.addNodes(treeNode, {pid:treeNode.id, name:I18N.ztree_node_new,type:course.type_t,ordno:ordno});
-									$("#course_buttons").hide();
+									dtype = course.type_t;
+									$("#hourDiv").hide();
+									$("#creditDiv").hide();
 								}
-								else{
-									var da = {pid:treeNode.id,type:course.type_c,ordno:ordno,typeName:treeNode.name};
-									$("#course_add").form("clear");
-									$("#course_add").form("load",da);
-									$("#course_buttons").show();
+								else{									
+									$("#hourDiv").show();
+									$("#creditDiv").show();
 								}
+								
+								var da = {pid:treeNode.id,type:dtype,ordno:ordno,typeName:treeNode.name};
+								$("#course_add").form("clear");
+								$("#course_add").form("load",da);
+								$("#course_buttons").show();
+								
 								return false;
 							});
 						}
@@ -175,7 +183,6 @@
 					},
 					callback: {
 						beforeRemove: ztreef.beforeRemove,
-						beforeRename: course.beforeRename,
 						onClick:course.onClick
 					}
 				};
