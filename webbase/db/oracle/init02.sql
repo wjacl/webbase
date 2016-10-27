@@ -112,3 +112,14 @@ INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
 VALUES('edu-mycs-del','删除学生','/student/delete','edu-myclazz','0',1,2030);
 INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','edu-mycs-del');
 
+
+/* 考勤模块 start  */
+INSERT INTO t_sys_param(ID,name,VALUE,remark)
+VALUES('work.start.time','上班时间','9:00','上班时间,格式：小时:分钟，24小时制');
+
+INSERT INTO t_sys_param(ID,name,VALUE,remark)
+VALUES('work.end.time','下班时间','17:30','下班时间,格式：小时:分钟，24小时制');
+
+
+
+/* 考勤模块 end  */
