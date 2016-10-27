@@ -1,10 +1,4 @@
 
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('major','专业','major',8,'0','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('9','大数据分析','bi',9,'major','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('10','Java','java',10,'major','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('11','大数据研发','bd',11,'major','s',1);
-INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('12','UIUE','ui',12,'major','s',1);
-
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('clazz.status','班级状态','clazz.status',13,'0','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('14','未开班','n',14,'clazz.status','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('15','已开班','s',15,'clazz.status','s',1);
