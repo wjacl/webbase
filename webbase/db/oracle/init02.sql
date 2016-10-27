@@ -120,6 +120,16 @@ VALUES('work.start.time','上班时间','9:00','上班时间,格式：小时:分
 INSERT INTO t_sys_param(ID,name,VALUE,remark)
 VALUES('work.end.time','下班时间','17:30','下班时间,格式：小时:分钟，24小时制');
 
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('attend.type','考勤类别','attend.type',56,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('57','迟到','1',1,'attend.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('58','早退','2',2,'attend.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('59','旷工（课）','3',3,'attend.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('60','事假','4',4,'attend.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('61','病假','5',5,'attend.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('62','调休','6',6,'attend.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('63','年休','7',7,'attend.type','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('64','加班','8',8,'attend.type','s',1);
+
 
 
 /* 考勤模块 end  */
