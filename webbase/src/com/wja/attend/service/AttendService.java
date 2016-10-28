@@ -1,6 +1,7 @@
 package com.wja.attend.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +16,17 @@ import com.wja.base.util.BeanUtil;
 import com.wja.base.util.CollectionUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
+import com.wja.edu.entity.Student;
+import com.wja.edu.service.StudentService;
 
 @Service
 public class AttendService
 {
     @Autowired
     private AttendDao dao;
+    
+    @Autowired
+    private StudentService studentService;
     
     public Object add(Attendance c, String[] perIds)
     {
@@ -83,13 +89,45 @@ public class AttendService
         }
     }
     
+    private Map<String, Object> paramsHandle(Map<String, Object> params)
+    {
+        
+        String personIds = (String)params.get("personId_in_string");
+        if (StringUtils.isBlank(personIds))
+        {
+            String clazzId = (String)params.get("clazzId");
+            if (StringUtils.isNotBlank(clazzId))
+            {
+                Map<String, Object> p = new HashMap<>();
+                p.put("clazz", clazzId);
+                List<Student> sts = studentService.query(p, null);
+                if (CollectionUtil.isNotEmpty(sts))
+                {
+                    List<String> ids = new ArrayList<String>();
+                    for (Student st : sts)
+                    {
+                        ids.add(st.getId());
+                    }
+                    
+                    params.put("personId_in_string", ids);
+                }
+            }
+        }
+        
+        params.remove("clazzId");
+        
+        return params;
+    }
+    
     public List<Attendance> query(Map<String, Object> params, Sort sort)
     {
-        return this.dao.findAll(new CommSpecification<Attendance>(params), sort == null ? null : sort.getSpringSort());
+        return this.dao.findAll(new CommSpecification<Attendance>(paramsHandle(params)),
+            sort == null ? null : sort.getSpringSort());
     }
     
     public Page<Attendance> pageQuery(Map<String, Object> params, Page<Attendance> page)
     {
-        return page.setPageData(this.dao.findAll(new CommSpecification<Attendance>(params), page.getPageRequest()));
+        return page.setPageData(
+            this.dao.findAll(new CommSpecification<Attendance>(paramsHandle(params)), page.getPageRequest()));
     }
 }

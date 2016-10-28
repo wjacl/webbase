@@ -65,5 +65,8 @@ var I18N = {
 		parent:'父母姓名',
 		phone:'联系电话',
 		home:'家庭住址',
-	}
+	},
+	
+	attend:'考勤'
+
 }

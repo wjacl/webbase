@@ -130,6 +130,10 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('62','调休',
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('63','年休','7',7,'attend.type','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('64','加班','8',8,'attend.type','s',1);
 
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('attend.status','考勤状态','attend.status',65,'0','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('66','待审核','0',1,'attend.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('67','通过','1',2,'attend.status','s',1);
+INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('68','未通过','2',3,'attend.status','s',1);
 
 
 /* 考勤模块 end  */

@@ -45,9 +45,10 @@
 				</div>
 				<div data-options="region:'center',border:false"
 					style="width: 800px; max-height: 500px; padding: 0px 10px">
-
-					<div class="easyui-panel" data-options="collapsible:true,width:760"
-						title='<s:message code="clazzView.info" />'>
+					
+					<div id="tt" class="easyui-tabs" style="width:760px;height:100%" data-options="onSelect:clazzView.onTabSelect">
+					
+					<div title='<s:message code="clazzView.info" />'>
 
 						<form id="clazz" method="post" action="${ctx }/clazz/add"
 							style="margin-bottom: 0px; padding: 5px 5px 5px 0px">
@@ -127,10 +128,8 @@
 							</table>
 						</form>
 					</div>
-					<div style="height: 9px"></div>
 					
-					<div class="easyui-panel" data-options="collapsible:true,width:760,
-								onBeforeExpand:function(){$('#cour_panel').panel('collapse');return true;}" id="stu_panel"
+					<div id="stu_panel"
 						title='<s:message code="clazzView.studentInfo" />'>
 					
 						<div id="student_tb1">
@@ -141,12 +140,14 @@
 							<app:author path="/student/delete">
 								<a href="javascript:$.ad.doDelete('student_grid','${ctx }/student/delete')" class="easyui-linkbutton" iconCls="icon-remove"
 									plain="true"><s:message code='comm.remove' /></a>
-							</app:author>						
+							</app:author>
+								<a href="javascript:attend.toReg()" class="easyui-linkbutton" iconCls="icon-remove"
+									plain="true"><s:message code='attend.reg' /></a>						
 						</div>
 					
 						<table class="easyui-datagrid" id="student_grid" 
 							data-options="rownumbers:true,singleSelect:false,multiSort:true,selectOnCheck:true,width:758,
-								height:298,toolbar:'#student_tb1',border:0,
+								height:466,toolbar:'#student_tb1',border:0,
 								view: detailview,detailFormatter:student.detailFormatter,onExpandRow:student.onExpandRow
 					      ">
 							<thead>
@@ -175,10 +176,8 @@
 							</thead>
 						</table>	
 					</div>	
-					<div style="height: 9px"></div>
 					
-					<div class="easyui-panel" data-options="collapsible:true,width:760,collapsed:true,
-								onBeforeExpand:function(){$('#stu_panel').panel('collapse',true);return true;}" id="cour_panel"
+					<div id="cour_panel"
 						 title='<s:message code="clazzView.courseInfo" />'>
 					<!-- 班级课程计划 -->
 					<div id="student_tb2">
@@ -200,7 +199,7 @@
 				
 					<table class="easyui-datagrid" id="clazz_course"
 						data-options="rownumbers:true,singleSelect:false,selectOnCheck:true,width:758,border:0,
-								height:298,toolbar:'#student_tb2',
+								height:466,toolbar:'#student_tb2',
 									onEndEdit:function (index, row){
 							            var ed = $(this).datagrid('getEditor', {
 							                index: index,
@@ -275,8 +274,100 @@
 						</thead>
 					</table>
 				</div>
+				
+				<div title='<s:message code="attend" />'>
+					<div id="attend_tb" style="padding: 5px; height: auto">
+						<div style="margin-bottom: 5px">
+							<a href="javascript:attend.toReg();" class="easyui-linkbutton"
+								iconCls="icon-add" plain="true"><s:message code='attend.reg' /></a> 
+							<a href="javascript:$.ad.toUpdate('attend_grid','attend_w','<s:message code='attend.reg' />','attend_add','${ctx }/attend/update',{oldname:'name'})"
+								class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='comm.update' /></a>
+							<a href="javascript:$.ad.doDelete('attend_grid','${ctx }/attend/delete')" class="easyui-linkbutton" iconCls="icon-remove"
+								plain="true"><s:message code='comm.remove' /></a>
+						</div>
+						<div>
+							<form id="attend_query_form">						
+						             <s:message code="attend.student"/>:
+										<input class="easyui-combobox" name="personId_in_string" id="attend_personId"
+										style="width: 100px"
+										data-options="
+						                    url:'${ctx }/student/list',
+						                    method:'get',
+						                    valueField:'id',
+						                    textField:'name',
+					                    	multiple:true
+					                    ">
+					                    
+										<s:message code="attend.times"/>:
+										<input class="easyui-datebox" name="startTime_after_date"
+										style="width: 100px" />
+										-
+										<input class="easyui-datebox" name="startTime_before_date"
+										style="width: 100px" />
+										
+					                  <s:message code="attend.type"/>:
+										<input class="easyui-combobox" name="type_in_string"
+										style="width: 80px;"
+										data-options="
+						                    url:'${ctx }/dict/get?pvalue=attend.type',
+						                    method:'get',
+						                    valueField:'value',
+						                    textField:'name',
+						                    panelHeight:'auto',
+					                    	multiple:true
+					                    ">
+					                   <s:message code="attend.status"/>:
+										<input class="easyui-combobox" name="status_in_string" id="attend_status"
+										style="width: 80px;"
+										data-options="
+						                    url:'${ctx }/dict/get?pvalue=attend.status',
+						                    method:'get',
+						                    valueField:'value',
+						                    textField:'name',
+						                    panelHeight:'auto',
+					                    	multiple:true
+					                    ">
+					                    <input type="hidden" name="clazzId" id="attend_clazz"/>
+								<a
+									href="javascript:$.ad.gridQuery('attend_query_form','attend_grid')"
+									class="easyui-linkbutton" iconCls="icon-search"><s:message
+										code="comm.query" /></a>
+							</form>
+						</div>
+					</div>
+					
+						<table class="easyui-datagrid" id="attend_grid" 
+							data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,width:758,
+								height:466,toolbar:'#attend_tb',border:0,sortName:'startTime',sortOrder:'desc',
+								view: detailview,detailFormatter:student.detailFormatter,onExpandRow:student.onExpandRow
+					      ">
+							<thead>
+								<tr>
+									<th data-options="field:'ck',checkbox:true"></th>
+									<th data-options="field:'personId',sortable:'true',width:100,formatter:attend.nameFormatter"><s:message
+											code="p.name" /></th>
+									<th data-options="field:'type',width:60,sortable:'true',formatter:attend.typeFormatter"><s:message
+											code="attend.type" /></th>
+									<th
+										data-options="field:'length',width:100"><s:message
+											code="attend.length" /></th>
+									<th
+										data-options="field:'startTime',width:120"><s:message
+											code="attend.startTime" /></th>
+									<th
+										data-options="field:'endTime',width:120"><s:message
+											code="attend.endTime" /></th>
+									<th
+										data-options="field:'status',width:100,align:'center',sortable:'true',formatter:attend.statusFormatter"><s:message
+											code="attend.status" /></th>
+								</tr>
+							</thead>
+						</table>	
+					</div>
+				
 				</div>
 			</div>
+		</div>
 	<div id="course_w" class="easyui-window" title='<s:message code="major.course.select" />'
 		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
 		style="width: 400px; height: 490px; padding: 10px;">
@@ -290,6 +381,14 @@
 						<s:message code="comm.ok" /></a> 
 			</div>
 	</div>
+	
+	<div id="attend_w" class="easyui-window" title="<s:message code='attend.reg' />"
+		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
+		style="width: 500px; height: 290px; padding: 10px;">
+		<div class="content">
+		</div>
+	</div>
+	
 	<%@ include file="/WEB-INF/jsp/edu/student_update_win.jsp"%>
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>
 </body>

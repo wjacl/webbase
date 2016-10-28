@@ -1,9 +1,35 @@
+
+var attend = {
+	attend_w_load:false,
+	toReg:function(){
+		$('#attend_add').form("clear");
+		var da = $("#attend_personId").combobox('getData');
+		$('#attend_add_per').combobox('loadData',da);
+		$('#attend_w').window('open');
+	}
+};
+
 var clazzView = {
 	rootId : 0,
 	type_o : 'o',
 	type_c : 'c',
 	type_y : 'y',
 	currNode : null,
+	onTabSelect :function(title,index){
+		if(title == I18N.attend){
+			if($('#attend_clazz').val() != clazzView.currNode.id){
+				var clazzid = clazzView.currNode.id;
+				$('#attend_query_form').form('clear');
+				$('#attend_clazz').val(clazzid);
+				$('#attend_personId').combobox({queryParams:{clazz:clazzid}});
+				$('#attend_personId').combobox('reload');
+				if(!$("#attend_grid").datagrid("options").url){
+					$("#attend_grid").datagrid("options").url = ctx + '/attend/query';
+				}			
+				$("#attend_grid").datagrid("load",{clazzId:clazzid});
+			}
+		}
+	},
 	loadClazz:function(treeNode,tree,close){
 		if(treeNode.nodeType != clazzView.type_y){
 			return;
@@ -32,6 +58,10 @@ var clazzView = {
 		
 		if (treeNode.nodeType == clazzView.type_c) {
 			clazzView.currNode = treeNode;
+			
+			var tab = $('#tt').tabs('getSelected');
+			clazzView.onTabSelect(tab.panel("options").title);
+			
 			treeNode.oldname = treeNode.name;
 			$("#clazz").form("load", treeNode);
 			if(!$("#student_grid").datagrid("options").url){
@@ -602,4 +632,6 @@ $(function(){
          index: 0,
          field: 'status'
      });
+	 
+	 $('#attend_w').window('refresh',ctx + '/attend/toAdd');
 });

@@ -3,6 +3,7 @@ package com.wja.attend.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +17,17 @@ import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
 
 @Controller
-@RequestMapping("/teacher")
+@RequestMapping("/attend")
 public class AttendController
 {
     @Autowired
     private AttendService service;
+    
+    @RequestMapping("toAdd")
+    public String toAdd()
+    {
+        return "attend/add";
+    }
     
     @RequestMapping("manage")
     public String manage()
@@ -39,9 +46,15 @@ public class AttendController
     
     @RequestMapping({"add"})
     @ResponseBody
-    public OpResult add(Attendance c, String[] perIds)
+    public OpResult add(Attendance c, String perIds)
     {
-        return OpResult.addOk(this.service.add(c, perIds));
+        String[] pids = null;
+        if (StringUtils.isNotBlank(perIds))
+            ;
+        {
+            pids = perIds.split(",");
+        }
+        return OpResult.addOk(this.service.add(c, pids));
     }
     
     @RequestMapping("query")
