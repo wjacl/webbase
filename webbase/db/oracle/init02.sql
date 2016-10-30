@@ -135,5 +135,28 @@ INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('66','待审�
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('67','通过','1',2,'attend.status','s',1);
 INSERT INTO t_sys_dict(Id,name,value,ordno,pid,type,valid) VALUES('68','未通过','2',3,'attend.status','s',1);
 
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('stu-course','我的课程','/student/mycourse',NULL,'1',1,3010);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','stu-course');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('stu-task','我的作业','/student/mytask',NULL,'1',1,3020);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','stu-task');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('stu-exam','我的考试','/student/myexam',NULL,'1',1,3030);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','stu-exam');
+
+INSERT INTO t_sys_privilege(pr_id,pr_name,Path,p_pr_id,pr_type,valid,Order_No)
+VALUES('stu-attend','我的考勤','/student/myattend',NULL,'1',1,3040);
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('admin','stu-attend');
+
+INSERT INTO t_sys_role(ID,NAME,TYPE,valid,version,create_user)
+VALUES('student','学生','s',1,0,'u001');
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('student','stu-course');
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('student','stu-task');
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('student','stu-exam');
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('student','stu-attend');
+INSERT INTO t_sys_role_priv(r_id,pr_id) VALUES('student','person');
 
 /* 考勤模块 end  */
