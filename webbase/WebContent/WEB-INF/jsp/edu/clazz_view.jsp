@@ -32,6 +32,7 @@
 	edf = true;
 </script>
 </app:author>
+<script type="text/javascript" src="${ctx }/js/app/edu/attend.js"></script>
 <script type="text/javascript" src="${ctx }/js/app/edu/clazz_view.js"></script>
 </head>
 <body>
