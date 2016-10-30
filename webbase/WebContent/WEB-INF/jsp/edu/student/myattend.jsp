@@ -16,9 +16,9 @@
 	</h3>
 	<div id="attend_tb" style="padding: 5px; height: auto">
 		<div style="margin-bottom: 5px">
-			<a href="javascript:attend.toReg('<s:message code='attend' />');" class="easyui-linkbutton"
-				iconCls="icon-add" plain="true"><s:message code='attend.reg' /></a> 
-			<a href="javascript:attend.toUpdate('<s:message code='attend' />');"
+			<a href="javascript:attend.leave.apply('<s:message code='attend.leave.apply' />');" class="easyui-linkbutton"
+				iconCls="icon-add" plain="true"><s:message code='attend.leave' /></a> 
+			<a href="javascript:$.ad.toUpdate('attend_grid','attend_w','<s:message code='attend.apply' />','attend_add','${ctx }/attend/update');"
 				class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='comm.update' /></a>
 			<a href="javascript:$.ad.doDelete('attend_grid','${ctx }/attend/delete')" class="easyui-linkbutton" iconCls="icon-remove"
 				plain="true"><s:message code='comm.remove' /></a>
@@ -29,10 +29,12 @@
 	<table class="easyui-datagrid" id="attend_grid" 
 		data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,width:758,
 			toolbar:'#attend_tb',sortName:'startTime',sortOrder:'desc',url:'${ctx }/attend/query?personId=${studentId }',
+			onCheck:attend.leave.onCheck,
 			view: detailview,detailFormatter:attend.detailFormatter,onExpandRow:attend.onExpandRow
       ">
 		<thead>
 			<tr>
+				<th data-options="field:'ck',checkbox:true"></th>
 				<th data-options="field:'personId',sortable:'true',width:100,formatter:attend.nameFormatter"><s:message
 						code="p.name" /></th>
 				<th data-options="field:'type',width:60,align:'center',sortable:'true',formatter:attend.typeFormatter"><s:message
@@ -52,6 +54,11 @@
 			</tr>
 		</thead>
 	</table>
+	<div id="attend_w" class="easyui-window" title="<s:message code='attend.leave.apply' />"
+		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
+		style="width: 500px; height: 290px; padding: 10px;">
+		<%@ include file="/WEB-INF/jsp/attend/leave.jsp"%>
+	</div>
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>
 </body>
 </html>

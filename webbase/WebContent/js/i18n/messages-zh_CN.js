@@ -69,5 +69,7 @@ var I18N = {
 	
 	attend:'考勤',
 	attend_reason:'原因',
-	attend_remark:'备注'
+	attend_remark:'备注',
+	attend_leave_type:[{value:4,name:'事假'},{value:5,name:'病假'},{value:6,name:'调休'},{value:7,name:'年休'}],
+	attend_leave_cannot_change:'待审核状态的申请才可选中更改！'
 }

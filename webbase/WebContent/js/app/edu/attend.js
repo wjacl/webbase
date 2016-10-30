@@ -54,5 +54,20 @@ var attend = {
         	ddv.append(des);
         	row.addDetail = true;
         }
-    }			
+    },
+    
+    leave:{
+    	apply:function(wTitle){
+    		var wid = "attend_w";
+    		$("#" + wid).window({title:wTitle});
+    		$("#" + wid).window("open");
+    	},
+    	onCheck:function(index,row){
+			if(row.status != "0"){
+				$("#attend_grid").datagrid("uncheckRow",index);
+				$.sm.show(I18N.attend_leave_cannot_change);
+			}
+		}
+    }
+    
 };
