@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="app" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="appfn" uri="http://wja.com/jsp/app/functions" %>
 <!DOCTYPE html>
 <html>
 <head> 
@@ -18,6 +19,7 @@
 	var my = '${my != null ? my : ""}';
 	var abc = false;
 	var edf = false;
+	var todayWorkStartTime = '${appfn:todayWorkStartTime()}';
 </script>
 
 <app:author path="/clazz/add">
@@ -278,15 +280,15 @@
 				<div title='<s:message code="attend" />'>
 					<div id="attend_tb" style="padding: 5px; height: auto">
 						<div style="margin-bottom: 5px">
-							<a href="javascript:attend.toReg();" class="easyui-linkbutton"
+							<a href="javascript:attend.toReg('<s:message code='attend' />');" class="easyui-linkbutton"
 								iconCls="icon-add" plain="true"><s:message code='attend.reg' /></a> 
-							<a href="javascript:$.ad.toUpdate('attend_grid','attend_w','<s:message code='attend.reg' />','attend_add','${ctx }/attend/update',{oldname:'name'})"
+							<a href="javascript:attend.toUpdate('<s:message code='attend' />');"
 								class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='comm.update' /></a>
 							<a href="javascript:$.ad.doDelete('attend_grid','${ctx }/attend/delete')" class="easyui-linkbutton" iconCls="icon-remove"
 								plain="true"><s:message code='comm.remove' /></a>
 						</div>
 						<div>
-							<form id="attend_query_form">						
+							<form id="attend_query_form" style="margin:0px">						
 						             <s:message code="attend.student"/>:
 										<input class="easyui-combobox" name="personId_in_string" id="attend_personId"
 										style="width: 100px"
@@ -328,7 +330,7 @@
 					                    	multiple:true
 					                    ">
 					                    <input type="hidden" name="clazzId" id="attend_clazz"/>
-								<a
+								<a style="margin-left:10px"
 									href="javascript:$.ad.gridQuery('attend_query_form','attend_grid')"
 									class="easyui-linkbutton" iconCls="icon-search"><s:message
 										code="comm.query" /></a>
@@ -338,24 +340,24 @@
 					
 						<table class="easyui-datagrid" id="attend_grid" 
 							data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,width:758,
-								height:466,toolbar:'#attend_tb',border:0,sortName:'startTime',sortOrder:'desc',
-								view: detailview,detailFormatter:student.detailFormatter,onExpandRow:student.onExpandRow
+								toolbar:'#attend_tb',border:0,sortName:'startTime',sortOrder:'desc',
+								view: detailview,detailFormatter:attend.detailFormatter,onExpandRow:attend.onExpandRow
 					      ">
 							<thead>
 								<tr>
 									<th data-options="field:'ck',checkbox:true"></th>
 									<th data-options="field:'personId',sortable:'true',width:100,formatter:attend.nameFormatter"><s:message
 											code="p.name" /></th>
-									<th data-options="field:'type',width:60,sortable:'true',formatter:attend.typeFormatter"><s:message
+									<th data-options="field:'type',width:60,align:'center',sortable:'true',formatter:attend.typeFormatter"><s:message
 											code="attend.type" /></th>
 									<th
-										data-options="field:'length',width:100"><s:message
+										data-options="field:'length',width:100,align:'center'"><s:message
 											code="attend.length" /></th>
 									<th
-										data-options="field:'startTime',width:120"><s:message
+										data-options="field:'startTime',width:120,align:'center'"><s:message
 											code="attend.startTime" /></th>
 									<th
-										data-options="field:'endTime',width:120"><s:message
+										data-options="field:'endTime',width:120,align:'center'"><s:message
 											code="attend.endTime" /></th>
 									<th
 										data-options="field:'status',width:100,align:'center',sortable:'true',formatter:attend.statusFormatter"><s:message

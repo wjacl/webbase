@@ -3,7 +3,6 @@ package com.wja.attend.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.wja.attend.entity.Attendance;
 import com.wja.attend.service.AttendService;
 import com.wja.base.common.OpResult;
+import com.wja.base.util.BeanUtil;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
 
@@ -46,29 +46,27 @@ public class AttendController
     
     @RequestMapping({"add"})
     @ResponseBody
-    public OpResult add(Attendance c, String perIds)
+    public OpResult add(Attendance c, String[] personId)
     {
-        String[] pids = null;
-        if (StringUtils.isNotBlank(perIds))
-            ;
-        {
-            pids = perIds.split(",");
-        }
-        return OpResult.addOk(this.service.add(c, pids));
+        return OpResult.addOk(this.service.add(c, personId));
     }
     
     @RequestMapping("query")
     @ResponseBody
     public Page<Attendance> pageQuery(@RequestParam Map<String, Object> params, Page<Attendance> page)
     {
-        return this.service.pageQuery(params, page);
+        this.service.pageQuery(params, page);
+        BeanUtil.setCollFieldValues(page.getRows());
+        return page;
     }
     
     @RequestMapping("list")
     @ResponseBody
     public List<Attendance> query(@RequestParam Map<String, Object> params, Sort sort)
     {
-        return this.service.query(params, sort);
+        List<Attendance> list = this.service.query(params, sort);
+        BeanUtil.setCollFieldValues(list);
+        return list;
     }
     
     @RequestMapping("delete")

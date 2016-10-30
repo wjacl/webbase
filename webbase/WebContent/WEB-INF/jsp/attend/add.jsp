@@ -5,15 +5,16 @@
 <form id="attend_add" method="post" action="${ctx }/attend/add">
 	<table style="width:100%;border:0px solid #ccc;">
 		<tr>
-			<td><s:message code="attend.student"/>:</td>
+			<td style="width:70px"><s:message code="attend.student"/>:</td>
 			<td colspan="3">
-				<input class="easyui-combobox" name="perIds" style="width: 100%" id="attend_add_per"
+				<input class="easyui-combobox" name="personId" style="width: 100%" id="attend_add_per"
 				data-options="required:true,multiple:true,
                     valueField:'id',
                     textField:'name'">
-				<input type="hidden" name="personId" />
-				<input type="hidden" name="perIds"/>
+				<input type="hidden" name="personType" value="1" id="attend_personType"/>
 				<input type="hidden" name="status" value="1" id="attendStatus"/>
+				<input type="hidden" name="id" />
+				<input type="hidden" name="version" />
 			</td>
 		</tr>
 		<tr>	
@@ -38,13 +39,13 @@
 		<tr>
 			<td><s:message code="attend.startTime"/>:</td>
 			<td>
-				<input class="easyui-datetimebox" data-options="required:true" 
+				<input class="easyui-datetimebox" data-options="required:true,showSeconds:false" id="attend_startTime"
 					name="startTime" style="width: 140px">
 			</td>
 			
 			<td><s:message code="attend.endTime"/>:</td>
 			<td>
-				<input class="easyui-datetimebox" data-options="required:true" 
+				<input class="easyui-datetimebox" data-options="showSeconds:false" id="attend_endTime"
 					name="endTime" style="width: 140px">
 			</td>
 		</tr>
@@ -52,7 +53,7 @@
 			<td><s:message code="attend.reason"/>:</td>
 			<td colspan="3">
 				<input class="easyui-textbox" name="reason" style="width: 100%"
-				data-options="required:true,validType:'maxLength[200]',multiline:true">
+				data-options="validType:'maxLength[200]',multiline:true">
 			</td>
 		</tr>
 		<tr>						

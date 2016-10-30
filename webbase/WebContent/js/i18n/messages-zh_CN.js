@@ -67,6 +67,7 @@ var I18N = {
 		home:'家庭住址',
 	},
 	
-	attend:'考勤'
-
+	attend:'考勤',
+	attend_reason:'原因',
+	attend_remark:'备注'
 }

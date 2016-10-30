@@ -35,7 +35,7 @@ public class AttendService
             return null;
         }
         
-        if (CollectionUtil.isNotEmpty(perIds))
+        if (CollectionUtil.isNotEmpty(perIds) && perIds.length > 1)
         {
             List<Attendance> atts = new ArrayList<>();
             for (String perId : perIds)
@@ -110,6 +110,11 @@ public class AttendService
                     }
                     
                     params.put("personId_in_string", ids);
+                }
+                else
+                {
+                    // 班级没有学生，则查询一个不存在的学生，避免查询出非本班的数据
+                    params.put("personId", "0");
                 }
             }
         }

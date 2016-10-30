@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,12 +15,23 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.wja.base.common.CommConstants;
 import com.wja.base.common.CommEntity;
 import com.wja.base.util.DateUtil;
+import com.wja.base.util.SetValue;
+import com.wja.edu.entity.Student;
+import com.wja.edu.entity.Teacher;
 
 @Entity
 @Table(name = "t_attend_attendance", indexes = @Index(columnList = "per_id") )
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class Attendance extends CommEntity
 {
+    @Transient
+    @SetValue(clazz = Student.class, id = "personId", field = "name")
+    private String stuName;
+    
+    @Transient
+    @SetValue(clazz = Teacher.class, id = "personId", field = "name")
+    private String teaName;
+    
     @Column(name = "per_id", length = 32, nullable = false)
     private String personId;
     
@@ -160,6 +172,26 @@ public class Attendance extends CommEntity
     public void setReason(String reason)
     {
         this.reason = reason;
+    }
+    
+    public String getStuName()
+    {
+        return stuName;
+    }
+    
+    public void setStuName(String stuName)
+    {
+        this.stuName = stuName;
+    }
+    
+    public String getTeaName()
+    {
+        return teaName;
+    }
+    
+    public void setTeaName(String teaName)
+    {
+        this.teaName = teaName;
     }
     
 }
