@@ -83,6 +83,14 @@ $.sm = {
 	           });
 		},
 		
+		confirm:function(mess,fun){
+			$.messager.confirm(I18N.CONFIRM_TITLE, mess, function(r){		 
+				 if(r){
+	                fun.call(this);
+				 }
+	           });
+		},
+		
 		ResultStatus_Ok:200,   //操作结果码：成功
 		ResultStatus_Eorror : 500,  //操作结果码：失败
 		
