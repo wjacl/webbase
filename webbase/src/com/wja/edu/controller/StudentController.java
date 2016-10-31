@@ -30,7 +30,7 @@ public class StudentController
     public String myCourse(Model model)
     {
         Student st = this.studentService.getByUserId(RequestThreadLocal.currUser.get().getId());
-        model.addAttribute("clazzId", st.getClazz());
+        model.addAttribute("clazzId", st == null ? "" : st.getClazz());
         return "edu/student/mycourse";
     }
     
@@ -38,7 +38,7 @@ public class StudentController
     public String myAttend(Model model)
     {
         Student st = this.studentService.getByUserId(RequestThreadLocal.currUser.get().getId());
-        model.addAttribute("personId", st.getId());
+        model.addAttribute("personId", st == null ? RequestThreadLocal.currUser.get().getId() : st.getId());
         model.addAttribute("personType", Attendance.PERSON_TYPE_STUDENT);
         return "edu/student/myattend";
     }
