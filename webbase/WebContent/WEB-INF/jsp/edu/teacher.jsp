@@ -99,8 +99,7 @@
                 
                 teacherUpdate:function(){
                 	if(!$("#teacher_w").window("options").closed){
-
-        				$("#teacher_courseIds").combobox('reload');
+                		$("#teacher_courseIds").combobox('reload');
         				var selRows = $("#teacher_grid").datagrid("getSelections");
         				var courseIds = [];
         				var courses = selRows[0].courses;
@@ -112,7 +111,23 @@
         				$("#teacher_courseIds").combobox('setValues', courseIds);
         			}
                 	
-                }
+                },
+                loadFilter:function(data){
+        			if(data && data.rows){
+        				var rows = data.rows;
+        				for(var i in rows){
+        					if(rows[i].courses){
+        						var roles = rows[i].courses;
+        						for(var j in roles){
+        							if(roles[j].$ref){
+        								roles[j] = eval(roles[j].$ref.replace('$',"data"));
+        							}
+        						}
+        					}
+        				}
+        			}
+        			return data;
+        		}
 								 
 		};
 		
@@ -155,7 +170,7 @@
 	<table class="easyui-datagrid" id="teacher_grid" style="width: 916px;"
 		data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,
 				view: detailview,detailFormatter:teacher.detailFormatter,onExpandRow:teacher.onExpandRow,
-				url:'${ctx }/teacher/query',method:'post',toolbar:'#teacher_tb'">
+				url:'${ctx }/teacher/query',method:'post',toolbar:'#teacher_tb',loadFilter:teacher.loadFilter">
 		<thead>
 			<tr>
 				<th data-options="field:'ck',checkbox:true"></th>
@@ -364,9 +379,9 @@
 					<a href="javascript:void(0)" class="easyui-linkbutton"
 						onclick="$.ad.submitForm('teacher_add','teacher_grid','teacher_w')" style="width: 80px">
 						<s:message code="comm.submit" /></a> 
-					<a href="javascript:void(0)"
+					<%-- <a href="javascript:void(0)"
 						class="easyui-linkbutton" onclick="$.ad.clearForm('teacher_add')"
-						style="width: 80px"><s:message code="comm.clear" /></a>
+						style="width: 80px"><s:message code="comm.clear" /></a> --%>
 				</div>
 	</div>
 	<%@ include file="/WEB-INF/jsp/frame/footer.jsp"%>

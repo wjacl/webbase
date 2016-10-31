@@ -103,7 +103,9 @@ public class UserService
         }
         
         user.setPassword(MD5.encode(user.getPassword()));
-        this.userDao.save(user);
+        User u = this.userDao.save(user);
+        user.setId(u.getId());
+        user = u;
         Object res = user;
         // 学生-增加学生记录
         if (CommConstants.User.TYPE_STUDENT.equals(user.getType()))

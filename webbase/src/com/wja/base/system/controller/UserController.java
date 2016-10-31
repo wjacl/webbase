@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -77,7 +79,7 @@ public class UserController
     }
     
     @RequestMapping(value = "regist", method = RequestMethod.POST)
-    public String regist(User user, String clazz, Model model)
+    public String regist(User user, String clazz, Model model, HttpSession session)
     {
         if (this.userService.getUserByUsername(user.getUsername()) != null)
         {
@@ -87,6 +89,8 @@ public class UserController
         
         user.setStatus(CommConstants.User.STATUS_NEED_AUDIT);
         model.addAttribute("data", this.userService.addUser(user, clazz));
+        // 将用户放入session中，让信息登记时的保存可通过登录过滤器。
+        session.setAttribute(CommConstants.SESSION_USER, user);
         
         switch (user.getType())
         {

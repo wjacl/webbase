@@ -47,7 +47,7 @@ public class TeacherController
         }
         
         boolean add = StringUtils.isBlank(c.getId());
-        this.service.save(c);
+        c = this.service.save(c);
         if (add)
         {
             return OpResult.addOk(c.getId());

@@ -42,7 +42,7 @@ public class TeacherService
         return this.dao.findByUserId(userId);
     }
     
-    public void save(Teacher e)
+    public Teacher save(Teacher e)
     {
         if (StringUtils.isNotBlank(e.getId()))
         {
@@ -80,7 +80,7 @@ public class TeacherService
             e = dbc;
         }
         
-        this.dao.save(e);
+        return this.dao.save(e);
     }
     
     public void delete(String[] ids)
