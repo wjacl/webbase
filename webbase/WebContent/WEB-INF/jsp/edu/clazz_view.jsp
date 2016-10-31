@@ -287,6 +287,10 @@
 								class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='comm.update' /></a>
 							<a href="javascript:$.ad.doDelete('attend_grid','${ctx }/attend/delete')" class="easyui-linkbutton" iconCls="icon-remove"
 								plain="true"><s:message code='comm.remove' /></a>
+							<a href="javascript:attend.audit('1');"
+								class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='attend.audit.pass' /></a>
+							<a href="javascript:attend.audit('2');"
+								class="easyui-linkbutton" iconCls="icon-edit" plain="true"><s:message code='attend.audit.notpass' /></a>
 						</div>
 						<div>
 							<form id="attend_query_form" style="margin:0px">						

@@ -28,6 +28,19 @@ public class AttendService
     @Autowired
     private StudentService studentService;
     
+    public void audit(String[] ids, String status)
+    {
+        if (CollectionUtil.isNotEmpty(ids) && StringUtils.isNotBlank(status))
+        {
+            for (String id : ids)
+            {
+                Attendance a = this.dao.getOne(id);
+                a.setStatus(status);
+                this.dao.save(a);
+            }
+        }
+    }
+    
     public Object add(Attendance c, String[] perIds)
     {
         if (c == null)

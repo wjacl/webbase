@@ -35,6 +35,14 @@ public class AttendController
         return "attend/attend";
     }
     
+    @RequestMapping("audit")
+    @ResponseBody
+    public Object audit(String[] ids, String status)
+    {
+        this.service.audit(ids, status);
+        return OpResult.ok();
+    }
+    
     @RequestMapping("update")
     @ResponseBody
     public OpResult save(Attendance c)

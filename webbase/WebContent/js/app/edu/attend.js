@@ -2,6 +2,42 @@
 var attend = {
 	attend_w_load:false,
 	perType_stu : '1',
+	status_audit:0,
+	status_pass:1,
+	audit:function(status){
+		var gridId = "attend_grid";
+		var selRows = $("#" + gridId).datagrid("getChecked");
+		var ids = [];
+		if(selRows.length == 0){
+			$.sm.alert(I18N.alert_select);
+			return;
+		}
+		else{
+			for(var i in selRows){
+				if(selRows[i].status == attend.status_audit){
+					ids.push(selRows[i].id);
+				}
+			}
+		}
+		
+		if(ids.length == 0){
+			$.sm.alert(I18N.attend_audit_select);
+			return;
+		}
+		var mess = I18N.attend_audit_confirm_mess_pass;
+		if(status != attend.status_pass){
+			mess = I18N.attend_audit_confirm_mess_notpass;
+		}
+		
+		$.sm.confirm(mess,function(){
+			
+			$.post(ctx + '/attend/audit',{ids:ids,status:status},function(data){
+				$.sm.handleResult(data,function(data){
+					$("#" + gridId).datagrid("reload");
+				});
+			},'json');
+		});
+	},
 	toReg:function(wTitle){
 		$.ad.toAdd('attend_w',wTitle,'attend_add',ctx + '/attend/add')
 		$('#attend_add_per').combobox({multiple:true});
