@@ -7,25 +7,51 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp"%>
+<c:choose>
+	<c:when test="${not empty personInfo }">
+<script type="text/javascript">	
+	function submitOk(data){
+		var data = eval('(' + data + ')');
+		$.sm.handleResult(data,function(data){
+			
+		});
+	}
+	$(function(){
+		var data = ${personData };
+		$('#student_add').form('load',data);
+	});
+</script>
+	</c:when>
+	<c:otherwise>
 <script type="text/javascript">
 function submitOk(data){
 	$("#student_w").panel("close");
 	$("#content").append("<p><s:message code="student.info.reg.ok"/></p>")
 }
 </script>
+</c:otherwise>
+</c:choose>
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
-	
+
 	<c:if test="${not empty data.sex }"> 
 		<h3><s:message code="student.tip.audit"/></h3>
 	</c:if>
 	<c:if test="${empty data.sex }">
-		<p><s:message code="p.reg.ok"/></p>
-	<h3>
-		<s:message code="p.info.reg" />
-	</h3>
-	
+	<c:choose>
+		<c:when test="${not empty personInfo }">
+			<h3>
+				<s:message code="person.info" />
+			</h3>
+		</c:when>
+		<c:otherwise>	
+			<p><s:message code="p.reg.ok"/></p>
+		<h3>
+			<s:message code="p.info.reg" />
+		</h3>
+		</c:otherwise>
+	</c:choose>
 	<div id="student_w" class="easyui-panel"
 		style="width: 780px; height: 400px; padding: 10px;">
 		
@@ -197,14 +223,17 @@ function submitOk(data){
 					
                     <input type="hidden" name="id"  value="${data.id }"/>
                     <input type="hidden" name="version"  value="${data.version }"/>
+                    <c:if test="${not empty personInfo}">
+                    	<input type="hidden" name="status"/>
+                    </c:if>
 				</form>
 				<div style="text-align: center; padding: 5px 0">
 					<a href="javascript:void(0)" class="easyui-linkbutton"
 						onclick="$.ad.submitForm('student_add',null,null,submitOk)" style="width: 80px">
 						<s:message code="comm.submit" /></a> 
-					<a href="javascript:void(0)"
+					<%-- <a href="javascript:void(0)"
 						class="easyui-linkbutton" onclick="$.ad.clearForm('student_add')"
-						style="width: 80px"><s:message code="comm.clear" /></a>
+						style="width: 80px"><s:message code="comm.clear" /></a> --%>
 				</div>
 	</div>	
 	</c:if>
