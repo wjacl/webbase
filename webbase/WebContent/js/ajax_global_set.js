@@ -227,6 +227,37 @@ $.ad = {
 	},
 	
 	/**
+	 * 打开表单窗口方法
+	 * @param options:{beforeProc:function,formId:String,clear:boolean,initFun:function,
+	 * 		url:string,initData:object,wid:string,wTitle:string}
+	 */
+	openFormWin:function(options){
+		if(options.beforeProc){
+			options.beforeProc();
+		}
+		if(options.formId){
+			if(options.clear){
+				$('#' + options.formId).form('clear');
+			}
+			if(options.url){
+				$('#' + options.formId).form({url:options.url});
+			}
+			if(options.initFun){
+				options.initFun();
+			}
+			if(options.initData){
+				$('#' + options.formId).form('load',options.initData);
+			}
+		}
+		if(options.wid){
+			if(options.wTitle){
+				$('#' + options.wid).window({title:options.wTitle});
+			}
+			$('#' + options.wid).window('open');
+		}
+	},
+	
+	/**
 	 * 从表格选择数据修改的方法<br>
 	 * @param gridId 表格id<br>
 	 * @param wid  窗口id<br>
