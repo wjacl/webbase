@@ -294,7 +294,6 @@
 										<input class="easyui-combobox" name="personId_in_string" id="attend_personId"
 										style="width: 100px"
 										data-options="
-						                    url:'${ctx }/student/list',
 						                    method:'get',
 						                    valueField:'id',
 						                    textField:'name',
@@ -387,7 +386,7 @@
 	
 	<div id="attend_w" class="easyui-window" title="<s:message code='attend.reg' />"
 		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
-		style="width: 500px; height: 290px; padding: 10px;">
+		style="width: 540px; height: 320px; padding: 10px;">
 		<div class="content">
 		</div>
 	</div>

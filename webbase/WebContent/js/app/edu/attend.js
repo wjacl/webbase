@@ -58,6 +58,9 @@ var attend = {
     
     leave:{
     	apply:function(wTitle){
+    		$("#attend_add").form({url:ctx + 'attend/add'});
+    		$("#attend_add").form("clear");
+    		$("#attend_add").form("load",addData);
     		var wid = "attend_w";
     		$("#" + wid).window({title:wTitle});
     		$("#" + wid).window("open");

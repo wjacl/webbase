@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wja.attend.entity.Attendance;
 import com.wja.base.common.OpResult;
 import com.wja.base.util.Page;
 import com.wja.base.util.Sort;
@@ -37,7 +38,8 @@ public class StudentController
     public String myAttend(Model model)
     {
         Student st = this.studentService.getByUserId(RequestThreadLocal.currUser.get().getId());
-        model.addAttribute("studentId", st.getId());
+        model.addAttribute("personId", st.getId());
+        model.addAttribute("personType", Attendance.PERSON_TYPE_STUDENT);
         return "edu/student/myattend";
     }
     

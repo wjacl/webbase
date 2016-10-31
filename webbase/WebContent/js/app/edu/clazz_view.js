@@ -13,6 +13,9 @@ var clazzView = {
 				$('#attend_query_form').form('clear');
 				$('#attend_clazz').val(clazzid);
 				$('#attend_personId').combobox({queryParams:{clazz:clazzid}});
+				if(!$('#attend_personId').combobox("options").url){
+					$('#attend_personId').combobox("options").url = ctx + '/student/list';
+				}
 				$('#attend_personId').combobox('reload');
 				if(!$("#attend_grid").datagrid("options").url){
 					$("#attend_grid").datagrid("options").url = ctx + '/attend/query';

@@ -4,15 +4,17 @@
 <form id="attend_add" method="post" action="${ctx }/attend/add">
 	<table style="width:100%;border:0px solid #ccc;">
 		<tr>
-			<td style="width:70px"><s:message code="attend.apply.person"/>:</td>
+			<td style="width:70px"><s:message code="attend.leave.person"/>:</td>
 			<td colspan="3">
-				${sessionUser.name }
+				${session_user.name }
 				<input type="hidden" name="personId" value="${personId }"/>               
 				<input type="hidden" name="personType" value="${personType }" id="attend_personType"/>
 				<input type="hidden" name="status" value="0" id="attendStatus"/>
 				<input type="hidden" name="id" />
 				<input type="hidden" name="version" />
-			</td>	
+			</td>
+		</tr>
+		<tr>	
 			<td><s:message code="attend.type"/>:</td>
 			<td>
 				<input class="easyui-combobox" name="type" style="width: 140px"
@@ -39,7 +41,7 @@
 			
 			<td><s:message code="attend.endTime"/>:</td>
 			<td>
-				<input class="easyui-datetimebox" data-options="showSeconds:false" id="attend_endTime"
+				<input class="easyui-datetimebox" data-options="required:true,showSeconds:false" id="attend_endTime"
 					name="endTime" style="width: 140px">
 			</td>
 		</tr>
@@ -47,7 +49,7 @@
 			<td><s:message code="attend.reason"/>:</td>
 			<td colspan="3">
 				<input class="easyui-textbox" name="reason" style="width: 100%"
-				data-options="validType:'maxLength[200]',multiline:true">
+				data-options="validType:'maxLength[200]',multiline:true,required:true">
 			</td>
 		</tr>
 		<tr>						

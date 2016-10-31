@@ -24,6 +24,10 @@ import com.wja.edu.entity.Teacher;
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class Attendance extends CommEntity
 {
+    public static final String PERSON_TYPE_STUDENT = "1";
+    
+    public static final String PERSON_TYPE_TEACHER = "2";
+    
     @Transient
     @SetValue(clazz = Student.class, id = "personId", field = "name")
     private String stuName;
