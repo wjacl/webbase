@@ -30,6 +30,27 @@ import com.wja.base.util.SetValue;
 @Table(name = "t_sys_user")
 @Where(clause = " valid = " + CommConstants.DATA_VALID)
 public class User extends CommEntity {
+
+    /**
+     * 用户类别-管理领导
+     */
+    public static final String TYPE_LEADER = "L";
+
+    /**
+     * 用户类别-普通员工
+     */
+    public static final String TYPE_NORMAL_STAFF = "N";
+
+    /**
+     * 用户状态-正常
+     */
+    public static final String STATUS_NORMAL = "N";
+
+    /**
+     * 用户状态-锁定
+     */
+    public static final String STATUS_LOCK = "L";
+
     @Transient
     @SetValue(clazz = User.class, id = "createUser", field = "name")
     private String createUserName;
@@ -94,7 +115,7 @@ public class User extends CommEntity {
      * @see CommConstants.User
      */
     @Column(length = 1, nullable = false)
-    private String status = CommConstants.User.STATUS_NORMAL;
+    private String status = User.STATUS_NORMAL;
 
     @ManyToMany
     @JoinTable(name = "t_sys_user_role", joinColumns = { @JoinColumn(name = "u_id") }, inverseJoinColumns = {

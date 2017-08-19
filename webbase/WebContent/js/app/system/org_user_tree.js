@@ -23,7 +23,8 @@ var org_user_tree = {
 			if (!exists(rows, row.pid)){
 				nodes.push({
 					id:row.id,
-					text:row.name
+					text:row.name,
+					iconCls:row.iconCls?row.iconCls:""
 				});
 			}
 		}
@@ -38,7 +39,8 @@ var org_user_tree = {
 			for(var i=0; i<rows.length; i++){
 				var row = rows[i];
 				if (row.pid == node.id){
-					var child = {id:row.id,text:row.name};
+					var child = {id:row.id,text:row.name,
+							iconCls:row.iconCls?row.iconCls:""};
 					if (node.children){
 						node.children.push(child);
 					} else {

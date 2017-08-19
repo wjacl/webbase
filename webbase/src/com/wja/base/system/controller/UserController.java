@@ -1,5 +1,7 @@
 package com.wja.base.system.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.wja.base.common.CommConstants;
 import com.wja.base.common.OpResult;
 import com.wja.base.system.dao.RoleDao;
+import com.wja.base.system.entity.Org;
 import com.wja.base.system.entity.Role;
 import com.wja.base.system.entity.User;
 import com.wja.base.system.service.OrgService;
@@ -42,6 +44,49 @@ public class UserController {
     @RequestMapping("mana")
     public String manage() {
 	return "system/user";
+    }
+
+    @RequestMapping("memberTree")
+    @ResponseBody
+    public List<?> memberTree() {
+	User user = RequestThreadLocal.currUser.get();
+	List<Object> treeList = new ArrayList<>();
+	if (user != null) {
+	    List<Org> orgs = new ArrayList<>();
+	    orgs.add(user.getOrg());
+
+	    if (User.TYPE_LEADER.equals(user.getType())) {
+		// 领导用户，可以查看所在部门及子部门
+		this.orgService.getAllChildOrg(user.getOrg(), orgs, null, null);
+	    } else {
+		// 普通员工用户，只可查看所在部门人员，不可查看子部门
+	    }
+
+	    // 查询人员
+	    List<String> orgIds = new ArrayList<>();
+	    for (Org org : orgs) {
+		orgIds.add(org.getId());
+	    }
+
+	    Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("org.id_in_String", orgIds);
+
+	    List<User> users = this.userService.query(params);
+
+	    // 将组织、人员组合成一个List
+	    treeList.addAll(orgs);
+	    for (User u : users) {
+		Map<String, Object> ma = new HashMap<>();
+		ma.put("id", u.getId());
+		ma.put("name", u.getName());
+		ma.put("pid", u.getOrg().getId());
+		ma.put("type", "user");
+		ma.put("userType", u.getType());
+		ma.put("iconCls", "icon-man");
+		treeList.add(ma);
+	    }
+	}
+	return treeList;
     }
 
     @RequestMapping("oldPwdCheck")
@@ -78,7 +123,7 @@ public class UserController {
 	    return OpResult.error("unameExits", null);
 	}
 
-	user.setStatus(CommConstants.User.STATUS_LOCK);
+	user.setStatus(User.STATUS_LOCK);
 	this.userService.addUser(user);
 
 	return OpResult.ok();
