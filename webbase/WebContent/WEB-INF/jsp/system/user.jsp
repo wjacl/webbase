@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp"%>
+	<script type="text/javascript" src="${ctx }/js/app/system/org_user_tree.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
@@ -41,6 +42,12 @@
 	                    panelHeight:'auto',
 	                    multiple:true
                     ">
+                <s:message code="user.org"/>:
+				<input id="orgTreeInput" class="easyui-combotree" name="org.id_in_String" style="width: 200px"
+					data-options="
+						url:'${ctx }/org/tree',
+						loadFilter:userOrgTreeLoadFilter,
+	                    multiple:true">
 				<a
 					href="javascript:$.ad.gridQuery('user_query_form','user_grid')"
 					class="easyui-linkbutton" iconCls="icon-search"><s:message
@@ -49,25 +56,37 @@
 		</div>
 	</div>
 
-	<table class="easyui-datagrid" id="user_grid" style="width: 720px;"
+	<table class="easyui-datagrid" id="user_grid" 
 		data-options="rownumbers:true,singleSelect:false,pagination:true,multiSort:true,selectOnCheck:true,
 				url:'${ctx }/user/query',method:'post',toolbar:'#user_tb',loadFilter:userDataProcess">
 		<thead>
 			<tr>
 				<th data-options="field:'ck',checkbox:true"></th>
-				<th data-options="field:'name',width:100"><s:message
+				<th data-options="field:'name',width:60"><s:message
 						code="user.name" /></th>
-				<th data-options="field:'username',width:100,sortable:'true'"><s:message
+				<th data-options="field:'orgName',width:100"><s:message
+						code="user.org" /></th>
+				<th data-options="field:'job',width:80"><s:message
+						code="user.job" /></th>
+				<th data-options="field:'username',width:60"><s:message
 						code="user.username" /></th>
 				<th
-					data-options="field:'type',width:100,sortable:'true',formatter:userTypeFormatter"><s:message
+					data-options="field:'type',width:80,sortable:'true',formatter:userTypeFormatter"><s:message
 						code="user.type" /></th>
 				<th
-					data-options="field:'status',width:100,align:'center',sortable:'true',formatter:userStatusFormatter"><s:message
+					data-options="field:'status',width:60,align:'center',sortable:'true',formatter:userStatusFormatter"><s:message
 						code="user.status" /></th>
 				<th
-					data-options="field:'roles',width:260,align:'left',formatter:userRoleFormatter"><s:message
+					data-options="field:'roles',width:200,align:'left',formatter:userRoleFormatter"><s:message
 						code="role" /></th>
+				<th data-options="field:'phone',width:80"><s:message
+						code="user.phone" /></th>
+				<th data-options="field:'weixin',width:80"><s:message
+						code="user.weixin" /></th>
+				<th data-options="field:'qq',width:80"><s:message
+						code="user.qq" /></th>
+				<th data-options="field:'email',width:100"><s:message
+						code="user.email" /></th>
 			</tr>
 		</thead>
 	</table>
@@ -84,6 +103,14 @@
 								roles[j] = eval(roles[j].$ref.replace('$',"data"));
 							}
 						}
+					}
+					
+					//组织机构处理
+					if(rows[i].org){
+						if(rows[i].org.$ref){
+							rows[i].org = eval(rows[i].org.$ref.replace('$',"data"));
+						}
+						rows[i].orgName = rows[i].org.name;
 					}
 				}
 			}
@@ -143,70 +170,142 @@
 					}
 				}
 				$("#userRoleComb").combobox('setValues', roleIds);
+				
+				//组织树处理
+				$('#orgTreeInput').combotree('setValue', selRows[0].org.id);
 			}
+		}
+		
+		function userOrgTreeLoadFilter(data){
+			return org_user_tree.orgDataConvertToEasyTreeData(data);
 		}
 	</script>
 	
 	<div id="user_w" class="easyui-window" title='<s:message code="user.add" />'
 		data-options="modal:true,closed:true,minimizable:false,maximizable:false,collapsible:false"
-		style="width: 400px; height: 400px; padding: 10px;">
+		style="width: 600px; height: 440px; padding: 10px;">
 		<div class="content">
 				<form id="user_add" method="post" action="${ctx }/user/add">
-					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="name" style="width: 100%"
-							data-options="label:'<s:message code="user.name"/>:',required:true,validType:'length[1,30]'">
-					</div>
-					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="username" style="width: 100%"
-							data-options="label:'<s:message code="user.username"/>:',required:true,
-							validType:{length:[1,30],myRemote:['${ctx }/user/unameCheck','username','#oldUsername']},
-							invalidMessage:I18N.user_uname_exits">
-						<input type="hidden" name="oldUsername" id="oldUsername" />
-					</div>
-					<div style="margin-bottom: 20px">
-						<input class="easyui-textbox" name="password" type="password"  id="pwd"
-							style="width: 100%"
-							data-options="label:'<s:message code="user.pwd"/>:',required:true,validType:'length[6,32]'">
-					</div>
-					<div style="margin-bottom: 20px">
-						<input class="easyui-combobox" name="type"
-						style="width: 100%;"
-						data-options="
-		                    url:'${ctx }/dict/get?pvalue=user.type',
-		                    method:'get',
-		                    valueField:'value',
-		                    textField:'name',
-		                    panelHeight:'auto',
-		                    required:true,
-		                    label:'<s:message code="user.type"/>:'
-	                    ">
-                    </div>
-					<div style="margin-bottom: 20px">
-						<input class="easyui-combobox" name="status"
-						style="width: 100%;"
-						data-options="
-		                    url:'${ctx }/dict/get?pvalue=user.status',
-		                    method:'get',
-		                    valueField:'value',
-		                    textField:'name',
-		                    panelHeight:'auto',
-		                    required:true,
-		                    label:'<s:message code="user.status"/>:'
-	                    ">
-                    </div>
-                    <div style="margin-bottom: 20px">
-						<input class="easyui-combobox" name="roleIds"  id="userRoleComb"
-						style="width: 100%;"
-						data-options="
-		                    url:'${ctx }/user/roles',
-		                    method:'get',
-		                    valueField:'id',
-		                    textField:'name',
-		                    panelHeight:'auto',
-		                    label:'<s:message code="role"/>:',
-	                    	multiple:true
-	                    ">
-                    </div>
+				<table>
+					<tr>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-textbox" name="name" style="width: 100%"
+									data-options="label:'<s:message code="user.name"/>:',required:true,validType:'length[1,30]'">
+							</div>
+						</td>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input id="orgTreeInput" class="easyui-combotree" name="org.id" style="width: 100%"
+									data-options="label:'<s:message code="user.org"/>:',
+										required:true,
+										url:'${ctx }/org/tree',
+										loadFilter:userOrgTreeLoadFilter">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-textbox" name="job" style="width: 100%"
+									data-options="label:'<s:message code="user.job"/>:',validType:'length[0,60]'">
+							</div>
+						</td>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-textbox" name="phone" style="width: 100%"
+									data-options="label:'<s:message code="user.phone"/>:',validType:'length[0,30]'">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-textbox" name="email" style="width: 100%"
+									data-options="label:'<s:message code="user.email"/>:',validType:'length[0,60]'">
+							</div>
+						</td>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-textbox" name="weixin" style="width: 100%"
+									data-options="label:'<s:message code="user.weixin"/>:',validType:'length[0,20]'">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-textbox" name="qq" style="width: 100%"
+									data-options="label:'<s:message code="user.qq"/>:',validType:'length[0,20]'">
+							</div>
+						</td>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-textbox" name="username" style="width: 100%"
+									data-options="label:'<s:message code="user.username"/>:',required:true,
+									validType:{length:[1,30],myRemote:['${ctx }/user/unameCheck','username','#oldUsername']},
+									invalidMessage:I18N.user_uname_exits">
+								<input type="hidden" name="oldUsername" id="oldUsername" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-textbox" name="password" type="password"  id="pwd"
+									style="width: 100%"
+									data-options="label:'<s:message code="user.pwd"/>:',required:true,validType:'length[6,32]'">
+							</div>
+						</td>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-combobox" name="type"
+								style="width: 100%;"
+								data-options="
+				                    url:'${ctx }/dict/get?pvalue=user.type',
+				                    method:'get',
+				                    valueField:'value',
+				                    textField:'name',
+				                    panelHeight:'auto',
+				                    required:true,
+				                    label:'<s:message code="user.type"/>:'
+			                    ">
+		                    </div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div style="margin-bottom: 20px">
+								<input class="easyui-combobox" name="status"
+								style="width: 100%;"
+								data-options="
+				                    url:'${ctx }/dict/get?pvalue=user.status',
+				                    method:'get',
+				                    valueField:'value',
+				                    textField:'name',
+				                    panelHeight:'auto',
+				                    required:true,
+				                    label:'<s:message code="user.status"/>:'
+			                    ">
+		                    </div>
+						</td>
+						<td>
+		                    <div style="margin-bottom: 20px">
+								<input class="easyui-combobox" name="roleIds"  id="userRoleComb"
+								style="width: 100%;"
+								data-options="
+				                    url:'${ctx }/user/roles',
+				                    method:'get',
+				                    valueField:'id',
+				                    textField:'name',
+				                    panelHeight:'auto',
+				                    label:'<s:message code="role"/>:',
+			                    	multiple:true
+			                    ">
+		                    </div>
+						</td>
+					</tr>
+                    </table>
                     <input type="hidden" name="id" />
                     <input type="hidden" name="version" />
 				</form>
