@@ -43,7 +43,7 @@
 	                    multiple:true
                     ">
                 <s:message code="user.org"/>:
-				<input id="orgTreeInput" class="easyui-combotree" name="org.id_in_String" style="width: 200px"
+				<input class="easyui-combotree" name="org.id_in_String" style="width: 200px"
 					data-options="
 						url:'${ctx }/org/tree',
 						loadFilter:userOrgTreeLoadFilter,
