@@ -6,7 +6,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ include file="/WEB-INF/jsp/frame/comm_css_js.jsp"%>
-	<script type="text/javascript" src="${ctx }/js/app/system/org_user_tree.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/jsp/frame/header.jsp"%>
@@ -46,7 +45,7 @@
 				<input class="easyui-combotree" name="org.id_in_String" style="width: 200px"
 					data-options="
 						url:'${ctx }/org/tree',
-						loadFilter:userOrgTreeLoadFilter,
+						loadFilter:$.ad.standardIdPidNameArrayToEasyUITree,
 	                    multiple:true">
 				<a
 					href="javascript:$.ad.gridQuery('user_query_form','user_grid')"
@@ -176,9 +175,6 @@
 			}
 		}
 		
-		function userOrgTreeLoadFilter(data){
-			return org_user_tree.orgDataConvertToEasyTreeData(data);
-		}
 	</script>
 	
 	<div id="user_w" class="easyui-window" title='<s:message code="user.add" />'
@@ -200,7 +196,7 @@
 									data-options="label:'<s:message code="user.org"/>:',
 										required:true,
 										url:'${ctx }/org/tree',
-										loadFilter:userOrgTreeLoadFilter">
+										loadFilter:$.ad.standardIdPidNameArrayToEasyUITree">
 							</div>
 						</td>
 					</tr>
