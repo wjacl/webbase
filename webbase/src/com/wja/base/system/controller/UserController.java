@@ -102,7 +102,7 @@ public class UserController
     public Object addUser(User user, String[] roleIds)
     {
         
-        if (roleIds != null && roleIds.length > 1)
+        if (roleIds != null && roleIds.length > 0)
         {
             Set<Role> roles = new HashSet<>();
             roles.addAll(this.roleDao.findAll(roleIds));
